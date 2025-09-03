@@ -1,0 +1,245 @@
+{
+  "tree_id": "maintenance-v1",
+  "version": 1,
+  "title": {
+    "en": "Maintenance and Repairs",
+    "nl": "Onderhoud en Reparaties"
+  },
+  "root_node_id": "root",
+  "nodes": {
+    "root": {
+      "node_id": "root",
+      "type": "branch",
+      "title": {
+        "en": "What type of issue are you experiencing?",
+        "nl": "Wat voor soort probleem heeft u?"
+      },
+      "children": ["bathroom", "kitchen", "heating", "water-leaks"]
+    },
+    "bathroom": {
+      "node_id": "bathroom",
+      "type": "branch", 
+      "title": {
+        "en": "Bathroom and Toilet",
+        "nl": "Badkamer en Toilet"
+      },
+      "children": ["toilet-clog", "shower-drain", "toilet-seat", "bathroom-fire"]
+    },
+    "kitchen": {
+      "node_id": "kitchen",
+      "type": "branch",
+      "title": {
+        "en": "Kitchen",
+        "nl": "Keuken"
+      },
+      "children": ["sink-clog", "appliance-broken", "cabinet-door"]
+    },
+    "heating": {
+      "node_id": "heating",
+      "type": "branch",
+      "title": {
+        "en": "Heating and Boiler",
+        "nl": "Verwarming en Boiler"
+      },
+      "children": ["no-heat", "boiler-noise", "radiator-leak"]
+    },
+    "water-leaks": {
+      "node_id": "water-leaks",
+      "type": "branch",
+      "title": {
+        "en": "Water and Leaks",
+        "nl": "Water en Lekken"
+      },
+      "children": ["pipe-leak", "ceiling-leak", "faucet-drip"]
+    },
+    "toilet-clog": {
+      "node_id": "toilet-clog",
+      "type": "video_check",
+      "title": {
+        "en": "Clogged Toilet",
+        "nl": "Verstopt Toilet"
+      },
+      "video_url": "https://www.youtube.com/watch?v=R22urvGcWy4",
+      "description": {
+        "en": "Watch this video to see if you can resolve the clog yourself.",
+        "nl": "Bekijk deze video om te zien of u de verstopping zelf kunt oplossen."
+      },
+      "outcomes": {
+        "yes": {
+          "leaf_type": "end_no_ticket",
+          "leaf_reason": "video_resolved"
+        },
+        "no": {
+          "leaf_type": "start_ticket",
+          "leaf_reason": "video_not_resolved",
+          "required_fields": ["description"],
+          "flow": ["describe_media", "contact_questions", "review", "submit"],
+          "question_groups": ["contact_at_home"]
+        }
+      }
+    },
+    "shower-drain": {
+      "node_id": "shower-drain",
+      "type": "leaf",
+      "title": {
+        "en": "Shower Drain Clogged",
+        "nl": "Doucheafvoer Verstopt"
+      },
+      "leaf_type": "start_ticket",
+      "leaf_reason": "standard_wizard",
+      "required_fields": ["description"],
+      "flow": ["describe_media", "contact_questions", "review", "submit"],
+      "question_groups": ["contact_at_home"]
+    },
+    "toilet-seat": {
+      "node_id": "toilet-seat",
+      "type": "leaf",
+      "title": {
+        "en": "Broken Toilet Seat",
+        "nl": "Kapotte Toiletbril"
+      },
+      "leaf_type": "end_no_ticket",
+      "leaf_reason": "tenant_responsibility"
+    },
+    "sink-clog": {
+      "node_id": "sink-clog",
+      "type": "video_check",
+      "title": {
+        "en": "Kitchen Sink Clogged",
+        "nl": "Keuken Gootsteen Verstopt"
+      },
+      "video_url": "https://www.youtube.com/watch?v=fjDsUrwJ0FE",
+      "description": {
+        "en": "Try these steps to unclog your kitchen sink.",
+        "nl": "Probeer deze stappen om uw keuken gootsteen vrij te maken."
+      },
+      "outcomes": {
+        "yes": {
+          "leaf_type": "end_no_ticket", 
+          "leaf_reason": "video_resolved"
+        },
+        "no": {
+          "leaf_type": "start_ticket",
+          "leaf_reason": "video_not_resolved",
+          "required_fields": ["description"],
+          "flow": ["describe_media", "contact_questions", "review", "submit"],
+          "question_groups": ["contact_at_home"]
+        }
+      }
+    },
+    "appliance-broken": {
+      "node_id": "appliance-broken",
+      "type": "leaf",
+      "title": {
+        "en": "Broken Kitchen Appliance",
+        "nl": "Kapot Keukenapparaat"
+      },
+      "leaf_type": "start_ticket",
+      "leaf_reason": "standard_wizard",
+      "required_fields": ["description"],
+      "flow": ["describe_media", "contact_questions", "review", "submit"],
+      "question_groups": ["contact_at_home"]
+    },
+    "cabinet-door": {
+      "node_id": "cabinet-door",
+      "type": "leaf",
+      "title": {
+        "en": "Cabinet Door Issues",
+        "nl": "Kastdeur Problemen"
+      },
+      "leaf_type": "start_ticket",
+      "leaf_reason": "standard_wizard",
+      "required_fields": ["description"],
+      "flow": ["describe_media", "contact_questions", "review", "submit"],
+      "question_groups": ["contact_at_home"]
+    },
+    "no-heat": {
+      "node_id": "no-heat",
+      "type": "leaf",
+      "title": {
+        "en": "No Heat/Heating Not Working",
+        "nl": "Geen Verwarming"
+      },
+      "leaf_type": "start_ticket",
+      "leaf_reason": "emergency",
+      "required_fields": ["description"],
+      "flow": ["describe_media", "contact_questions", "review", "submit"],
+      "question_groups": ["contact_at_home", "emergency_contact"]
+    },
+    "boiler-noise": {
+      "node_id": "boiler-noise",
+      "type": "leaf",
+      "title": {
+        "en": "Boiler Making Strange Noises",
+        "nl": "Boiler Maakt Vreemde Geluiden"
+      },
+      "leaf_type": "start_ticket",
+      "leaf_reason": "safety_issue",
+      "required_fields": ["description"],
+      "flow": ["describe_media", "contact_questions", "review", "submit"],
+      "question_groups": ["contact_at_home", "safety_details"]
+    },
+    "radiator-leak": {
+      "node_id": "radiator-leak",
+      "type": "leaf",
+      "title": {
+        "en": "Radiator Leaking",
+        "nl": "Radiator Lekt"
+      },
+      "leaf_type": "start_ticket",
+      "leaf_reason": "standard_wizard",
+      "required_fields": ["description"],
+      "flow": ["describe_media", "contact_questions", "review", "submit"],
+      "question_groups": ["contact_at_home"]
+    },
+    "pipe-leak": {
+      "node_id": "pipe-leak",
+      "type": "leaf",
+      "title": {
+        "en": "Pipe Leak",
+        "nl": "Leiding Lek"
+      },
+      "leaf_type": "start_ticket",
+      "leaf_reason": "emergency",
+      "required_fields": ["description"],
+      "flow": ["describe_media", "contact_questions", "review", "submit"],
+      "question_groups": ["contact_at_home", "emergency_contact"]
+    },
+    "ceiling-leak": {
+      "node_id": "ceiling-leak",
+      "type": "leaf",
+      "title": {
+        "en": "Ceiling Leak",
+        "nl": "Plafond Lek"
+      },
+      "leaf_type": "start_ticket",
+      "leaf_reason": "emergency",
+      "required_fields": ["description"],
+      "flow": ["describe_media", "contact_questions", "review", "submit"],
+      "question_groups": ["contact_at_home", "emergency_contact"]
+    },
+    "faucet-drip": {
+      "node_id": "faucet-drip",
+      "type": "leaf",
+      "title": {
+        "en": "Dripping Faucet",
+        "nl": "Druppelende Kraan"
+      },
+      "leaf_type": "start_ticket",
+      "leaf_reason": "standard_wizard",
+      "required_fields": ["description"],
+      "flow": ["describe_media", "contact_questions", "review", "submit"],
+      "question_groups": ["contact_at_home"]
+    },
+    "bathroom-fire": {
+      "node_id": "bathroom-fire",
+      "type": "leaf",
+      "title": {
+        "en": "Fire",
+        "nl": "Brand"
+      },
+      "leaf_type": "end_no_ticket",
+      "leaf_reason": "emergency"
+    }
+  }
+}

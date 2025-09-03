@@ -1,0 +1,168 @@
+{
+  "tree_id": "maintenance-v1",
+  "version": 1,
+  "root": {
+    "node_id": "root",
+    "type": "branch",
+    "title": {
+      "en": "Maintenance and Repairs",
+      "nl": "Onderhoud en Reparaties"
+    },
+    "children": [
+      {
+        "node_id": "bathroom",
+        "type": "branch",
+        "title": {
+          "en": "Bathroom and Toilet",
+          "nl": "Badkamer en Toilet"
+        },
+        "children": [
+          {
+            "node_id": "bathroom.toilet_clog",
+            "type": "video_check",
+            "title": {
+              "en": "Clogged toilet",
+              "nl": "Verstopt toilet"
+            },
+            "video_url": "https://www.youtube.com/watch?v=R22urvGcWy4",
+            "outcomes": {
+              "yes": {
+                "leaf_type": "end_no_ticket",
+                "leaf_reason": "video_resolved"
+              },
+              "no": {
+                "leaf_type": "start_ticket",
+                "leaf_reason": "video_not_resolved",
+                "required_fields": ["description"],
+                "flow": ["describe_media", "contact_questions", "review", "submit"],
+                "question_groups": ["contact_at_home"]
+              }
+            }
+          },
+          {
+            "node_id": "bathroom.toilet.seat_broken",
+            "type": "leaf",
+            "title": {
+              "en": "Toilet seat broken or loose",
+              "nl": "Toiletbril kapot of los"
+            },
+            "leaf_type": "end_no_ticket",
+            "leaf_reason": "tenant_responsibility"
+          },
+          {
+            "node_id": "bathroom.tap_leak",
+            "type": "leaf",
+            "title": {
+              "en": "Leaking tap",
+              "nl": "Lekkende kraan"
+            },
+            "leaf_type": "start_ticket",
+            "leaf_reason": "standard_wizard",
+            "required_fields": ["description", "photos"],
+            "flow": ["describe_media", "contact_questions", "review", "submit"],
+            "question_groups": ["contact_at_home", "entry_permission"]
+          },
+          {
+            "node_id": "bathroom.fire",
+            "type": "leaf",
+            "title": {
+              "en": "Fire",
+              "nl": "Brand"
+            },
+            "leaf_type": "end_no_ticket",
+            "leaf_reason": "emergency"
+          }
+        ]
+      },
+      {
+        "node_id": "kitchen",
+        "type": "branch",
+        "title": {
+          "en": "Kitchen",
+          "nl": "Keuken"
+        },
+        "children": [
+          {
+            "node_id": "kitchen.extractor_fan",
+            "type": "leaf",
+            "title": {
+              "en": "Extractor fan not working",
+              "nl": "Afzuigkap werkt niet"
+            },
+            "leaf_type": "start_ticket",
+            "leaf_reason": "standard_wizard",
+            "required_fields": ["description", "photos"],
+            "flow": ["describe_media", "contact_questions", "review", "submit"],
+            "question_groups": ["contact_at_home", "entry_permission"]
+          },
+          {
+            "node_id": "kitchen.fridge_noise",
+            "type": "leaf",
+            "title": {
+              "en": "Refrigerator making noise",
+              "nl": "Koelkast maakt lawaai"
+            },
+            "leaf_type": "end_no_ticket",
+            "leaf_reason": "tenant_responsibility"
+          }
+        ]
+      },
+      {
+        "node_id": "heating",
+        "type": "branch",
+        "title": {
+          "en": "Heating and Boiler",
+          "nl": "Verwarming en Ketel"
+        },
+        "children": [
+          {
+            "node_id": "heating.no_hot_water",
+            "type": "leaf",
+            "title": {
+              "en": "No hot water",
+              "nl": "Geen warm water"
+            },
+            "leaf_type": "end_no_ticket",
+            "leaf_reason": "emergency"
+          },
+          {
+            "node_id": "heating.cold_radiator",
+            "type": "leaf",
+            "title": {
+              "en": "Radiator not getting warm",
+              "nl": "Radiator wordt niet warm"
+            },
+            "leaf_type": "start_ticket",
+            "leaf_reason": "standard_wizard",
+            "required_fields": ["description", "photos"],
+            "flow": ["describe_media", "contact_questions", "review", "submit"],
+            "question_groups": ["contact_at_home", "entry_permission"]
+          }
+        ]
+      },
+      {
+        "node_id": "water",
+        "type": "branch",
+        "title": {
+          "en": "Water and Leaks",
+          "nl": "Water en Lekken"
+        },
+        "children": [
+          {
+            "node_id": "water.leak",
+            "type": "leaf",
+            "title": {
+              "en": "Water leak",
+              "nl": "Waterlekkage"
+            },
+            "leaf_type": "start_ticket",
+            "leaf_reason": "standard_wizard",
+            "required_fields": ["description", "photos"],
+            "flow": ["describe_media", "contact_questions", "review", "submit"],
+            "question_groups": ["contact_at_home", "entry_permission"]
+          }
+        ]
+      }
+    ]
+  }
+}

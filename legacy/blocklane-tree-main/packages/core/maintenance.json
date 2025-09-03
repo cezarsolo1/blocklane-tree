@@ -1,0 +1,221 @@
+{
+  "label": "Onderhoud en Reparaties",
+  "key": "root",
+  "type": "menu",
+  "children": [
+    {
+      "label": "Badkamer en Toilet",
+      "key": "bathroom",
+      "type": "menu",
+      "children": [
+        {
+          "label": "Lekkende kraan",
+          "key": "bathroom.tap_leak",
+          "type": "leaf",
+          "leafType": "FIX_VIDEO",
+          "videoUrl": "https://example.com/tap-repair-video"
+        },
+        {
+          "label": "Toilet spoelt niet door",
+          "key": "bathroom.toilet_flush",
+          "type": "leaf",
+          "leafType": "DESCRIBE"
+        },
+        {
+          "label": "Toiletbril kapot of los",
+          "key": "bathroom.toilet_seat_broken",
+          "type": "leaf",
+          "leafType": "RESPONSIBILITY"
+        },
+        {
+          "label": "Brand",
+          "key": "bathroom.fire",
+          "type": "leaf",
+          "leafType": "EMERGENCY"
+        },
+        {
+          "label": "Afvoer verstopt",
+          "key": "bathroom.drain_clogged",
+          "type": "leaf",
+          "leafType": "FIX_VIDEO",
+          "videoUrl": "https://www.youtube.com/watch?v=R22urvGcWy4&ab_channel=Andr%C3%A9Hazes"
+        }
+      ]
+    },
+    {
+      "label": "Keuken",
+      "key": "kitchen",
+      "type": "menu",
+      "children": [
+        {
+          "label": "Afzuigkap werkt niet",
+          "key": "kitchen.extractor_fan",
+          "type": "leaf",
+          "leafType": "DESCRIBE"
+        },
+        {
+          "label": "Koelkast maakt lawaai",
+          "key": "kitchen.fridge_noise",
+          "type": "leaf",
+          "leafType": "RESPONSIBILITY"
+        },
+        {
+          "label": "Kraan lekt",
+          "key": "kitchen.tap_leak",
+          "type": "leaf",
+          "leafType": "FIX_VIDEO"
+        }
+      ]
+    },
+    {
+      "label": "Verwarming en Ketel",
+      "key": "heating",
+      "type": "menu",
+      "children": [
+        {
+          "label": "Geen warm water",
+          "key": "heating.no_hot_water",
+          "type": "leaf",
+          "leafType": "EMERGENCY"
+        },
+        {
+          "label": "Radiator wordt niet warm",
+          "key": "heating.cold_radiator",
+          "type": "leaf",
+          "leafType": "FIX_VIDEO"
+        },
+        {
+          "label": "Ketel maakt geluid",
+          "key": "heating.boiler_noise",
+          "type": "leaf",
+          "leafType": "DESCRIBE"
+        }
+      ]
+    },
+    {
+      "label": "Water en Lekken",
+      "key": "water",
+      "type": "menu",
+      "children": [
+        {
+          "label": "Lekkage uit plafond",
+          "key": "water.ceiling_leak",
+          "type": "leaf",
+          "leafType": "EMERGENCY"
+        },
+        {
+          "label": "Druppelende kraan",
+          "key": "water.dripping_tap",
+          "type": "leaf",
+          "leafType": "FIX_VIDEO"
+        },
+        {
+          "label": "Lage waterdruk",
+          "key": "water.low_pressure",
+          "type": "leaf",
+          "leafType": "DESCRIBE"
+        }
+      ]
+    },
+    {
+      "label": "Deuren, Garages en Sloten",
+      "key": "doors",
+      "type": "menu",
+      "children": [
+        {
+          "label": "Deur sluit niet goed",
+          "key": "doors.not_closing",
+          "type": "leaf",
+          "leafType": "DESCRIBE"
+        },
+        {
+          "label": "Slot werkt niet",
+          "key": "doors.lock_broken",
+          "type": "leaf",
+          "leafType": "EMERGENCY"
+        },
+        {
+          "label": "Garagedeur defect",
+          "key": "doors.garage_broken",
+          "type": "leaf",
+          "leafType": "DESCRIBE"
+        }
+      ]
+    },
+    {
+      "label": "Gemeenschappelijke ruimtes",
+      "key": "common_areas",
+      "type": "menu",
+      "children": [
+        {
+          "label": "Lift",
+          "key": "common_areas.lift",
+          "type": "menu",
+          "children": [
+            {
+              "label": "Lift storing (werkt helemaal niet)",
+              "key": "common_areas.lift.total_outage",
+              "type": "leaf",
+              "leafType": "AUTO_SEND"
+            },
+            {
+              "label": "Lift blijft hangen / persoon opgesloten",
+              "key": "common_areas.lift.trapped",
+              "type": "leaf",
+              "leafType": "DESCRIBE"
+            },
+            {
+              "label": "Liftdeur opent/sluit niet goed",
+              "key": "common_areas.lift.door_issue",
+              "type": "leaf",
+              "leafType": "DESCRIBE"
+            },
+            {
+              "label": "Lift maakt lawaai / rijdt schokkerig",
+              "key": "common_areas.lift.noise_or_jerky",
+              "type": "leaf",
+              "leafType": "DESCRIBE"
+            }
+          ]
+        },
+        {
+          "label": "Portiekverlichting",
+          "key": "common_areas.entry_lighting",
+          "type": "leaf",
+          "leafType": "DESCRIBE"
+        },
+        {
+          "label": "Trappenhuisdeur",
+          "key": "common_areas.stairwell_door",
+          "type": "leaf",
+          "leafType": "DESCRIBE"
+        }
+      ]
+    },
+    {
+      "label": "Elektriciteit",
+      "key": "electricity",
+      "type": "menu",
+      "children": [
+        {
+          "label": "Geen stroom",
+          "key": "electricity.no_power",
+          "type": "leaf",
+          "leafType": "EMERGENCY"
+        },
+        {
+          "label": "Stopcontact werkt niet",
+          "key": "electricity.socket_broken",
+          "type": "leaf",
+          "leafType": "DESCRIBE"
+        },
+        {
+          "label": "Lichtschakelaar defect",
+          "key": "electricity.switch_broken",
+          "type": "leaf",
+          "leafType": "DESCRIBE"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+project_id = "cigxgrewgaocyfyutrth"
+
+[functions.sync-to-external-api]
+verify_jwt = false
+
+[functions.ticket-sync-listener]
+verify_jwt = false
