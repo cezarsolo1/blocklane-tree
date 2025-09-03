@@ -4,18 +4,15 @@
  * Shows success message when video helped resolve the issue
  */
 
-import { LeafNode } from '@/types/decision-tree';
 import { Card, CardContent } from '@/components/ui/card';
 import { CheckCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface WizardVideoResolvedPageProps {
-  node: LeafNode;
   className?: string;
 }
 
 export const WizardVideoResolvedPage = ({ 
-  node,
   className 
 }: WizardVideoResolvedPageProps) => {
   return (

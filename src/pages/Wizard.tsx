@@ -6,7 +6,6 @@
  */
 
 import { useState, useEffect } from 'react';
-import { DecisionNode, LeafNode } from '@/types/decision-tree';
 import { DecisionTreeEngine, WizardNavigator } from '@/modules/decision-tree';
 import { WizardRenderer } from '@/components/wizard';
 import { Stepper } from '@/components/ui/stepper';
@@ -54,13 +53,6 @@ export const Wizard = () => {
     loadTree();
   }, []);
 
-  const handleLeafReached = (leaf: DecisionNode) => {
-    console.log('Leaf reached:', leaf);
-    // TODO: Implement ticket creation flow for start_ticket leaves
-    if (leaf.type === 'leaf' && (leaf as any).leaf_type === 'start_ticket') {
-      alert('This would start the ticket creation flow (Step 2-5 from spec)');
-    }
-  };
 
   const handleMissingOption = () => {
     alert('Missing option selected! This would create a virtual leaf node for ticket creation.');

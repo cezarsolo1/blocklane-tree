@@ -445,9 +445,7 @@ export const WizardRenderer = ({
                   ) : (currentNode as LeafNode).leaf_reason === 'video_resolved' ? (
                     <>
                       {onProgressBarVisibilityChange?.(false)}
-                      <WizardVideoResolvedPage
-                        node={currentNode as LeafNode}
-                      />
+                      <WizardVideoResolvedPage />
                     </>
                   ) : (
                     <div className="text-center py-8">

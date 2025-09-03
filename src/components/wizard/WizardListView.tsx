@@ -5,7 +5,7 @@
  * Uses same navigation logic as Tile view but renders with dynamic dropdown levels.
  */
 
-import { DecisionNode, LeafNode } from '@/types/decision-tree';
+import { DecisionNode } from '@/types/decision-tree';
 import {
   Select,
   SelectContent,

@@ -64,8 +64,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        console.log('Auth state change:', event, session?.user?.email);
+      async (_, session) => {
+        console.log('Auth state change:', session?.user?.email);
         setUser(session?.user ?? null);
         
         try {
@@ -75,13 +75,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             console.log('Allowlist check for', session.user.email, ':', isAllowed);
             setIsAllowlisted(isAllowed);
             
-            if (event === 'SIGNED_IN') {
-              // Ensure profile exists after login (non-blocking)
-              ensureProfileExists(supabase, session.user).catch(err => 
-                console.log('Profile creation failed (non-critical):', err)
-              );
-              console.log('Authentication complete, profile creation in background');
-            }
+            // Ensure profile exists after login (non-blocking)
+            ensureProfileExists(supabase, session.user).catch(err => 
+              console.log('Profile creation failed (non-critical):', err)
+            );
+            console.log('Authentication complete, profile creation in background');
           } else {
             setIsAllowlisted(false);
           }
