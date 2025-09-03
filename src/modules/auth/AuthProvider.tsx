@@ -6,8 +6,8 @@ interface AuthContextType {
   loading: boolean;
   isAllowlisted: boolean;
   supabase: SupabaseClient;
-  signIn: (email: string, password: string) => Promise<{ error?: any }>;
-  signUp: (email: string, password: string) => Promise<{ error?: any }>;
+  requestOtp: (email: string) => Promise<{ error?: any }>;
+  verifyOtp: (email: string, token: string) => Promise<{ error?: any }>;
   signOut: () => Promise<void>;
   checkAllowedEmail: (email: string) => Promise<boolean>;
 }
@@ -155,26 +155,45 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     */
   };
 
-  const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
+  const requestOtp = async (email: string) => {
+    console.log('Requesting OTP for email:', email);
+    
+    // Check if email is allowed first
+    const isAllowed = await checkAllowedEmail(email);
+    if (!isAllowed) {
+      return { error: { message: 'Email not authorized for access. Please contact contact@blocklane.nl' } };
+    }
+
+    const { error } = await supabase.auth.signInWithOtp({
       email,
-      password
+      options: {
+        shouldCreateUser: true,
+      }
     });
+
+    if (error) {
+      console.log('OTP request error:', error);
+    } else {
+      console.log('OTP sent successfully to:', email);
+    }
 
     return { error };
   };
 
-  const signUp = async (email: string, password: string) => {
-    // Check if email is allowed
-    const isAllowed = await checkAllowedEmail(email);
-    if (!isAllowed) {
-      return { error: { message: 'Email not authorized for registration' } };
-    }
-
-    const { error } = await supabase.auth.signUp({
+  const verifyOtp = async (email: string, token: string) => {
+    console.log('Verifying OTP for email:', email);
+    
+    const { error } = await supabase.auth.verifyOtp({
       email,
-      password
+      token,
+      type: 'email'
     });
+
+    if (error) {
+      console.log('OTP verification error:', error);
+    } else {
+      console.log('OTP verified successfully for:', email);
+    }
 
     return { error };
   };
@@ -188,8 +207,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     loading,
     isAllowlisted,
     supabase,
-    signIn,
-    signUp,
+    requestOtp,
+    verifyOtp,
     signOut,
     checkAllowedEmail
   };
