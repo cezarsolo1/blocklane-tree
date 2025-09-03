@@ -32,7 +32,9 @@ const getSupabaseClient = () => {
     });
     
     if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Missing Supabase environment variables');
+      console.error('Missing Supabase environment variables. Please check Vercel environment settings.');
+      // Return a mock client to prevent app crash
+      return createClient('https://placeholder.supabase.co', 'placeholder-key');
     }
     
     supabaseClient = createClient(supabaseUrl, supabaseKey);
