@@ -35,7 +35,7 @@ export const MyOptionMissing = ({ node, tree, onClick }: MyOptionMissingProps) =
         className="flex items-center gap-2"
       >
         <HelpCircle className="h-4 w-4" />
-        My option is missing
+        Mijn optie ontbreekt
       </Button>
     </div>
   );

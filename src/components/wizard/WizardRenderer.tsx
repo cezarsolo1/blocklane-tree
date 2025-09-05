@@ -505,7 +505,7 @@ export const WizardRenderer = ({
                   )}
                 >
                   <AlertTriangle className="h-4 w-4 mr-2" />
-                  My option is missing
+                  Mijn optie ontbreekt
                 </Button>
               )}
               
