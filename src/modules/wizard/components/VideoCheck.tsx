@@ -25,7 +25,7 @@ export const VideoCheck = ({ node, onOutcome }: VideoCheckProps) => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Video className="h-5 w-5" />
-            {node.title.en}
+            {typeof node.title === 'string' ? node.title : node.title.en}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">

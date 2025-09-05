@@ -1,8 +1,63 @@
 /**
  * Decision Tree Types
- * Based on spec section 2.3 - JSON schema and section 4.1 - Enums
+ * Updated to support the Dutch maintenance tree format
  */
 
+export type NodeType = 'menu' | 'info' | 'issue';
+
+export type FieldType = 'single_select' | 'multi_select' | 'yes_no' | 'text' | 'files';
+
+export interface MenuOption {
+  label: string;
+  next: string;
+  aliases?: string[];
+}
+
+export interface FormField {
+  key: string;
+  label: string;
+  type: FieldType;
+  options?: string[];
+}
+
+export interface MenuNode {
+  id: string;
+  type: 'menu';
+  title: string;
+  options: MenuOption[];
+}
+
+export interface InfoNode {
+  id: string;
+  type: 'info';
+  title: string;
+  body: string;
+  next?: string;
+}
+
+export interface IssueNode {
+  id: string;
+  type: 'issue';
+  title: string;
+  fields: FormField[];
+  related?: string[];
+}
+
+export type MaintenanceNode = MenuNode | InfoNode | IssueNode;
+
+export interface MaintenanceTree {
+  version: string;
+  locale: string;
+  entry: string;
+  meta: {
+    name: string;
+    notes: string;
+    bins: string[];
+  };
+  nodes: MaintenanceNode[];
+}
+
+// Legacy types for backward compatibility
 export type LeafType = 'end_no_ticket' | 'start_ticket';
 
 export type LeafReason = 
@@ -23,14 +78,14 @@ export interface LocalizedText {
 export interface TreeNode {
   node_id: string;
   type: 'branch';
-  title: LocalizedText;
+  title: LocalizedText | string;
   children: string[];
 }
 
 export interface VideoCheckNode {
   node_id: string;
   type: 'video_check';
-  title: LocalizedText;
+  title: LocalizedText | string;
   video_url: string;
   description?: LocalizedText;
   outcomes: {
@@ -51,7 +106,7 @@ export interface VideoCheckNode {
 export interface LeafNode {
   node_id: string;
   type: 'leaf';
-  title: LocalizedText;
+  title: LocalizedText | string;
   leaf_type: LeafType;
   leaf_reason: LeafReason;
   required_fields?: string[];

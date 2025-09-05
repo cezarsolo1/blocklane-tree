@@ -73,6 +73,9 @@ export class DecisionTreeEngine {
    * Get localized title for a node
    */
   getNodeTitle(node: DecisionNode): string {
+    if (typeof node.title === 'string') {
+      return node.title;
+    }
     return node.title[this.language] || node.title.en || 'Untitled';
   }
 
@@ -258,8 +261,8 @@ export class DecisionTreeEngine {
       throw new Error(`Invalid node structure: ${node.node_id}`);
     }
 
-    if (!node.title.en) {
-      throw new Error(`Node missing English title: ${node.node_id}`);
+    if (typeof node.title !== 'string' && !node.title.en) {
+      throw new Error(`Node ${node.node_id} missing English title`);
     }
 
     switch (node.type) {

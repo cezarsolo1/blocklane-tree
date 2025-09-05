@@ -66,7 +66,7 @@ export class DecisionTreeEngine {
       const node = this.getNodeByPath(currentPath);
       if (node) {
         breadcrumbs.push({
-          label: node.title[lang],
+          label: typeof node.title === 'string' ? node.title : node.title[lang] || node.title.en,
           path: [...currentPath]
         });
       }
@@ -126,7 +126,7 @@ export class DecisionTreeEngine {
       if (!child) return null;
       return {
         id: child.node_id,
-        title: child.title.en, // TODO: Support localization
+        title: typeof child.title === 'string' ? child.title : child.title.en,
         type: child.type
       };
     }).filter(Boolean) as Array<{ id: string; title: string; type: string }>;
@@ -168,7 +168,7 @@ export class DecisionTreeEngine {
     }> = [];
 
     const searchRecursive = (node: DecisionNode, path: string[]) => {
-      const title = node.title[lang];
+      const title = typeof node.title === 'string' ? node.title : node.title[lang] || node.title.en;
       if (title.toLowerCase().includes(query.toLowerCase())) {
         const result: any = {
           node_id: node.node_id,

@@ -79,7 +79,7 @@ export const WizardRenderer = ({
         
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">
-            {current_node.title.en}
+            {typeof current_node.title === 'string' ? current_node.title : current_node.title.en}
           </h1>
           
           {canGoBack && (

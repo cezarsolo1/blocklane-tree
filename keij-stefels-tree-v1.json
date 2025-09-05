@@ -1,0 +1,467 @@
+{
+  "version": "1.0.0",
+  "locale": "nl-NL",
+  "entry": "precheck.emergency",
+  "meta": {
+    "name": "Onderhoudsboom — Ongepland (Topklasse)",
+    "notes": "Locatie- of symptoom-gestuurd. Hergebruik van gedeelde issue-knooppunten om het aantal nodes klein te houden. Alleen ongeplande storingen/defecten.",
+    "bins": [
+      "lekkage",
+      "sanitair_toilet",
+      "apparatuur",
+      "verwarming_cv_warmwater",
+      "stroom_elektra",
+      "deuren_sloten_dranger",
+      "intercom_bel",
+      "lift",
+      "ramen_kozijnen_glas",
+      "ventilatie_schimmel_geur",
+      "dak_hwa_balkon_gevel",
+      "ongedierte_overlast"
+    ]
+  },
+  "nodes": [
+    {
+      "id": "precheck.emergency",
+      "type": "menu",
+      "title": "Eerst: is er direct gevaar?",
+      "options": [
+        {
+          "label": "Gaslucht / explosiegevaar",
+          "next": "info.emerg_gas",
+          "aliases": ["gas", "gaslucht", "ruikt gas", "gaskraan", "CO"]
+        },
+        {
+          "label": "Brand / rook / vonken",
+          "next": "info.emerg_brand",
+          "aliases": ["brand", "rook", "brandlucht", "vlam", "vonken"]
+        },
+        {
+          "label": "Ernstige lekkage (water blijft stromen)",
+          "next": "info.emerg_water",
+          "aliases": ["overstroming", "leidingsbreuk", "hoofdleiding", "water blijft stromen"]
+        },
+        { "label": "Nee, geen direct gevaar", "next": "start" }
+      ]
+    },
+
+    { "id": "info.emerg_gas", "type": "info",
+      "title": "Bel onmiddellijk 112 en het storingsnummer van uw netbeheerder (gas).",
+      "body": "Sluit de gaskraan indien mogelijk en verlaat de ruimte. Neem hierna contact op met de verhuurder/beheerder. Ga niet schakelen (geen licht/elektra) en ventileer.",
+      "next": "start"
+    },
+    { "id": "info.emerg_brand", "type": "info",
+      "title": "Bel onmiddellijk 112 (brandweer).",
+      "body": "Waarschuw huisgenoten/buren en verlaat het pand. Gebruik geen lift. Neem na de melding contact op met de beheerder.",
+      "next": "start"
+    },
+    { "id": "info.emerg_water", "type": "info",
+      "title": "Draai indien mogelijk de hoofdkraan dicht.",
+      "body": "Beperk de schade (emmers/doeken) indien veilig. Meld de lekkage hierna via de boom.",
+      "next": "start"
+    },
+
+    {
+      "id": "start",
+      "type": "menu",
+      "title": "Wat herkent u het beste?",
+      "options": [
+        { "label": "Snel naar veelvoorkomend probleem", "next": "quick" },
+        { "label": "In uw woning", "next": "woning" },
+        { "label": "In het gebouw (gemeenschappelijk)", "next": "gebouw" },
+        { "label": "Buiten het gebouw", "next": "buiten" },
+        { "label": "Weet ik niet / Algemeen", "next": "algemeen" }
+      ]
+    },
+
+    /* ---------------- QUICK (SYMPTOM-FIRST) ---------------- */
+    {
+      "id": "quick",
+      "type": "menu",
+      "title": "Kies uw probleem",
+      "options": [
+        { "label": "Lekkage", "next": "issue.lekkage", "aliases": ["waterlek", "nat", "plafond druppelt", "van boven buren"] },
+        { "label": "Verstopping / Afvoer", "next": "issue.afvoer", "aliases": ["verstopt", "afvoer", "riool", "loopt niet door"] },
+        { "label": "Geen verwarming / geen warm water", "next": "issue.verwarming", "aliases": ["cv", "ketel", "radiator koud", "boiler", "blokverwarming", "warm water"] },
+        { "label": "Stroomstoring / Elektra", "next": "issue.stroom", "aliases": ["stroom uit", "aardlek", "kortsluiting", "groepenkast", "licht uit"] },
+        { "label": "Intercom / Bellenbord", "next": "issue.intercom", "aliases": ["bel", "buzzer", "deur opener", "bellentableau"] },
+        { "label": "Lift", "next": "issue.lift", "aliases": ["lift storing", "lift staat stil", "deuren"] },
+        { "label": "Deur / Slot / Dranger", "next": "issue.deuren_sloten", "aliases": ["voordeur", "balkondeur", "cilinder", "sleutel", "dranger"] },
+        { "label": "Ramen / Kozijnen / Glas", "next": "issue.ramen_kozijnen_glas", "aliases": ["raam", "tocht", "kit", "espagnolet", "glasbreuk", "dubbelglas"] },
+        { "label": "Ventilatie / Schimmel / Geur", "next": "issue.vent_schimmel_geur", "aliases": ["ventilator", "afzuiging", "W TW", "stank", "schimmel", "vocht"] },
+        { "label": "Apparatuur (keuken/witgoed/airco)", "next": "issue.apparatuur", "aliases": ["vaatwasser", "oven", "kookplaat", "inductie", "koelkast", "vriezer", "wasmachine", "droger", "afzuigkap", "airco"] },
+        { "label": "Dak / Dakgoot / Regenpijp", "next": "issue.dak_hwa", "aliases": ["daklekkage", "goot", "regenpijp", "lichtkoepel"] },
+        { "label": "Ongedierte / overlast", "next": "issue.ongedierte_overlast", "aliases": ["muizen", "wespen", "duiven", "zwerver", "graffiti", "urine"] }
+      ]
+    },
+
+    /* ---------------- IN UW WONING (LOCATION-FIRST) ---------------- */
+    {
+      "id": "woning",
+      "type": "menu",
+      "title": "Waar in de woning?",
+      "options": [
+        { "label": "Keuken", "next": "woning_keuken" },
+        { "label": "Badkamer", "next": "woning_badkamer" },
+        { "label": "Toilet", "next": "woning_toilet" },
+        { "label": "Woonkamer", "next": "woning_woonkamer" },
+        { "label": "Slaapkamer", "next": "woning_slaapkamer" },
+        { "label": "Hal / Meterkast", "next": "woning_hal" },
+        { "label": "Zolder / Berging (privé)", "next": "woning_zolder" },
+        { "label": "Balkon / Tuin (privé)", "next": "woning_balkon" }
+      ]
+    },
+
+    { "id": "woning_keuken", "type": "menu", "title": "Keuken",
+      "options": [
+        { "label": "Lekkage (gootsteen/leiding/apparaat)", "next": "issue.lekkage" },
+        { "label": "Afvoer verstopt", "next": "issue.afvoer" },
+        { "label": "Kraan probleem (lekt/los/geen water)", "next": "issue.kraan" },
+        { "label": "Apparatuur (oven/vaatwasser/koelkast/kookplaat/afzuigkap)", "next": "issue.apparatuur" },
+        { "label": "Stroom / stopcontact / verlichting", "next": "issue.stroom" },
+        { "label": "Ramen / kozijnen / glas / tocht", "next": "issue.ramen_kozijnen_glas" },
+        { "label": "Deur / slot (incl. balkondeur)", "next": "issue.deuren_sloten" }
+      ]
+    },
+
+    { "id": "woning_badkamer", "type": "menu", "title": "Badkamer",
+      "options": [
+        { "label": "Lekkage (douche/bad/leiding)", "next": "issue.lekkage" },
+        { "label": "Afvoer verstopt (douche/bad/wastafel)", "next": "issue.afvoer" },
+        { "label": "Kraan / thermostaat", "next": "issue.kraan" },
+        { "label": "Ventilatie / schimmel / geur", "next": "issue.vent_schimmel_geur" },
+        { "label": "Geen warm water / verwarming", "next": "issue.verwarming" },
+        { "label": "Ramen / kozijnen / glas", "next": "issue.ramen_kozijnen_glas" }
+      ]
+    },
+
+    { "id": "woning_toilet", "type": "menu", "title": "Toilet",
+      "options": [
+        { "label": "Verstopt / loopt over", "next": "issue.afvoer" },
+        { "label": "Blijft doorlopen / spoelt niet / mechaniek", "next": "issue.toilet" },
+        { "label": "Lekkage rondom toilet", "next": "issue.lekkage" },
+        { "label": "Geur / ventilatie", "next": "issue.vent_schimmel_geur" }
+      ]
+    },
+
+    { "id": "woning_woonkamer", "type": "menu", "title": "Woonkamer",
+      "options": [
+        { "label": "Verwarming / radiator", "next": "issue.verwarming" },
+        { "label": "Stroom / verlichting", "next": "issue.stroom" },
+        { "label": "Ramen / kozijnen / glas", "next": "issue.ramen_kozijnen_glas" },
+        { "label": "Deur / slot", "next": "issue.deuren_sloten" },
+        { "label": "Lekkage (bron onbekend)", "next": "issue.lekkage" }
+      ]
+    },
+
+    { "id": "woning_slaapkamer", "type": "menu", "title": "Slaapkamer",
+      "options": [
+        { "label": "Verwarming / radiator", "next": "issue.verwarming" },
+        { "label": "Ventilatie / schimmel / geur", "next": "issue.vent_schimmel_geur" },
+        { "label": "Ramen / kozijnen / glas / tocht", "next": "issue.ramen_kozijnen_glas" },
+        { "label": "Deur / slot", "next": "issue.deuren_sloten" },
+        { "label": "Stroom / verlichting", "next": "issue.stroom" }
+      ]
+    },
+
+    { "id": "woning_hal", "type": "menu", "title": "Hal / Meterkast",
+      "options": [
+        { "label": "Stroomstoring / aardlek / groepenkast", "next": "issue.stroom" },
+        { "label": "Rookmelder piept of defect", "next": "issue.rookmelder" },
+        { "label": "Intercom / deuropener", "next": "issue.intercom" },
+        { "label": "Lekkage bij meter/leiding", "next": "issue.lekkage" }
+      ]
+    },
+
+    { "id": "woning_zolder", "type": "menu", "title": "Zolder / Berging (privé)",
+      "options": [
+        { "label": "Lekkage (dak/dakraam)", "next": "issue.lekkage" },
+        { "label": "Ventilatie / schimmel / geur", "next": "issue.vent_schimmel_geur" },
+        { "label": "Ongedierte", "next": "issue.ongedierte_overlast" }
+      ]
+    },
+
+    { "id": "woning_balkon", "type": "menu", "title": "Balkon / Tuin (privé)",
+      "options": [
+        { "label": "Balkondeur / slot", "next": "issue.deuren_sloten" },
+        { "label": "Hekwerk / vloer / lekkage", "next": "issue.dak_hwa" },
+        { "label": "Ongedierte (wespen/duiven)", "next": "issue.ongedierte_overlast" }
+      ]
+    },
+
+    /* ---------------- GEBOUW (GEMEENSCHAPPELIJK) ---------------- */
+    {
+      "id": "gebouw",
+      "type": "menu",
+      "title": "Waar in het gebouw?",
+      "options": [
+        { "label": "Entree / portiek (deur/intercom/verlichting)", "next": "gebouw_entree" },
+        { "label": "Traphuis / gangen", "next": "gebouw_traphuis" },
+        { "label": "Lift", "next": "issue.lift" },
+        { "label": "Parkeergarage / poort", "next": "gebouw_parkeergarage" },
+        { "label": "Berging / fietsenstalling", "next": "gebouw_berging" },
+        { "label": "Afval / containers", "next": "gebouw_afval" },
+        { "label": "Lekkage in gemeenschappelijke ruimte", "next": "issue.lekkage" }
+      ]
+    },
+
+    { "id": "gebouw_entree", "type": "menu", "title": "Entree / portiek",
+      "options": [
+        { "label": "Deur sluit niet / dranger defect", "next": "issue.deuren_sloten" },
+        { "label": "Intercom / bellentableau", "next": "issue.intercom" },
+        { "label": "Verlichting defect", "next": "issue.stroom" }
+      ]
+    },
+
+    { "id": "gebouw_traphuis", "type": "menu", "title": "Traphuis / gangen",
+      "options": [
+        { "label": "Verlichting defect", "next": "issue.stroom" },
+        { "label": "Lekkage / natte plek", "next": "issue.lekkage" },
+        { "label": "Overlast / vervuiling (graffiti/urine/spullen)", "next": "issue.ongedierte_overlast" },
+        { "label": "Schade (muur/trede/leuning)", "next": "issue.schade_bouwkundig" }
+      ]
+    },
+
+    { "id": "gebouw_parkeergarage", "type": "menu", "title": "Parkeergarage / poort",
+      "options": [
+        { "label": "Toegangspoort / pas / hek", "next": "issue.poort" },
+        { "label": "Verlichting", "next": "issue.stroom" },
+        { "label": "Lekkage", "next": "issue.lekkage" }
+      ]
+    },
+
+    { "id": "gebouw_berging", "type": "menu", "title": "Berging / fietsenstalling",
+      "options": [
+        { "label": "Deur / slot", "next": "issue.deuren_sloten" },
+        { "label": "Verlichting", "next": "issue.stroom" },
+        { "label": "Lekkage", "next": "issue.lekkage" }
+      ]
+    },
+
+    { "id": "gebouw_afval", "type": "menu", "title": "Afval / containers",
+      "options": [
+        { "label": "Container vol/kapot / vervuiling", "next": "issue.afval" }
+      ]
+    },
+
+    /* ---------------- BUITEN HET GEBOUW ---------------- */
+    {
+      "id": "buiten",
+      "type": "menu",
+      "title": "Buiten het gebouw",
+      "options": [
+        { "label": "Gevel / balkon / hekwerk", "next": "issue.dak_hwa" },
+        { "label": "Dak / dakgoot / regenpijp / lichtkoepel", "next": "issue.dak_hwa" },
+        { "label": "Terrein / stoep / tuin (gemeenschappelijk)", "next": "issue.terrein" },
+        { "label": "Buitenverlichting", "next": "issue.stroom" },
+        { "label": "Hek / poort", "next": "issue.poort" }
+      ]
+    },
+
+    /* ---------------- ALGEMEEN ---------------- */
+    {
+      "id": "algemeen",
+      "type": "menu",
+      "title": "Wat is er aan de hand?",
+      "options": [
+        { "label": "Lekkage (bron onbekend)", "next": "issue.lekkage" },
+        { "label": "Geen verwarming / warm water", "next": "issue.verwarming" },
+        { "label": "Stroomstoring / elektra", "next": "issue.stroom" },
+        { "label": "Verstopping / afvoer", "next": "issue.afvoer" },
+        { "label": "Intercom / bel", "next": "issue.intercom" },
+        { "label": "Deur / slot", "next": "issue.deuren_sloten" },
+        { "label": "Ramen / kozijnen / glas", "next": "issue.ramen_kozijnen_glas" },
+        { "label": "Ventilatie / schimmel / geur", "next": "issue.vent_schimmel_geur" },
+        { "label": "Apparatuur (keuken/witgoed/airco)", "next": "issue.apparatuur" },
+        { "label": "Lift", "next": "issue.lift" },
+        { "label": "Anders / weet ik niet", "next": "issue.algemeen" }
+      ]
+    },
+
+    /* ---------------- SHARED ISSUE NODES ---------------- */
+
+    { "id": "issue.lekkage", "type": "issue", "title": "Lekkage",
+      "fields": [
+        { "key": "locatie", "label": "Waar ziet u water?", "type": "single_select",
+          "options": ["Plafond", "Muur", "Vloer", "Rondom toilet", "Keuken (gootsteen/kastje)", "Badkamer (douche/bad/wastafel)", "Radiator/leiding", "Dak/dakraam/koepel", "Dakgoot/Regenpijp", "Kelder/kruipruimte", "Bovenburen", "Onbekend"] },
+        { "key": "ernst", "label": "Hoe ernstig is het?", "type": "single_select",
+          "options": ["Druppelt", "Regelmatig", "Stroomt / niet te stoppen"] },
+        { "key": "kraan_dicht", "label": "Kunt u (hoofd)kraan dichtdraaien?", "type": "yes_no" },
+        { "key": "start_moment", "label": "Wanneer begonnen?", "type": "single_select",
+          "options": ["Zojuist", "Vandaag", "Eerder (dagen/weken)"] },
+        { "key": "fotos", "label": "Foto's toevoegen", "type": "files" }
+      ],
+      "related": ["issue.afvoer", "issue.verwarming"]
+    },
+
+    { "id": "issue.afvoer", "type": "issue", "title": "Verstopping / Afvoer",
+      "fields": [
+        { "key": "plek", "label": "Waar?", "type": "single_select",
+          "options": ["Toilet", "Douche", "Bad", "Wastafel", "Keukenafvoer", "Meerdere afvoeren", "Buitenafvoer"] },
+        { "key": "ernst", "label": "Wat gebeurt er?", "type": "single_select",
+          "options": ["Loopt langzaam weg", "Staat stil", "Loopt over / overstroomt"] },
+        { "key": "plopper_ontstopper", "label": "Zelf al iets geprobeerd (plopper/zeef/reiniger)?", "type": "yes_no" },
+        { "key": "fotos", "label": "Foto's", "type": "files" }
+      ]
+    },
+
+    { "id": "issue.verwarming", "type": "issue", "title": "Verwarming / Warm water",
+      "fields": [
+        { "key": "systeem", "label": "Type installatie", "type": "single_select",
+          "options": ["CV-ketel", "Blokverwarming", "Stadsverwarming", "Warmtepomp", "Boiler", "Onbekend"] },
+        { "key": "klacht", "label": "Klacht", "type": "multi_select",
+          "options": ["Geen verwarming", "Radiator(s) worden niet warm", "Ketel valt uit", "Ketel lekt", "Geen warm water", "Warm water schommelt", "Luid/tikkend geluid"] },
+        { "key": "thermostaat", "label": "Thermostaat hoger dan 20°C gezet?", "type": "yes_no" },
+        { "key": "druk", "label": "Waterdruk bekend?", "type": "single_select",
+          "options": ["< 1.0 bar", "1.0–2.0 bar", "> 2.0 bar", "Onbekend"] }
+      ],
+      "related": ["issue.lekkage", "issue.stroom"]
+    },
+
+    { "id": "issue.stroom", "type": "issue", "title": "Stroomstoring / Elektra",
+      "fields": [
+        { "key": "bereik", "label": "Waar is de storing?", "type": "single_select",
+          "options": ["Één kamer", "Meerdere kamers", "De hele woning", "Gemeenschappelijke ruimte"] },
+        { "key": "aardlek", "label": "Slaat de aardlekschakelaar/groep uit?", "type": "yes_no" },
+        { "key": "apparaat", "label": "Begon het na aansluiten van een apparaat?", "type": "yes_no" },
+        { "key": "fotos", "label": "Foto groepenkast (indien mogelijk)", "type": "files" }
+      ]
+    },
+
+    { "id": "issue.intercom", "type": "issue", "title": "Intercom / Deuropener",
+      "fields": [
+        { "key": "functie", "label": "Wat werkt niet?", "type": "multi_select",
+          "options": ["Belsignaal", "Gesprek (spraak)", "Deuropener", "Beeld (video)"] },
+        { "key": "locatie", "label": "Waar?", "type": "single_select",
+          "options": ["Uw woning", "Entree/portiek (bellentableau)"] }
+      ]
+    },
+
+    { "id": "issue.lift", "type": "issue", "title": "Lift",
+      "fields": [
+        { "key": "klacht", "label": "Klacht", "type": "multi_select",
+          "options": ["Lift staat stil", "Deuren sluiten niet", "Veel geluid", "Knoppen/indicatie defect"] },
+        { "key": "insluiting", "label": "Zit er iemand vast?", "type": "yes_no" }
+      ]
+    },
+
+    { "id": "issue.deuren_sloten", "type": "issue", "title": "Deur / Slot / Dranger",
+      "fields": [
+        { "key": "type_deur", "label": "Welke deur?", "type": "single_select",
+          "options": ["Voordeur", "Balkondeur", "Binnendeur", "Algemene toegangsdeur", "Poort/hek", "Overig"] },
+        { "key": "probleem", "label": "Probleem", "type": "multi_select",
+          "options": ["Klemt / sluit niet", "Cilinder/sleutel werkt niet", "Dranger defect", "Inbraak-/schadespoor", "Klink/espagnolet defect"] }
+      ]
+    },
+
+    { "id": "issue.ramen_kozijnen_glas", "type": "issue", "title": "Ramen / Kozijnen / Glas",
+      "fields": [
+        { "key": "probleem", "label": "Probleem", "type": "multi_select",
+          "options": ["Tocht / sluit niet goed", "Lekkage bij raam/kozijn", "Glasbreuk / thermische breuk", "Hendels/espagnolet defect", "Rubbers/kit slecht"] },
+        { "key": "positie", "label": "Waar?", "type": "single_select",
+          "options": ["Voorgevel", "Achtergevel", "Dakraam / lichtkoepel", "Onbekend"] }
+      ]
+    },
+
+    { "id": "issue.vent_schimmel_geur", "type": "issue", "title": "Ventilatie / Schimmel / Geur",
+      "fields": [
+        { "key": "onderwerp", "label": "Onderwerp", "type": "single_select",
+          "options": ["Ventilatie werkt niet/te zwak", "Schimmelvorming/vocht", "Sterke geur (riool/afval/gas?)"] },
+        { "key": "ruimte", "label": "Waar?", "type": "single_select",
+          "options": ["Badkamer", "Toilet", "Keuken", "Slaapkamer", "Woonkamer", "Gang/Traphuis", "Kelder"] }
+      ],
+      "related": ["issue.afvoer", "issue.lekkage"]
+    },
+
+    { "id": "issue.apparatuur", "type": "issue", "title": "Apparatuur (keuken/witgoed/airco)",
+      "fields": [
+        { "key": "apparaat", "label": "Welk apparaat?", "type": "single_select",
+          "options": ["Vaatwasser", "Oven/Combi", "Kookplaat/Inductie", "Koelkast/Vriezer", "Wasmachine", "Droger", "Afzuigkap", "Airco", "Boiler"] },
+        { "key": "klacht", "label": "Klacht", "type": "multi_select",
+          "options": ["Gaat niet aan", "Werkt niet goed", "Lekt", "Maakt (veel) geluid", "Veroorzaakt stroomuitval"] },
+        { "key": "merk_model", "label": "Merk/model (indien bekend)", "type": "text" }
+      ],
+      "related": ["issue.stroom", "issue.lekkage"]
+    },
+
+    { "id": "issue.dak_hwa", "type": "issue", "title": "Dak / Dakgoot / Regenpijp / Balkon",
+      "fields": [
+        { "key": "onderdeel", "label": "Onderdeel", "type": "multi_select",
+          "options": ["Dakbedekking", "Dakraam/lichtkoepel", "Dakgoot", "Regenpijp/HWA", "Balkon/hekwerk", "Gevel"] },
+        { "key": "probleem", "label": "Probleem", "type": "multi_select",
+          "options": ["Lekkage", "Los/gescheurd/beschadigd", "Overloopt/verstopt", "Water komt binnen"] }
+      ]
+    },
+
+    { "id": "issue.ongedierte_overlast", "type": "issue", "title": "Ongedierte / Overlast",
+      "fields": [
+        { "key": "soort", "label": "Wat is het probleem?", "type": "single_select",
+          "options": ["Muizen/ratten", "Wespen/hoornaars", "Duiven", "Vervuiling/graffiti/urine", "Zwerver/overlast", "Overig"] },
+        { "key": "locatie", "label": "Waar?", "type": "single_select",
+          "options": ["Eigen woning", "Trappenhuis/gang", "Entree/portiek", "Buiten"] }
+      ]
+    },
+
+    { "id": "issue.kraan", "type": "issue", "title": "Kraan / Mengkraan / Thermostaat",
+      "fields": [
+        { "key": "plek", "label": "Waar?", "type": "single_select",
+          "options": ["Keuken", "Badkamer", "Toiletfontein", "Buiten"] },
+        { "key": "probleem", "label": "Probleem", "type": "multi_select",
+          "options": ["Lekt", "Los / wiebelt", "Alleen heet/koud", "Temperatuur niet regelbaar", "Geen water"] }
+      ]
+    },
+
+    { "id": "issue.toilet", "type": "issue", "title": "Toilet",
+      "fields": [
+        { "key": "probleem", "label": "Probleem", "type": "multi_select",
+          "options": ["Verstopt", "Loopt door / vult niet", "Spoelt niet", "Lekt aan voet/inbouwreservoir"] }
+      ]
+    },
+
+    { "id": "issue.rookmelder", "type": "issue", "title": "Rookmelder / CO-melder",
+      "fields": [
+        { "key": "klacht", "label": "Klacht", "type": "single_select",
+          "options": ["Piept (batterij?)", "Gaat onterecht af", "Werkt niet"] }
+      ]
+    },
+
+    { "id": "issue.poort", "type": "issue", "title": "Hek / Poort / Toegang",
+      "fields": [
+        { "key": "probleem", "label": "Probleem", "type": "multi_select",
+          "options": ["Gaat niet open/dicht", "Pas/fob werkt niet", "Motor/ketting defect"] }
+      ]
+    },
+
+    { "id": "issue.terrein", "type": "issue", "title": "Terrein / Stoep / Tuin (gemeenschappelijk)",
+      "fields": [
+        { "key": "probleem", "label": "Probleem", "type": "single_select",
+          "options": ["Losse/verzakte tegels", "Water blijft staan", "Vervuiling/rommel"] }
+      ]
+    },
+
+    { "id": "issue.schade_bouwkundig", "type": "issue", "title": "Schade (muur/plafond/vloer/trap)",
+      "fields": [
+        { "key": "element", "label": "Wat is beschadigd?", "type": "single_select",
+          "options": ["Muur/plafond (scheur/vochtplek)", "Vloer (los/verzakt)", "Trap/leuning", "Overig"] },
+        { "key": "oorzaak_bekend", "label": "Is de oorzaak bekend (bijv. na lekkage)?", "type": "yes_no" }
+      ]
+    },
+
+    { "id": "issue.afval", "type": "issue", "title": "Afval / Containers",
+      "fields": [
+        { "key": "probleem", "label": "Probleem", "type": "single_select",
+          "options": ["Container vol", "Container kapot", "Rondom vervuiling"] }
+      ]
+    },
+
+    { "id": "issue.algemeen", "type": "issue", "title": "Algemene melding",
+      "fields": [
+        { "key": "beschrijving", "label": "Beschrijf kort het probleem", "type": "text" },
+        { "key": "ruimte", "label": "Waar is het?", "type": "single_select",
+          "options": ["Keuken", "Badkamer", "Toilet", "Woonkamer", "Slaapkamer", "Hal/Meterkast", "Zolder/Berging", "Balkon/Tuin", "Traphuis/Gang", "Entree/Portiek", "Buiten", "Onbekend"] },
+        { "key": "fotos", "label": "Foto's toevoegen", "type": "files" }
+      ],
+      "related": ["issue.lekkage", "issue.afvoer", "issue.verwarming", "issue.stroom"]
+    }
+  ]
+}

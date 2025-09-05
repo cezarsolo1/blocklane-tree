@@ -96,7 +96,7 @@ export const TreeGrid = ({ node, tree, onItemClick, selectedNode, className }: T
               </div>
 
               <h3 className="text-sm font-medium text-white">
-                {child.title.en}
+                {typeof child.title === 'string' ? child.title : child.title.en}
               </h3>
 
               {/* No extra leaf hints under tiles */}
