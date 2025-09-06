@@ -5,6 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { CustomQuestionField } from '@/components/ui/CustomQuestionField';
+import { CUSTOM_QUESTIONS_CONFIG, CustomQuestion } from '@/types/custom-questions';
 
 interface ContactDetailsProps {
   onBack: () => void;
@@ -24,6 +26,8 @@ export interface ContactFormData {
   notes?: string;
   emergencyContact?: string;
   accessInstructions?: string;
+  // Custom questions answers
+  customAnswers?: Record<string, any>;
 }
 
 export default function ContactDetails({ 
@@ -41,10 +45,15 @@ export default function ContactDetails({
     city: initialData.city || '',
     notes: initialData.notes || '',
     emergencyContact: initialData.emergencyContact || '',
-    accessInstructions: initialData.accessInstructions || ''
+    accessInstructions: initialData.accessInstructions || '',
+    customAnswers: initialData.customAnswers || {}
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Get custom questions configuration for this leaf_reason
+  const customQuestionsConfig = CUSTOM_QUESTIONS_CONFIG[leafReason];
+  const hasCustomQuestions = customQuestionsConfig && customQuestionsConfig.questions.length > 0;
 
   // Log the leaf_reason for backend analytics
   useEffect(() => {
@@ -61,11 +70,13 @@ export default function ContactDetails({
         body: JSON.stringify({
           step: 'contact_details',
           leaf_reason: leafReason,
+          has_custom_questions: hasCustomQuestions,
+          custom_questions_count: customQuestionsConfig?.questions.length || 0,
           timestamp: new Date().toISOString()
         })
       }).catch(err => console.warn('Analytics logging failed:', err));
     }
-  }, [leafReason]);
+  }, [leafReason, hasCustomQuestions, customQuestionsConfig?.questions.length]);
 
   const handleInputChange = (field: keyof ContactFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -73,6 +84,21 @@ export default function ContactDetails({
     // Clear error when user starts typing
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  const handleCustomAnswerChange = (questionId: string, value: any) => {
+    setFormData(prev => ({
+      ...prev,
+      customAnswers: {
+        ...prev.customAnswers,
+        [questionId]: value
+      }
+    }));
+
+    // Clear error when user provides answer
+    if (errors[questionId]) {
+      setErrors(prev => ({ ...prev, [questionId]: '' }));
     }
   };
 
@@ -108,6 +134,18 @@ export default function ContactDetails({
       newErrors.city = 'City is required';
     }
 
+    // Validate custom questions
+    if (hasCustomQuestions) {
+      customQuestionsConfig.questions.forEach((question: CustomQuestion) => {
+        if (question.required) {
+          const answer = formData.customAnswers?.[question.id];
+          if (!answer || (typeof answer === 'string' && !answer.trim())) {
+            newErrors[question.id] = `${question.label} is required`;
+          }
+        }
+      });
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -136,7 +174,8 @@ export default function ContactDetails({
               has_email: !!formData.contactEmail,
               has_phone: !!formData.contactPhone,
               has_address: !!formData.streetAddress,
-              has_notes: !!formData.notes
+              has_notes: !!formData.notes,
+              custom_answers_count: Object.keys(formData.customAnswers || {}).length
             }
           })
         }).catch(err => console.warn('Analytics logging failed:', err));
@@ -156,9 +195,17 @@ export default function ContactDetails({
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             Step 3: Contact Details
+            {hasCustomQuestions && customQuestionsConfig.title && (
+              <span className="text-sm font-normal text-muted-foreground">
+                & {customQuestionsConfig.title}
+              </span>
+            )}
           </CardTitle>
           <p className="text-sm text-muted-foreground">
-            Please provide your contact information so we can reach you about your ticket.
+            {hasCustomQuestions && customQuestionsConfig.description ? 
+              customQuestionsConfig.description : 
+              'Please provide your contact information so we can reach you about your ticket.'
+            }
           </p>
         </CardHeader>
         
@@ -264,6 +311,25 @@ export default function ContactDetails({
                 </div>
               </div>
             </div>
+
+            {/* Custom Questions Section */}
+            {hasCustomQuestions && (
+              <div className="space-y-4">
+                <h3 className="font-semibold text-lg">
+                  {customQuestionsConfig.title || 'Additional Questions'}
+                </h3>
+                
+                {customQuestionsConfig.questions.map((question: CustomQuestion) => (
+                  <CustomQuestionField
+                    key={question.id}
+                    question={question}
+                    value={formData.customAnswers?.[question.id]}
+                    onChange={(value) => handleCustomAnswerChange(question.id, value)}
+                    error={errors[question.id]}
+                  />
+                ))}
+              </div>
+            )}
 
             {/* Additional Fields for specific leaf reasons */}
             {showAdditionalFields && (

@@ -33,7 +33,7 @@ export const maintenanceTreeData = {
         },
         {
           "label": "Brand / rook / vonken",
-          "next": "info.emerg_brand",
+          "next": "issue.video",
           "aliases": ["brand", "rook", "brandlucht", "vlam", "vonken"]
         },
         {

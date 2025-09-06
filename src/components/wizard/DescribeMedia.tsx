@@ -5,7 +5,7 @@
  * Based on legacy implementation, translated to English
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -13,11 +13,13 @@ import { Label } from '@/components/ui/label';
 import { PhotoDropzone, UploadedPhoto } from './PhotoDropzone';
 import { LeafNode } from '@/types/decision-tree';
 import { cn } from '@/lib/utils';
+import { CustomQuestionField } from '@/components/ui/CustomQuestionField';
+import { STEP2_QUESTIONS_CONFIG, CustomQuestion } from '@/types/custom-questions';
 
 interface DescribeMediaProps {
   leafNode: LeafNode;
   breadcrumbs: Array<{ nodeId: string; title: string }>;
-  onNext: (data: { description: string; photos: UploadedPhoto[] }) => void;
+  onNext: (data: { description: string; photos: UploadedPhoto[]; customAnswers?: Record<string, any> }) => void;
   onBack: () => void;
   className?: string;
 }
@@ -30,16 +32,81 @@ export const DescribeMedia = ({
 }: DescribeMediaProps) => {
   const [description, setDescription] = useState('');
   const [photos, setPhotos] = useState<UploadedPhoto[]>([]);
+  const [customAnswers, setCustomAnswers] = useState<Record<string, any>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Get custom questions for this issue type
+  const issueId = leafNode.node_id;
+  const customQuestionsConfig = STEP2_QUESTIONS_CONFIG[issueId];
+  const hasCustomQuestions = customQuestionsConfig && customQuestionsConfig.questions.length > 0;
+
+  useEffect(() => {
+    if (hasCustomQuestions && customQuestionsConfig) {
+      const defaultAnswers: Record<string, any> = {};
+      customQuestionsConfig.questions.forEach((question: CustomQuestion) => {
+        if (question.defaultValue !== undefined) {
+          defaultAnswers[question.id] = question.defaultValue;
+          console.log('Setting default value:', question.id, question.defaultValue);
+        }
+      });
+      
+      if (Object.keys(defaultAnswers).length > 0) {
+        console.log('Initializing custom answers with defaults:', defaultAnswers);
+        setCustomAnswers(defaultAnswers);
+      }
+    }
+  }, [hasCustomQuestions, issueId]);
+
+  const handleCustomAnswerChange = (questionId: string, value: any) => {
+    setCustomAnswers(prev => ({
+      ...prev,
+      [questionId]: value
+    }));
+
+    // Clear error when user provides answer
+    if (errors[questionId]) {
+      setErrors(prev => ({ ...prev, [questionId]: '' }));
+    }
+  };
+
+  const validateCustomQuestions = (): boolean => {
+    if (!hasCustomQuestions) return true;
+
+    const newErrors: Record<string, string> = {};
+    customQuestionsConfig.questions.forEach((question: CustomQuestion) => {
+      if (question.required) {
+        const answer = customAnswers[question.id];
+        if (!answer || (typeof answer === 'string' && !answer.trim())) {
+          newErrors[question.id] = `${question.label} is verplicht`;
+        }
+      }
+    });
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleNext = () => {
     if (description.trim().length < 10) {
       return; // Basic validation
     }
-    onNext({ description: description.trim(), photos });
+    
+    if (!validateCustomQuestions()) {
+      return; // Custom questions validation failed
+    }
+    
+    onNext({ 
+      description: description.trim(), 
+      photos,
+      customAnswers: hasCustomQuestions ? customAnswers : undefined
+    });
   };
 
   const isDescriptionValid = description.trim().length >= 10;
-  const canProceed = isDescriptionValid;
+  const areCustomQuestionsValid = !hasCustomQuestions || customQuestionsConfig.questions.every((q: CustomQuestion) => 
+    !q.required || (customAnswers[q.id] && (typeof customAnswers[q.id] !== 'string' || customAnswers[q.id].trim()))
+  );
+  const canProceed = isDescriptionValid && areCustomQuestionsValid;
 
   return (
     <div className={cn("space-y-6", className)}>
@@ -50,6 +117,11 @@ export const DescribeMedia = ({
           <p className="text-sm text-muted-foreground">
             Issue: {typeof leafNode.title === 'string' ? leafNode.title : leafNode.title.en}
           </p>
+          {hasCustomQuestions && (
+            <p className="text-sm text-blue-600 font-medium">
+              {customQuestionsConfig.description}
+            </p>
+          )}
         </CardHeader>
       </Card>
 
@@ -87,6 +159,29 @@ export const DescribeMedia = ({
         </CardContent>
       </Card>
 
+      {/* Custom Questions */}
+      {hasCustomQuestions && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">{customQuestionsConfig.title}</CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Beantwoord de vragen hieronder voor snellere afhandeling
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {customQuestionsConfig.questions.map((question: CustomQuestion) => (
+              <CustomQuestionField
+                key={question.id}
+                question={question}
+                value={customAnswers[question.id]}
+                onChange={(value) => handleCustomAnswerChange(question.id, value)}
+                error={errors[question.id]}
+              />
+            ))}
+          </CardContent>
+        </Card>
+      )}
+
       {/* Photos */}
       <Card>
         <CardHeader>
@@ -120,7 +215,7 @@ export const DescribeMedia = ({
           disabled={!canProceed}
           className="bg-[#0052FF] hover:bg-blue-600 text-white disabled:bg-gray-300 disabled:text-gray-500"
         >
-          Next: Contact Details
+          Next: Review
         </Button>
       </div>
     </div>

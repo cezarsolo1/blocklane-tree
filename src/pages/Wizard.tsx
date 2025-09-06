@@ -131,8 +131,7 @@ export const Wizard = () => {
   const steps = [
     { title: 'Step 1', description: 'What is the problem?' },
     { title: 'Step 2', description: 'Description & pictures' },
-    { title: 'Step 3', description: 'Contact details' },
-    { title: 'Step 4', description: 'Confirm and send' }
+    { title: 'Step 3', description: 'Confirm and send' }
   ];
 
   return (

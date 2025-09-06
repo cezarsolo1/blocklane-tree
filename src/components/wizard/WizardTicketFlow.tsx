@@ -13,7 +13,7 @@ import { createTicketService } from '@/modules/tickets/TicketServiceFactory';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, ArrowLeft } from 'lucide-react';
-import ContactDetails, { ContactFormData } from '@/pages/ContactDetails';
+import { ContactFormData } from '@/pages/ContactDetails';
 
 interface WizardTicketFlowProps {
   leafNode: LeafNode;
@@ -24,12 +24,13 @@ interface WizardTicketFlowProps {
   className?: string;
 }
 
-type FlowStep = 'describe_media' | 'contact_questions' | 'review' | 'submitted';
+type FlowStep = 'describe_media' | 'review' | 'submitted';
 
 interface FlowData {
   description: string;
   photos: UploadedPhoto[];
   contactData?: ContactFormData;
+  customAnswers?: Record<string, any>;
   ticketId?: string;
 }
 
@@ -51,7 +52,7 @@ export const WizardTicketFlow = ({
   
   const ticketService = createTicketService();
 
-  const handleDescribeMediaSubmit = async (data: { description: string; photos: UploadedPhoto[] }) => {
+  const handleDescribeMediaSubmit = async (data: { description: string; photos: UploadedPhoto[]; customAnswers?: Record<string, any> }) => {
     setIsLoading(true);
     setError(null);
     
@@ -109,11 +110,12 @@ export const WizardTicketFlow = ({
       }
 
       setFlowData({
-        ...data,
-        ticketId
+        description: data.description,
+        photos: data.photos,
+        customAnswers: data.customAnswers
       });
       
-      setCurrentStep('contact_questions');
+      setCurrentStep('review');
       onStepChange?.(2); // Move to Step 3 (0-indexed)
     } catch (err) {
       console.error('Full error in handleDescribeMediaSubmit:', err);
@@ -123,31 +125,6 @@ export const WizardTicketFlow = ({
     }
   };
 
-  const handleContactQuestionsSubmit = async (contactData: ContactFormData) => {
-    setIsLoading(true);
-    setError(null);
-    
-    try {
-      if (flowData.ticketId) {
-        await ticketService.update(flowData.ticketId, {
-          contact_info: contactData,
-          leaf_reason: leafNode.leaf_reason // Log leaf_reason for backend branching
-        });
-      }
-      
-      setFlowData(prev => ({
-        ...prev,
-        contactData
-      }));
-      
-      setCurrentStep('review');
-      onStepChange?.(3); // Move to Step 4 (0-indexed)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update ticket');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleReviewSubmit = async () => {
     setIsLoading(true);
@@ -173,10 +150,8 @@ export const WizardTicketFlow = ({
     // Update progress bar based on step
     if (step === 'describe_media') {
       onStepChange?.(1); // Step 2
-    } else if (step === 'contact_questions') {
-      onStepChange?.(2); // Step 3
     } else if (step === 'review') {
-      onStepChange?.(3); // Step 4
+      onStepChange?.(2); // Step 3
     }
   };
 
@@ -205,31 +180,13 @@ export const WizardTicketFlow = ({
     );
   }
 
-  if (currentStep === 'contact_questions') {
-    return (
-      <div className={className}>
-        <ContactDetails
-          onBack={() => handleBackToStep('describe_media')}
-          onNext={handleContactQuestionsSubmit}
-          initialData={flowData.contactData}
-          leafReason={leafNode.leaf_reason}
-        />
-        
-        {error && (
-          <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
-            <p className="text-sm text-red-600">{error}</p>
-          </div>
-        )}
-      </div>
-    );
-  }
 
   if (currentStep === 'review') {
     return (
       <div className={className}>
         <Card>
           <CardHeader>
-            <CardTitle>Step 4: Review Your Request</CardTitle>
+            <CardTitle>Step 3: Review Your Request</CardTitle>
             <p className="text-sm text-muted-foreground">
               Please review your maintenance request before submitting.
             </p>
@@ -255,26 +212,28 @@ export const WizardTicketFlow = ({
                 </p>
               </div>
             )}
-            
-            {flowData.contactData && (
+
+            {flowData.customAnswers && Object.keys(flowData.customAnswers).length > 0 && (
               <div>
-                <h4 className="font-medium mb-2">Contact Information</h4>
-                <div className="text-sm text-muted-foreground space-y-1">
-                  <p><strong>Name:</strong> {flowData.contactData.contactName}</p>
-                  <p><strong>Email:</strong> {flowData.contactData.contactEmail}</p>
-                  <p><strong>Phone:</strong> {flowData.contactData.contactPhone}</p>
-                  <p><strong>Address:</strong> {flowData.contactData.streetAddress}, {flowData.contactData.postalCode} {flowData.contactData.city}</p>
-                  {flowData.contactData.notes && (
-                    <p><strong>Notes:</strong> {flowData.contactData.notes}</p>
-                  )}
+                <h4 className="font-medium mb-2">Additional Details</h4>
+                <div className="space-y-2">
+                  {Object.entries(flowData.customAnswers).map(([key, value]) => (
+                    <div key={key} className="text-sm">
+                      <span className="font-medium">{key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:</span>{' '}
+                      <span className="text-muted-foreground">
+                        {Array.isArray(value) ? value.join(', ') : String(value)}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
             
+            
             <div className="flex justify-between items-center pt-4">
               <Button
                 variant="outline"
-                onClick={() => handleBackToStep('contact_questions')}
+                onClick={() => handleBackToStep('describe_media')}
                 disabled={isLoading}
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
