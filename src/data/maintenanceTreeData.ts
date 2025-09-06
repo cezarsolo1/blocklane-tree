@@ -456,6 +456,13 @@ export const maintenanceTreeData = {
         { "key": "fotos", "label": "Foto's toevoegen", "type": "files" }
       ],
       "related": ["issue.lekkage", "issue.afvoer", "issue.verwarming", "issue.stroom"]
+    },
+
+    { "id": "issue.video", "type": "issue", "title": "Video Upload",
+      "fields": [
+        { "key": "beschrijving", "label": "Beschrijf het probleem", "type": "text" },
+        { "key": "fotos", "label": "Foto's toevoegen", "type": "files" }
+      ]
     }
   ]
 } as const;
