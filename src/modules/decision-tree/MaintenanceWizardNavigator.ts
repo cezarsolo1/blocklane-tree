@@ -83,7 +83,9 @@ export class MaintenanceWizardNavigator {
     if (this.currentNode.type === 'menu') {
       const menuNode = this.currentNode as MenuNode;
       return menuNode.options.map((option, index) => {
-        const nextNode = this.engine.findNodeById(option.next);
+        // Handle both 'next' and 'code' properties
+        const targetId = option.next || (option as any).code;
+        const nextNode = targetId ? this.engine.findNodeById(targetId) : null;
         return {
           index,
           node: nextNode ? this.adaptNodeToLegacyFormat(nextNode) : this.createVirtualLeaf(option),

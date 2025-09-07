@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 import { MaintenanceTreeEngine } from '@/modules/decision-tree/MaintenanceTreeEngine';
 import { MaintenanceWizardNavigator } from '@/modules/decision-tree/MaintenanceWizardNavigator';
 // Import the complete maintenance tree data from the TypeScript file
-import { maintenanceTreeData } from '@/data/maintenanceTreeData';
+import { maintenanceTreeData } from '@/data/decision_tree_nl_v2.0';
 import { WizardRenderer } from '@/components/wizard';
 import { Stepper } from '@/components/ui/stepper';
 import { LogoutButton } from '@/components/LogoutButton';
