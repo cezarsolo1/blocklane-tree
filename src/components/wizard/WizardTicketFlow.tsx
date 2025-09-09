@@ -14,6 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, ArrowLeft } from 'lucide-react';
 import { ContactFormData } from '@/pages/ContactDetails';
+import { saveFinalStepLog } from '@/utils/maintenanceLogHelper';
 
 interface WizardTicketFlowProps {
   leafNode: LeafNode;
@@ -131,13 +132,24 @@ export const WizardTicketFlow = ({
     setError(null);
     
     try {
+      // Save maintenance log
+      await saveFinalStepLog(
+        leafNode,
+        breadcrumbs,
+        flowData.description,
+        flowData.photos,
+        flowData.contactData,
+        flowData.customAnswers
+      );
+      
+      // Finalize ticket if exists
       if (flowData.ticketId) {
         await ticketService.finalize(flowData.ticketId);
       }
       
       setCurrentStep('submitted');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to submit ticket');
+      setError(err instanceof Error ? err.message : 'Failed to submit request');
     } finally {
       setIsLoading(false);
     }
