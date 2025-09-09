@@ -15,6 +15,7 @@ import { LeafNode } from '@/types/decision-tree';
 import { cn } from '@/lib/utils';
 import { CustomQuestionField } from '@/components/ui/CustomQuestionField';
 import { STEP2_QUESTIONS_CONFIG, CustomQuestion } from '@/types/custom-questions';
+import { InfoBox } from '@/components/ui/InfoBox';
 
 interface DescribeMediaProps {
   leafNode: LeafNode;
@@ -39,6 +40,8 @@ export const DescribeMedia = ({
   const issueId = leafNode.node_id;
   const customQuestionsConfig = STEP2_QUESTIONS_CONFIG[issueId];
   const hasCustomQuestions = customQuestionsConfig && customQuestionsConfig.questions.length > 0;
+  const isVideoOnly = issueId === 'issue.video';
+  const isTenantResponsibility = issueId === 'issue.uw_responsability';
 
   useEffect(() => {
     if (hasCustomQuestions && customQuestionsConfig) {
@@ -87,7 +90,7 @@ export const DescribeMedia = ({
   };
 
   const handleNext = () => {
-    if (description.trim().length < 10) {
+    if (description.trim().length < 10 && !isVideoOnly && !isTenantResponsibility) {
       return; // Basic validation
     }
     
@@ -96,8 +99,8 @@ export const DescribeMedia = ({
     }
     
     onNext({ 
-      description: description.trim(), 
-      photos,
+      description: isVideoOnly || isTenantResponsibility ? '' : description.trim(), 
+      photos: isVideoOnly || isTenantResponsibility ? [] : photos,
       customAnswers: hasCustomQuestions ? customAnswers : undefined
     });
   };
@@ -106,7 +109,7 @@ export const DescribeMedia = ({
   const areCustomQuestionsValid = !hasCustomQuestions || customQuestionsConfig.questions.every((q: CustomQuestion) => 
     !q.required || (customAnswers[q.id] && (typeof customAnswers[q.id] !== 'string' || customAnswers[q.id].trim()))
   );
-  const canProceed = isDescriptionValid && areCustomQuestionsValid;
+  const canProceed = isVideoOnly || isTenantResponsibility || (isDescriptionValid && areCustomQuestionsValid);
 
   return (
     <div className={cn("space-y-6", className)}>
@@ -125,50 +128,68 @@ export const DescribeMedia = ({
         </CardHeader>
       </Card>
 
-      {/* Description */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Description</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="description">
-              Describe the problem in detail <span className="text-red-500">*</span>
-            </Label>
-            <Textarea
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Where is the problem? When did it start? How often does it happen?"
-              rows={4}
-              required
-              className={cn(
-                "min-h-[100px]",
-                !isDescriptionValid && description.length > 0 && "border-red-300"
-              )}
-            />
-            {!isDescriptionValid && description.length > 0 && (
-              <p className="text-sm text-red-600">
-                Please provide at least 10 characters for a meaningful description.
-              </p>
-            )}
-            <p className="text-sm text-muted-foreground">
-              {description.length}/10 minimum characters
-            </p>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Custom Questions */}
-      {hasCustomQuestions && (
+      {/* Description - Hide for video-only and tenant responsibility issues */}
+      {!isVideoOnly && !isTenantResponsibility && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">{customQuestionsConfig.title}</CardTitle>
-            <p className="text-sm text-muted-foreground">
-              Beantwoord de vragen hieronder voor snellere afhandeling
-            </p>
+            <CardTitle className="text-lg">Description</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="description">
+                Describe the problem in detail <span className="text-red-500">*</span>
+              </Label>
+              <Textarea
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Where is the problem? When did it start? How often does it happen?"
+                rows={4}
+                required
+                className={cn(
+                  "min-h-[100px]",
+                  !isDescriptionValid && description.length > 0 && "border-red-300"
+                )}
+              />
+              {!isDescriptionValid && description.length > 0 && (
+                <p className="text-sm text-red-600">
+                  Please provide at least 10 characters for a meaningful description.
+                </p>
+              )}
+              <p className="text-sm text-muted-foreground">
+                {description.length}/10 minimum characters
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Tenant responsibility info box */}
+      {isTenantResponsibility && (
+        <InfoBox
+          title="Deze reparatie valt onder uw eigen verantwoordelijkheid"
+          body="Volgens het Besluit kleine herstellingen bent u als huurder zelf verantwoordelijk voor een aantal kleine reparaties en onderhoudswerkzaamheden in de woning.\n\nDe reparatie die u probeerde te melden valt onder deze categorie. Dit betekent dat Keij & Stefels dit niet voor u kan uitvoeren via de servicedesk."
+          actions={[
+            "U kunt de reparatie zelf uitvoeren",
+            "U kunt een vakman inschakelen op eigen kosten"
+          ]}
+          footerNote="Wilt u precies weten welke reparaties onder uw verantwoordelijkheid vallen? Raadpleeg dan het complete overzicht via onze website."
+          variant="warning"
+        />
+      )}
+
+      {/* Custom Questions */}
+      {hasCustomQuestions && !isTenantResponsibility && (
+        <Card>
+          {!isVideoOnly && !isTenantResponsibility && (
+            <CardHeader>
+              <CardTitle className="text-lg">{customQuestionsConfig.title}</CardTitle>
+              <p className="text-sm text-muted-foreground">
+                Beantwoord de vragen hieronder voor snellere afhandeling
+              </p>
+            </CardHeader>
+          )}
+          <CardContent className={isVideoOnly || isTenantResponsibility ? "p-6" : "space-y-4"}>
             {customQuestionsConfig.questions.map((question: CustomQuestion) => (
               <CustomQuestionField
                 key={question.id}
@@ -182,25 +203,27 @@ export const DescribeMedia = ({
         </Card>
       )}
 
-      {/* Photos */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Photos</CardTitle>
-          <p className="text-sm text-muted-foreground">
-            Add photos to help us understand the problem better
-          </p>
-        </CardHeader>
-        <CardContent>
-          <PhotoDropzone
-            maxFiles={8}
-            maxSizeMB={10}
-            value={photos}
-            onChange={setPhotos}
-            showHelpText={true}
-          />
-        </CardContent>
-      </Card>
-
+      {/* Photos - Hide for video-only and tenant responsibility issues */}
+      {!isVideoOnly && !isTenantResponsibility && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Photos</CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Add photos to help us understand the problem better
+            </p>
+          </CardHeader>
+          <CardContent>
+            <PhotoDropzone
+              maxFiles={8}
+              maxSizeMB={10}
+              value={photos}
+              onChange={setPhotos}
+              showHelpText={true}
+            />
+          </CardContent>
+        </Card>
+      )}
+      
       {/* Navigation */}
       <div className="flex justify-between items-center pt-4">
         <Button
@@ -210,13 +233,15 @@ export const DescribeMedia = ({
           Back
         </Button>
         
-        <Button
-          onClick={handleNext}
-          disabled={!canProceed}
-          className="bg-[#0052FF] hover:bg-blue-600 text-white disabled:bg-gray-300 disabled:text-gray-500"
-        >
-          Next: Review
-        </Button>
+        {!isTenantResponsibility && (
+          <Button
+            onClick={handleNext}
+            disabled={!canProceed}
+            className="bg-[#0052FF] hover:bg-blue-600 text-white disabled:bg-gray-300 disabled:text-gray-500"
+          >
+            Next: Review
+          </Button>
+        )}
       </div>
     </div>
   );

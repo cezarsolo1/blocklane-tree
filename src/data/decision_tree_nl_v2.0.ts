@@ -35,7 +35,7 @@ export const maintenanceTreeData = {
         { "label": "Apparaten (keuken, witgoed, airco)", "next": "cat.apparaten", "aliases": ["apparaat","vaatwasser","oven","fornuis","kookplaat","inductie","koelkast","vriezer","wasmachine","droger","afzuigkap","airco","boiler"] },
         { "label": "Rook- of CO-melder", "next": "cat.stroom.smoke", "aliases": ["rookmelder","co-melder","brandmelder","koolmonoxide","piept","batterij"] },
         { "label": "Brand / rook / vonken", "next": "issue.video", "aliases": ["brand","rook","brandlucht","vlam","vonken"] },
-        { "label": "Ruikt u gas?", "next": "issue.v1.emergency.gas", "aliases": ["gas","gaslucht","ruikt gas","gaskraan","co","koolmonoxide gas"] }
+        { "label": "Ruikt u gas?", "next": "issue.uw_responsability", "aliases": ["gas","gaslucht","ruikt gas","gaskraan","co","koolmonoxide gas"] }
       ]
     },
 

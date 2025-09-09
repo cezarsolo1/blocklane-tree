@@ -6,6 +6,7 @@
 
 import { MaintenanceTreeEngine } from './MaintenanceTreeEngine';
 import { MaintenanceNode, MenuNode, InfoNode, DecisionNode, LeafNode, TreeNode } from '@/types/decision-tree';
+import { STEP2_QUESTIONS_CONFIG } from '@/types/custom-questions';
 
 export class MaintenanceWizardNavigator {
   public state: any; // Compatibility property
@@ -246,8 +247,19 @@ export class MaintenanceWizardNavigator {
    * Create virtual leaf node for missing options
    */
   private createVirtualLeaf(option: any): LeafNode {
+    const targetId = option.next || (option as any).code;
+    if (STEP2_QUESTIONS_CONFIG[targetId]) {
+      return {
+        node_id: targetId,
+        type: 'leaf',
+        title: option.label,
+        leaf_type: 'start_ticket',
+        leaf_reason: 'standard_wizard'
+      };
+    }
+    
     return {
-      node_id: `virtual_${option.next}`,
+      node_id: `${targetId}`,
       type: 'leaf',
       title: option.label,
       leaf_type: 'start_ticket',

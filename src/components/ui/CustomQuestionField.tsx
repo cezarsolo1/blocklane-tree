@@ -80,18 +80,22 @@ export const CustomQuestionField: React.FC<CustomQuestionFieldProps> = ({
         const isVideoUrl = id === 'video_url';
         return (
           <div className="space-y-2">
-            <Label htmlFor={id}>
-              {label}
-              {required && <span className="text-red-500 ml-1">*</span>}
-            </Label>
-            <Input
-              id={id}
-              type="text"
-              value={currentValue}
-              onChange={(e) => onChange(e.target.value)}
-              placeholder={placeholder}
-              className={error ? 'border-red-500' : ''}
-            />
+            {!isVideoUrl && label && (
+              <Label htmlFor={id}>
+                {label}
+                {required && !isVideoUrl && <span className="text-red-500 ml-1">*</span>}
+              </Label>
+            )}
+            {!isVideoUrl && (
+              <Input
+                id={id}
+                type="text"
+                value={currentValue}
+                onChange={(e) => onChange(e.target.value)}
+                placeholder={placeholder}
+                className={error ? 'border-red-500' : ''}
+              />
+            )}
             {error && <p className="text-sm text-red-600">{error}</p>}
             {isVideoUrl && currentValue && <VideoPreview url={currentValue} />}
           </div>
@@ -114,12 +118,12 @@ export const CustomQuestionField: React.FC<CustomQuestionFieldProps> = ({
         return (
           <Select value={currentValue} onValueChange={onChange}>
             <SelectTrigger className={error ? 'border-red-500' : ''}>
-              <SelectValue placeholder={placeholder || 'Select an option'} />
+              <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
               {options?.map((option) => (
-                <SelectItem key={option} value={option}>
-                  {option}
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -130,11 +134,9 @@ export const CustomQuestionField: React.FC<CustomQuestionFieldProps> = ({
         return (
           <RadioGroup value={currentValue} onValueChange={onChange}>
             {options?.map((option) => (
-              <div key={option} className="flex items-center space-x-2">
-                <RadioGroupItem value={option} id={`${id}-${option}`} />
-                <Label htmlFor={`${id}-${option}`} className="text-sm font-normal">
-                  {option}
-                </Label>
+              <div key={option.value} className="flex items-center space-x-2">
+                <RadioGroupItem value={option.value} id={`${id}-${option.value}`} />
+                <Label htmlFor={`${id}-${option.value}`}>{option.label}</Label>
               </div>
             ))}
           </RadioGroup>
@@ -145,33 +147,37 @@ export const CustomQuestionField: React.FC<CustomQuestionFieldProps> = ({
           <div className="flex items-center space-x-2">
             <Checkbox
               id={id}
-              checked={currentValue || false}
-              onCheckedChange={onChange}
+              checked={currentValue === 'true' || currentValue === true}
+              onCheckedChange={(checked) => onChange(checked.toString())}
             />
-            <Label htmlFor={id} className="text-sm font-normal">
-              {label}
-            </Label>
+            <Label htmlFor={id}>{label}</Label>
           </div>
         );
 
       case 'number':
         return (
-          <Input
-            id={id}
-            type="number"
-            value={currentValue}
-            onChange={(e) => onChange(e.target.value)}
-            placeholder={placeholder}
-            className={error ? 'border-red-500' : ''}
-          />
+          <div className="space-y-2">
+            <Label htmlFor={id}>
+              {label}
+              {required && id !== 'video_url' && <span className="text-red-500 ml-1">*</span>}
+            </Label>
+            <Input
+              id={id}
+              type="number"
+              value={currentValue}
+              onChange={(e) => onChange(e.target.value)}
+              placeholder={placeholder}
+              className={error ? 'border-red-500' : ''}
+            />
+          </div>
         );
 
-      case 'date': {
+      case 'date':
         return (
           <div className="space-y-2">
             <Label htmlFor={id}>
               {label}
-              {required && <span className="text-red-500 ml-1">*</span>}
+              {required && id !== 'video_url' && <span className="text-red-500 ml-1">*</span>}
             </Label>
             <Input
               id={id}
@@ -180,10 +186,8 @@ export const CustomQuestionField: React.FC<CustomQuestionFieldProps> = ({
               onChange={(e) => onChange(e.target.value)}
               className={error ? 'border-red-500' : ''}
             />
-            {error && <p className="text-sm text-red-600">{error}</p>}
           </div>
         );
-      }
 
       default:
         return null;
@@ -192,9 +196,9 @@ export const CustomQuestionField: React.FC<CustomQuestionFieldProps> = ({
 
   return (
     <div className="space-y-2">
-      {type !== 'checkbox' && (
+      {type !== 'checkbox' && type !== 'text' && (
         <Label htmlFor={id}>
-          {label} {required && <span className="text-red-500">*</span>}
+          {label} {required && id !== 'video_url' && <span className="text-red-500">*</span>}
         </Label>
       )}
       {renderField()}

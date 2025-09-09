@@ -268,10 +268,14 @@ export const WizardRenderer = ({
   // Check if we can show "My option is missing" button
   const shouldShowMissingButton = canShowMissingOption && onMissingOption;
 
+  // Check if we're on a video issue step to hide the main header
+  const isVideoIssueStep = selectedLeafNode?.node_id === 'issue.video' || nextButtonClicked && selectedLeafNode?.node_id === 'issue.video';
+  const isTenantResponsibilityStep = selectedLeafNode?.node_id === 'issue.uw_responsability' || nextButtonClicked && selectedLeafNode?.node_id === 'issue.uw_responsability';
+
   return (
     <div className={cn("min-h-[70vh]", className)}>
-      {/* Title - only show when no breadcrumb (root step) */}
-      {breadcrumbs.length <= 1 && (
+      {/* Title - only show when no breadcrumb (root step) and not on video issue or tenant responsibility step */}
+      {breadcrumbs.length <= 1 && !isVideoIssueStep && !isTenantResponsibilityStep && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 md:pt-6">
           <h1 className="text-2xl md:text-3xl font-semibold mb-2">
             {typeof currentNode.title === 'string' ? currentNode.title : currentNode.title?.en || 'Maintenance Wizard'}
