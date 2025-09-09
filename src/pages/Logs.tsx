@@ -183,7 +183,7 @@ export const Logs: React.FC = () => {
                             {log.photos.length} photo{log.photos.length !== 1 ? 's' : ''}
                           </div>
                         )}
-                        {log.extra && (
+                        {log.extra != null && (
                           <div className="flex items-center">
                             <AlertCircle className="w-4 h-4 mr-1" />
                             <span>Additional details</span>
@@ -270,7 +270,7 @@ export const Logs: React.FC = () => {
                     </div>
                   )}
                   
-                  {selectedLog.extra && (
+                  {selectedLog.extra != null && (
                     <div>
                       <h4 className="font-medium text-gray-900 mb-1">Additional Details</h4>
                       <pre className="bg-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
