@@ -342,7 +342,8 @@ export const maintenanceTreeData = {
         { "label": "Keukenapparatuur", "next": "cat.apparaten.keuken", "aliases": ["keukenapparaat","vaatwasser","oven","fornuis","kookplaat","inductie","koelkast","vriezer","wasmachine","droger","afzuigkap","airco","boiler"] },
         { "label": "Witgoed", "next": "cat.apparaten.witgoed", "aliases": ["witgoed","wasmachine","droger"] },
         { "label": "Klimaatinstallaties", "next": "cat.apparaten.klimaat", "aliases": ["airco","ventilatie unit","wtw"] },
-        { "label": "Een apparaat veroorzaakt aardlek", "next": "issue.v1.electrical.rcd.trip", "aliases": ["aardlek door apparaat","rcd valt","aardlek trip","stroom valt uit bij apparaat"] }
+        { "label": "Een apparaat veroorzaakt aardlek", "next": "issue.v1.electrical.rcd.trip", "aliases": ["aardlek door apparaat","rcd valt","aardlek trip","stroom valt uit bij apparaat"] },
+        { "label": "Lamp", "next": "issue.uw_responsability", "aliases": ["airco","ventilatie unit","wtw"] }
       ]
     },
     {
