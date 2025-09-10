@@ -223,7 +223,7 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
     ]
   },
   'issue.uw_responsability': {
-    title: 'Deze reparatie valt onder uw eigen verantwoordelijkheid',
+    title: 'Deze zaak valt onder uw eigen verantwoordelijkheid',
     description: '',
     questions: [
       {
@@ -238,6 +238,18 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
         label: 'Aanvullende informatie (optioneel)',
         placeholder: 'Heeft u nog vragen of opmerkingen?',
         required: false
+      }
+    ]
+  },
+  'issue.emergency': {
+    title: 'Dit is een noodgeval',
+    description: 'Dit probleem vormt een direct gevaar voor de veiligheid',
+    questions: [
+      {
+        id: 'emergency_acknowledgment',
+        type: 'checkbox',
+        label: 'Ik begrijp dat dit een noodgeval is en ik direct actie moet ondernemen',
+        required: true
       }
     ]
   },

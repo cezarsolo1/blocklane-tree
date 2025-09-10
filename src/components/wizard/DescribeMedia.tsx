@@ -42,6 +42,7 @@ export const DescribeMedia = ({
   const hasCustomQuestions = customQuestionsConfig && customQuestionsConfig.questions.length > 0;
   const isVideoOnly = issueId === 'issue.video';
   const isTenantResponsibility = issueId === 'issue.uw_responsability';
+  const isEmergency = issueId === 'issue.emergency';
 
   useEffect(() => {
     if (hasCustomQuestions && customQuestionsConfig) {
@@ -68,18 +69,22 @@ export const DescribeMedia = ({
 
     // Clear error when user provides answer
     if (errors[questionId]) {
-      setErrors(prev => ({ ...prev, [questionId]: '' }));
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[questionId];
+        return newErrors;
+      });
     }
   };
 
-  const validateCustomQuestions = (): boolean => {
-    if (!hasCustomQuestions) return true;
-
+  const validateCustomQuestions = () => {
+    if (!hasCustomQuestions || !customQuestionsConfig) return true;
+    
     const newErrors: Record<string, string> = {};
     customQuestionsConfig.questions.forEach((question: CustomQuestion) => {
       if (question.required) {
-        const answer = customAnswers[question.id];
-        if (!answer || (typeof answer === 'string' && !answer.trim())) {
+        const value = customAnswers[question.id];
+        if (!value || (typeof value === 'string' && !value.trim())) {
           newErrors[question.id] = `${question.label} is verplicht`;
         }
       }
@@ -90,7 +95,7 @@ export const DescribeMedia = ({
   };
 
   const handleNext = () => {
-    if (description.trim().length < 10 && !isVideoOnly && !isTenantResponsibility) {
+    if (description.trim().length < 10 && !isVideoOnly && !isTenantResponsibility && !isEmergency) {
       return; // Basic validation
     }
     
@@ -99,8 +104,8 @@ export const DescribeMedia = ({
     }
     
     onNext({ 
-      description: isVideoOnly || isTenantResponsibility ? '' : description.trim(), 
-      photos: isVideoOnly || isTenantResponsibility ? [] : photos,
+      description: isVideoOnly || isTenantResponsibility || isEmergency ? '' : description.trim(), 
+      photos: isVideoOnly || isTenantResponsibility || isEmergency ? [] : photos,
       customAnswers: hasCustomQuestions ? customAnswers : undefined
     });
   };
@@ -109,27 +114,41 @@ export const DescribeMedia = ({
   const areCustomQuestionsValid = !hasCustomQuestions || customQuestionsConfig.questions.every((q: CustomQuestion) => 
     !q.required || (customAnswers[q.id] && (typeof customAnswers[q.id] !== 'string' || customAnswers[q.id].trim()))
   );
-  const canProceed = isVideoOnly || isTenantResponsibility || (isDescriptionValid && areCustomQuestionsValid);
+  const canProceed = isVideoOnly || isTenantResponsibility || isEmergency || (isDescriptionValid && areCustomQuestionsValid);
 
   return (
     <div className={cn("space-y-6", className)}>
-      {/* Header */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Step 2: Describe the Problem</CardTitle>
-          <p className="text-sm text-muted-foreground">
-            Issue: {typeof leafNode.title === 'string' ? leafNode.title : leafNode.title.en}
-          </p>
-          {hasCustomQuestions && (
-            <p className="text-sm text-blue-600 font-medium">
-              {customQuestionsConfig.description}
-            </p>
-          )}
-        </CardHeader>
-      </Card>
 
-      {/* Description - Hide for video-only and tenant responsibility issues */}
-      {!isVideoOnly && !isTenantResponsibility && (
+      {/* Emergency info box */}
+      {isEmergency && (
+        <InfoBox
+          title="Dit is een noodgeval"
+          body="Dit probleem vormt een direct gevaar voor de veiligheid.\n\nBel 112 en verlaat onmiddellijk de woning.\n\nWacht niet en onderneem direct actie."
+          actions={[
+            "Bel onmiddellijk 112",
+            "Verlaat de woning direct"
+          ]}
+          footerNote="⚠️ Dit is een noodsituatie - handel onmiddellijk!"
+          variant="error"
+        />
+      )}
+
+      {/* Tenant responsibility info box */}
+      {isTenantResponsibility && (
+        <InfoBox
+          title="Deze reparatie valt onder uw eigen verantwoordelijkheid"
+          body="Helaas kan uw beheerder niet alle meldingen voor u oplossen. Voor dagelijks onderhoud, kleine herstellingen en situaties die door eigen gebruik zijn ontstaan, bent u als huurder zelf verantwoordelijk. Dat geldt ook voor dit geval.\n\nWilt u meer weten over welke gevallen onder uw verantwoordelijkheid vallen en welke bij de verhuurder? Lees dan de uitleg van de Rijksoverheid"
+          actions={[
+            "U kunt de reparatie zelf uitvoeren",
+            "U kunt een vakman inschakelen op eigen kosten"
+          ]}
+          footerNote="Wilt u precies weten welke reparaties onder uw verantwoordelijkheid vallen? Raadpleeg dan het complete overzicht via de Rijksoverheid website."
+          variant="warning"
+        />
+      )}
+
+      {/* Description - Hide for video-only, tenant responsibility, and emergency issues */}
+      {!isVideoOnly && !isTenantResponsibility && !isEmergency && (
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Description</CardTitle>
@@ -157,31 +176,17 @@ export const DescribeMedia = ({
                 </p>
               )}
               <p className="text-sm text-muted-foreground">
-                {description.length}/10 minimum characters
+                Provide as much detail as possible to help us resolve your issue quickly.
               </p>
             </div>
           </CardContent>
         </Card>
       )}
 
-      {/* Tenant responsibility info box */}
-      {isTenantResponsibility && (
-        <InfoBox
-          title="Deze reparatie valt onder uw eigen verantwoordelijkheid"
-          body="Volgens het Besluit kleine herstellingen bent u als huurder zelf verantwoordelijk voor een aantal kleine reparaties en onderhoudswerkzaamheden in de woning.\n\nDe reparatie die u probeerde te melden valt onder deze categorie. Dit betekent dat Keij & Stefels dit niet voor u kan uitvoeren via de servicedesk."
-          actions={[
-            "U kunt de reparatie zelf uitvoeren",
-            "U kunt een vakman inschakelen op eigen kosten"
-          ]}
-          footerNote="Wilt u precies weten welke reparaties onder uw verantwoordelijkheid vallen? Raadpleeg dan het complete overzicht via onze website."
-          variant="warning"
-        />
-      )}
-
       {/* Custom Questions */}
-      {hasCustomQuestions && !isTenantResponsibility && (
+      {hasCustomQuestions && !isTenantResponsibility && !isEmergency && (
         <Card>
-          {!isVideoOnly && !isTenantResponsibility && (
+          {!isVideoOnly && !isTenantResponsibility && !isEmergency && (
             <CardHeader>
               <CardTitle className="text-lg">{customQuestionsConfig.title}</CardTitle>
               <p className="text-sm text-muted-foreground">
@@ -189,7 +194,7 @@ export const DescribeMedia = ({
               </p>
             </CardHeader>
           )}
-          <CardContent className={isVideoOnly || isTenantResponsibility ? "p-6" : "space-y-4"}>
+          <CardContent className={isVideoOnly || isTenantResponsibility || isEmergency ? "p-6" : "space-y-4"}>
             {customQuestionsConfig.questions.map((question: CustomQuestion) => (
               <CustomQuestionField
                 key={question.id}
@@ -203,8 +208,8 @@ export const DescribeMedia = ({
         </Card>
       )}
 
-      {/* Photos - Hide for video-only and tenant responsibility issues */}
-      {!isVideoOnly && !isTenantResponsibility && (
+      {/* Photos - Hide for video-only, tenant responsibility, and emergency issues */}
+      {!isVideoOnly && !isTenantResponsibility && !isEmergency && (
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Photos</CardTitle>
@@ -215,10 +220,8 @@ export const DescribeMedia = ({
           <CardContent>
             <PhotoDropzone
               maxFiles={8}
-              maxSizeMB={10}
-              value={photos}
               onChange={setPhotos}
-              showHelpText={true}
+              value={photos}
             />
           </CardContent>
         </Card>
@@ -233,7 +236,7 @@ export const DescribeMedia = ({
           Back
         </Button>
         
-        {!isTenantResponsibility && (
+        {!isTenantResponsibility && !isEmergency && (
           <Button
             onClick={handleNext}
             disabled={!canProceed}

@@ -22,6 +22,7 @@ interface AddressChangeRequest {
     house_number_suffix?: string;
     postal_code: string;
     city: string;
+    telephone?: string;
     country?: string;
   };
   tenantNote?: string;
@@ -79,6 +80,7 @@ export async function createAddressChangeRequest(
         proposed_house_number_suffix: request.proposedAddress.house_number_suffix || null,
         proposed_postal_code: request.proposedAddress.postal_code,
         proposed_city: request.proposedAddress.city,
+        proposed_telephone: request.proposedAddress.telephone || null,
         proposed_country: request.proposedAddress.country || 'NL',
         tenant_note: request.tenantNote || null
       })

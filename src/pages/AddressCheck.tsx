@@ -24,6 +24,7 @@ interface AddressForm {
   house_number_suffix: string;
   postal_code: string;
   city: string;
+  telephone: string;
   country: string;
 }
 
@@ -44,6 +45,7 @@ export const AddressCheck = () => {
     house_number_suffix: '',
     postal_code: '',
     city: '',
+    telephone: '',
     country: 'NL'
   });
 
@@ -171,7 +173,7 @@ export const AddressCheck = () => {
         // Now try to find by profile_id
         const { data: tenantAddress, error: addressError } = await supabase
           .from('tenant_addresses')
-          .select('id, street, house_number, house_number_suffix, postal_code, city, country, profile_id, is_current')
+          .select('id, street, house_number, house_number_suffix, postal_code, city, telephone, country, profile_id, is_current')
           .eq('profile_id', profile.id)
           .eq('is_current', true)
           .maybeSingle();
@@ -197,6 +199,7 @@ export const AddressCheck = () => {
           house_number_suffix: tenantAddress.house_number_suffix || '',
           postal_code: tenantAddress.postal_code || '',
           city: tenantAddress.city || '',
+          telephone: tenantAddress.telephone || '',
           country: tenantAddress.country || 'NL'
         };
         
@@ -287,7 +290,8 @@ export const AddressCheck = () => {
           house_number: form.house_number,
           house_number_suffix: form.house_number_suffix,
           postal_code: normalizedPostalCode,
-          city: normalizedCity
+          city: normalizedCity,
+          telephone: form.telephone
         },
         tenantNote: 'Address updated via wizard'
       }, supabase);
@@ -309,6 +313,7 @@ export const AddressCheck = () => {
             house_number_suffix: form.house_number_suffix.trim(),
             postal_code: normalizedPostalCode,
             city: normalizedCity,
+            telephone: form.telephone.trim(),
             country: 'NL'
           },
           profile_hint: {
@@ -427,6 +432,19 @@ export const AddressCheck = () => {
               onBlur={handleCityBlur}
               placeholder="Amsterdam"
               required
+              readOnly={!isEditing}
+              className={!isEditing ? 'bg-gray-100 cursor-not-allowed' : ''}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="telephone">Telephone Number</Label>
+            <Input
+              id="telephone"
+              type="tel"
+              value={form.telephone}
+              onChange={(e) => handleInputChange('telephone', e.target.value)}
+              placeholder="+31 6 12345678"
               readOnly={!isEditing}
               className={!isEditing ? 'bg-gray-100 cursor-not-allowed' : ''}
             />
