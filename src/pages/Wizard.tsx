@@ -54,7 +54,6 @@ export const Wizard = () => {
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                {/* <img src="/logos/keij-stefels-final.jpg" alt="Keij Stefels" className="h-32" /> */}
                 <h1 className="text-xl font-semibold text-foreground">Schedule Unplanned Maintenance</h1>
               </div>
               <div className="flex-1 flex justify-center">
