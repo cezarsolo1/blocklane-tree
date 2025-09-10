@@ -22,6 +22,7 @@ interface DescribeMediaProps {
   breadcrumbs: Array<{ nodeId: string; title: string }>;
   onNext: (data: { description: string; photos: UploadedPhoto[]; customAnswers?: Record<string, any> }) => void;
   onBack: () => void;
+  onVideoFallback?: () => void; // New prop for handling "Niet gelukt?" button
   className?: string;
 }
 
@@ -29,18 +30,20 @@ export const DescribeMedia = ({
   leafNode,
   onNext,
   onBack,
+  onVideoFallback,
   className
 }: DescribeMediaProps) => {
   const [description, setDescription] = useState('');
   const [photos, setPhotos] = useState<UploadedPhoto[]>([]);
   const [customAnswers, setCustomAnswers] = useState<Record<string, any>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [showRegularForm, setShowRegularForm] = useState(false);
 
   // Get custom questions for this issue type
   const issueId = leafNode.node_id;
   const customQuestionsConfig = STEP2_QUESTIONS_CONFIG[issueId];
   const hasCustomQuestions = customQuestionsConfig && customQuestionsConfig.questions.length > 0;
-  const isVideoOnly = issueId === 'issue.video';
+  const isVideoOnly = issueId === 'issue.video' && !showRegularForm;
   const isTenantResponsibility = issueId === 'issue.uw_responsability';
   const isEmergency = issueId === 'issue.emergency';
 
@@ -95,7 +98,8 @@ export const DescribeMedia = ({
   };
 
   const handleNext = () => {
-    if (description.trim().length < 10 && !isVideoOnly && !isTenantResponsibility && !isEmergency) {
+    // For video fallback cases, we need proper validation
+    if (needsDescription && description.trim().length < 10) {
       return; // Basic validation
     }
     
@@ -104,17 +108,32 @@ export const DescribeMedia = ({
     }
     
     onNext({ 
-      description: isVideoOnly || isTenantResponsibility || isEmergency ? '' : description.trim(), 
-      photos: isVideoOnly || isTenantResponsibility || isEmergency ? [] : photos,
+      description: (isVideoOnly && !showRegularForm) || isTenantResponsibility || isEmergency ? '' : description.trim(), 
+      photos: (isVideoOnly && !showRegularForm) || isTenantResponsibility || isEmergency ? [] : photos,
       customAnswers: hasCustomQuestions ? customAnswers : undefined
     });
+  };
+
+  const handleVideoFallback = () => {
+    setShowRegularForm(true);
+    // Clear any existing video-related custom answers
+    setCustomAnswers({});
+    if (onVideoFallback) {
+      onVideoFallback();
+    }
   };
 
   const isDescriptionValid = description.trim().length >= 10;
   const areCustomQuestionsValid = !hasCustomQuestions || customQuestionsConfig.questions.every((q: CustomQuestion) => 
     !q.required || (customAnswers[q.id] && (typeof customAnswers[q.id] !== 'string' || customAnswers[q.id].trim()))
   );
-  const canProceed = isVideoOnly || isTenantResponsibility || isEmergency || (isDescriptionValid && areCustomQuestionsValid);
+  
+  // For video fallback cases, we need description validation
+  const needsDescription = showRegularForm || (!isVideoOnly && !isTenantResponsibility && !isEmergency);
+  const needsCustomQuestions = hasCustomQuestions && !showRegularForm && !isTenantResponsibility && !isEmergency;
+  const canProceed = isVideoOnly || isTenantResponsibility || isEmergency || 
+                    (needsDescription ? isDescriptionValid : true) && 
+                    (needsCustomQuestions ? areCustomQuestionsValid : true);
 
   return (
     <div className={cn("space-y-6", className)}>
@@ -147,8 +166,8 @@ export const DescribeMedia = ({
         />
       )}
 
-      {/* Description - Hide for video-only, tenant responsibility, and emergency issues */}
-      {!isVideoOnly && !isTenantResponsibility && !isEmergency && (
+      {/* Description - Show for regular cases and video fallback */}
+      {(showRegularForm || (!isVideoOnly && !isTenantResponsibility && !isEmergency)) && (
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Description</CardTitle>
@@ -167,10 +186,10 @@ export const DescribeMedia = ({
                 required
                 className={cn(
                   "min-h-[100px]",
-                  !isDescriptionValid && description.length > 0 && "border-red-300"
+                  needsDescription && !isDescriptionValid && description.length > 0 && "border-red-300"
                 )}
               />
-              {!isDescriptionValid && description.length > 0 && (
+              {needsDescription && !isDescriptionValid && description.length > 0 && (
                 <p className="text-sm text-red-600">
                   Please provide at least 10 characters for a meaningful description.
                 </p>
@@ -183,8 +202,8 @@ export const DescribeMedia = ({
         </Card>
       )}
 
-      {/* Custom Questions */}
-      {hasCustomQuestions && !isTenantResponsibility && !isEmergency && (
+      {/* Custom Questions - Hide for video fallback cases */}
+      {hasCustomQuestions && !isTenantResponsibility && !isEmergency && !showRegularForm && (
         <Card>
           {!isVideoOnly && !isTenantResponsibility && !isEmergency && (
             <CardHeader>
@@ -208,8 +227,8 @@ export const DescribeMedia = ({
         </Card>
       )}
 
-      {/* Photos - Hide for video-only, tenant responsibility, and emergency issues */}
-      {!isVideoOnly && !isTenantResponsibility && !isEmergency && (
+      {/* Photos - Show for regular cases and video fallback */}
+      {(showRegularForm || (!isVideoOnly && !isTenantResponsibility && !isEmergency)) && (
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Photos</CardTitle>
@@ -237,13 +256,24 @@ export const DescribeMedia = ({
         </Button>
         
         {!isTenantResponsibility && !isEmergency && (
-          <Button
-            onClick={handleNext}
-            disabled={!canProceed}
-            className="bg-[#0052FF] hover:bg-blue-600 text-white disabled:bg-gray-300 disabled:text-gray-500"
-          >
-            Next: Review
-          </Button>
+          <div className="flex gap-2">
+            {isVideoOnly && (
+              <Button
+                onClick={handleVideoFallback}
+                variant="outline"
+                className="border-[#0052FF] text-[#0052FF] hover:bg-[#0052FF] hover:text-white"
+              >
+                Niet gelukt?
+              </Button>
+            )}
+            <Button
+              onClick={handleNext}
+              disabled={!canProceed}
+              className="bg-[#0052FF] hover:bg-blue-600 text-white disabled:bg-gray-300 disabled:text-gray-500"
+            >
+              {isVideoOnly ? "Gelukt!" : "Next: Review"}
+            </Button>
+          </div>
         )}
       </div>
     </div>

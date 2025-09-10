@@ -8,12 +8,14 @@
 import { useState } from 'react';
 import { LeafNode } from '@/types/decision-tree';
 import { DescribeMedia } from './DescribeMedia';
+import { VideoSuccessPage } from './VideoSuccessPage';
 import { UploadedPhoto } from './PhotoDropzone';
 import { createTicketService } from '@/modules/tickets/TicketServiceFactory';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, ArrowLeft } from 'lucide-react';
 import { ContactFormData } from '@/pages/ContactDetails';
+import ContactDetails from '@/pages/ContactDetails';
 import { saveFinalStepLog } from '@/utils/maintenanceLogHelper';
 
 interface WizardTicketFlowProps {
@@ -25,7 +27,7 @@ interface WizardTicketFlowProps {
   className?: string;
 }
 
-type FlowStep = 'describe_media' | 'review' | 'submitted';
+type FlowStep = 'describe_media' | 'contact_details' | 'review' | 'submitted' | 'video_success';
 
 interface FlowData {
   description: string;
@@ -58,6 +60,37 @@ export const WizardTicketFlow = ({
     setError(null);
     
     try {
+      // Check if this is a video success case (no description/photos but video was successful)
+      const isVideoSuccess = leafNode.node_id === 'issue.video' && 
+                            !data.description && 
+                            data.photos.length === 0 && 
+                            data.customAnswers && 
+                            data.customAnswers.video_url; // Video URL exists, meaning they watched the video
+      
+      if (isVideoSuccess) {
+        // Go directly to video success page
+        setCurrentStep('video_success');
+        return;
+      }
+
+      // Check if this is a video fallback case (has description/photos but no video_url)
+      const isVideoFallback = leafNode.node_id === 'issue.video' && 
+                             (data.description || data.photos.length > 0) &&
+                             (!data.customAnswers || !data.customAnswers.video_url);
+      
+      if (isVideoFallback) {
+        // For video fallback, skip ticket creation and go directly to contact details
+        setFlowData({
+          description: data.description,
+          photos: data.photos,
+          customAnswers: data.customAnswers
+        });
+        setCurrentStep('contact_details');
+        onStepChange?.(2); // Move to Step 3 (0-indexed)
+        setIsLoading(false);
+        return;
+      }
+
       // Log the complete navigation path including video check outcomes
       console.log('Creating ticket with navigation path:', {
         leafNode: {
@@ -116,7 +149,7 @@ export const WizardTicketFlow = ({
         customAnswers: data.customAnswers
       });
       
-      setCurrentStep('review');
+      setCurrentStep('contact_details');
       onStepChange?.(2); // Move to Step 3 (0-indexed)
     } catch (err) {
       console.error('Full error in handleDescribeMediaSubmit:', err);
@@ -155,6 +188,15 @@ export const WizardTicketFlow = ({
     }
   };
 
+  const handleContactDetailsSubmit = (contactData: ContactFormData) => {
+    setFlowData(prev => ({
+      ...prev,
+      contactData
+    }));
+    setCurrentStep('review');
+    onStepChange?.(3); // Move to Step 4 (0-indexed)
+  };
+
   const handleBackToStep = (step: FlowStep) => {
     setCurrentStep(step);
     setError(null);
@@ -162,9 +204,22 @@ export const WizardTicketFlow = ({
     // Update progress bar based on step
     if (step === 'describe_media') {
       onStepChange?.(1); // Step 2
-    } else if (step === 'review') {
+    } else if (step === 'contact_details') {
       onStepChange?.(2); // Step 3
+    } else if (step === 'review') {
+      onStepChange?.(3); // Step 4
     }
+  };
+
+  const handleVideoFallback = () => {
+    // Reset flow data and continue with regular Step 2
+    setFlowData({
+      description: '',
+      photos: []
+    });
+    
+    // Stay on describe_media step - the component will handle showing regular form
+    setCurrentStep('describe_media');
   };
 
   if (currentStep === 'describe_media') {
@@ -175,6 +230,7 @@ export const WizardTicketFlow = ({
           breadcrumbs={breadcrumbs}
           onNext={handleDescribeMediaSubmit}
           onBack={onBack}
+          onVideoFallback={handleVideoFallback}
         />
         
         {isLoading && (
@@ -244,8 +300,7 @@ export const WizardTicketFlow = ({
             
             <div className="flex justify-between items-center pt-4">
               <Button
-                variant="outline"
-                onClick={() => handleBackToStep('describe_media')}
+                onClick={() => handleBackToStep('contact_details')}
                 disabled={isLoading}
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
@@ -262,6 +317,24 @@ export const WizardTicketFlow = ({
             </div>
           </CardContent>
         </Card>
+        
+        {error && (
+          <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
+            <p className="text-sm text-red-600">{error}</p>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  if (currentStep === 'contact_details') {
+    return (
+      <div className={className}>
+        <ContactDetails
+          onBack={() => handleBackToStep('describe_media')}
+          onNext={handleContactDetailsSubmit}
+          leafReason={leafNode.leaf_reason}
+        />
         
         {error && (
           <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
@@ -292,6 +365,16 @@ export const WizardTicketFlow = ({
             </Button>
           </CardContent>
         </Card>
+      </div>
+    );
+  }
+
+  if (currentStep === 'video_success') {
+    return (
+      <div className={className}>
+        <VideoSuccessPage
+          onComplete={onComplete}
+        />
       </div>
     );
   }
