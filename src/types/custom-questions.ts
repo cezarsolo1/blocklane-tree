@@ -218,7 +218,7 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
         label: '',
         placeholder: 'bijv. https://youtube.com/watch?v=... of https://vimeo.com/...',
         required: true,
-        defaultValue: 'https://www.youtube.com/watch?v=dRT3tepdMyI'
+        defaultValue: 'https://www.youtube.com/watch?v=lrlT6s5_xN4'
       }
     ]
   },
