@@ -104,7 +104,7 @@ export const maintenanceTreeData = {
         { "label": "Toilet verstopt", "next": "issue.v1.drainage.toilet.blocked", "aliases": ["toilet verstopt","wc verstopt","wc","closet verstopt"] },
         { "label": "Douche of bad verstopt", "next": "issue.v1.drainage.bath_shower.blocked", "aliases": ["douche verstopt","bad verstopt","doucheputje verstopt","douchegoot","putje verstopt"] },
         { "label": "Wastafel verstopt (badkamer)", "next": "issue.v1.drainage.bathroom_sink.blocked", "aliases": ["wastafel verstopt","fontein verstopt","afvoer wastafel"] },
-        { "label": "Gootsteen verstopt (keuken)", "next": "issue.v1.drainage.kitchen_sink.blocked", "aliases": ["gootsteen verstopt","spoelbak verstopt","afvoer keuken"] },
+        { "label": "Gootsteen verstopt (keuken)", "next": "issue.video", "aliases": ["gootsteen verstopt","spoelbak verstopt","afvoer keuken"] },
         { "label": "Wasmachine-afvoer verstopt", "next": "issue.v1.drainage.washing_machine.blocked", "aliases": ["wasmachine afvoer verstopt","afvoerslang verstopt","overstroom wasmachine"] },
         { "label": "Vloerput of balkonafvoer verstopt", "next": "issue.v1.drainage.floor_or_balcony.blocked", "aliases": ["vloerput verstopt","balkon afvoer","putje balkon"] },
         { "label": "Standleiding verstopt (gemeenschappelijk)", "next": "issue.v1.drainage.riser.common.blocked", "aliases": ["standleiding","hoofdriool","meerdere verdiepingen verstopt","gemeenschappelijke afvoer"] },
