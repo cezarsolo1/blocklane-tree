@@ -14,6 +14,7 @@ interface AddressEventRequest {
     house_number_suffix?: string;
     postal_code: string;
     city: string;
+    telephone?: string;
     country?: string;
   };
   profile_hint?: {
@@ -63,6 +64,7 @@ export async function logAddressEvent(request: AddressEventRequest): Promise<Add
           house_number_suffix: request.address.house_number_suffix,
           postal_code: request.address.postal_code,
           city: request.address.city,
+          telephone: request.address.telephone,
           country: request.address.country
         },
         profile_hint: request.profile_hint
