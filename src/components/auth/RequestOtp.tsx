@@ -3,7 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Mail } from 'lucide-react';
+import { useAuth } from '@/modules/auth/AuthProvider';
+import { Mail, Zap } from 'lucide-react';
 
 interface RequestOtpProps {
   onOtpSent: (email: string) => void;
@@ -15,6 +16,7 @@ export const RequestOtp = ({ onOtpSent, onRequestOtp, loading }: RequestOtpProps
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { bypassAuth } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,6 +81,27 @@ export const RequestOtp = ({ onOtpSent, onRequestOtp, loading }: RequestOtpProps
               disabled={loading || isSubmitting || !email.trim()}
             >
               {isSubmitting ? 'Sending Code...' : 'Send Verification Code'}
+            </Button>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  For Testing
+                </span>
+              </div>
+            </div>
+            
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full flex items-center gap-2"
+              onClick={bypassAuth}
+            >
+              <Zap className="w-4 h-4" />
+              Skip Authentication
             </Button>
 
             <div className="text-center text-xs text-muted-foreground">

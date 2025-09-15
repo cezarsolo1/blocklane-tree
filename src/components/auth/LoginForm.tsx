@@ -9,15 +9,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useAuth } from './AuthProvider';
-import { Mail, CheckCircle } from 'lucide-react';
+import { useAuth } from '@/modules/auth/AuthProvider';
+import { Mail, CheckCircle, Zap } from 'lucide-react';
 
 export function LoginForm() {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { signIn } = useAuth();
+  const { requestOtp, bypassAuth } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,7 +27,7 @@ export function LoginForm() {
     setError(null);
 
     try {
-      await signIn(email);
+      await requestOtp(email);
       setSent(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to send magic link');
@@ -102,6 +102,27 @@ export function LoginForm() {
             disabled={loading || !email}
           >
             {loading ? 'Sending...' : 'Send magic link'}
+          </Button>
+          
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">
+                Or for development
+              </span>
+            </div>
+          </div>
+          
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full flex items-center gap-2"
+            onClick={bypassAuth}
+          >
+            <Zap className="w-4 h-4" />
+            Skip Authentication
           </Button>
           
           <p className="text-xs text-muted-foreground text-center">

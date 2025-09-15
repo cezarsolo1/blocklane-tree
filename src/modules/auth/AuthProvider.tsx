@@ -10,6 +10,7 @@ interface AuthContextType {
   verifyOtp: (email: string, token: string) => Promise<{ error?: any }>;
   signOut: () => Promise<void>;
   checkAllowedEmail: (email: string) => Promise<boolean>;
+  bypassAuth: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -202,6 +203,27 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     await supabase.auth.signOut();
   };
 
+  const bypassAuth = () => {
+    // Create a mock user for development
+    const mockUser = {
+      id: 'dev-user-123',
+      email: 'dev@blocklane.com',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      aud: 'authenticated',
+      role: 'authenticated',
+      email_confirmed_at: new Date().toISOString(),
+      app_metadata: {},
+      user_metadata: {},
+      identities: [],
+      factors: []
+    } as User;
+
+    setUser(mockUser);
+    setIsAllowlisted(true);
+    setLoading(false);
+  };
+
   const value = {
     user,
     loading,
@@ -210,7 +232,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     requestOtp,
     verifyOtp,
     signOut,
-    checkAllowedEmail
+    checkAllowedEmail,
+    bypassAuth
   };
 
   return (
