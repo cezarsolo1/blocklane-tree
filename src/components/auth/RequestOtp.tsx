@@ -56,7 +56,7 @@ export const RequestOtp = ({ onOtpSent, onRequestOtp, loading }: RequestOtpProps
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
+          {/*  <div>
               <Label htmlFor="email">Email Address</Label>
               <Input
                 id="email"
@@ -82,7 +82,7 @@ export const RequestOtp = ({ onOtpSent, onRequestOtp, loading }: RequestOtpProps
             >
               {isSubmitting ? 'Sending Code...' : 'Send Verification Code'}
             </Button>
-
+            */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
