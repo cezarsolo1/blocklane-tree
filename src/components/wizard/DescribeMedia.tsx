@@ -172,6 +172,15 @@ export const DescribeMedia = ({
         />
       )}
 
+      {/* Custom questions description info box */}
+      {customQuestionsConfig?.description && !isVideoOnly && !isTenantResponsibility && !isEmergency && (
+        <InfoBox
+          title={customQuestionsConfig.title || "Let op"}
+          body={customQuestionsConfig.description}
+          variant="info"
+        />
+      )}
+
       {/* Description - Show for regular cases and video fallback */}
       {(showRegularForm || (!isVideoOnly && !isTenantResponsibility && !isEmergency)) && (
         <Card>

@@ -965,4 +965,3 @@ Lock enums & schema; implement Edge Functions skeletons.
  Prefer widely-used stacks (Next \+ Supabase \+ Tailwind \+ Vercel).  
  Refactor frequently; rely on tests to prevent regressions.  
  Keep rules in markdown (Cursor/Windsurf rules) and include docs locally for model context.
-

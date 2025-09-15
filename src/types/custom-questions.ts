@@ -4,6 +4,16 @@ export interface CustomQuestion {
   label: string;
   placeholder?: string;
   required?: boolean;
+  
+  /**
+   * For checkbox:
+   * - 'boolean' = single yes/no checkbox (no options, answer is boolean)
+   * - 'multi' = multi-select checkbox group (uses options[], answer is string[])
+   * If omitted, UIs may infer: options? => 'multi', else 'boolean'.
+   * Adding this field is backward-compatible.
+   */
+  variant?: 'boolean' | 'multi';
+  
   options?: { value: string; label: string }[]; // for select/radio/checkbox
   validation?: {
     min?: number;
@@ -30,6 +40,16 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
     title: 'Lekkage Vragen',
     description: 'Help ons de lekkage situatie beter te begrijpen',
     questions: [
+      {
+        id: 'water_type',
+        type: 'radio',
+        label: 'Wat voor water lekt er?',
+        required: true,
+        options: [
+          { value: 'helder_schoon', label: 'Helder/schoon water (leidingwater)' },
+          { value: 'vuil_verkleurd', label: 'Vuil/verkleurd water (CV-water)' }
+        ]
+      },
       {
         id: 'leak_location',
         type: 'select',
@@ -139,7 +159,8 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
         id: 'circuit_breaker_status',
         type: 'checkbox',
         label: 'Is de zekering gesprongen?',
-        required: false
+        required: false,
+        variant: 'boolean'
       }
     ]
   },
@@ -232,7 +253,8 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
         id: 'tenant_acknowledgment',
         type: 'checkbox',
         label: 'Ik begrijp dat deze reparatie onder mijn eigen verantwoordelijkheid valt',
-        required: true
+        required: true,
+        variant: 'boolean'
       },
       {
         id: 'additional_info',
@@ -251,7 +273,8 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
         id: 'emergency_acknowledgment',
         type: 'checkbox',
         label: 'Ik begrijp dat dit een noodgeval is en ik direct actie moet ondernemen',
-        required: true
+        required: true,
+        variant: 'boolean'
       }
     ]
   },
@@ -273,11 +296,13 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
       {
         id: 'battery_replaced',
         type: 'radio',
-        label: 'Heeft u de batterij al vervangen?',
+        label:
+          'In bijna alle gevallen betekent dit dat de batterij leeg is.\n👉 Vervang alstublieft de batterij.\n\nGa alleen verder als dit niet lukt of geen succes biedt:',
         required: false,
         options: [
-          { value: 'ja', label: 'Ja' },
-          { value: 'nee', label: 'Nee' }
+          { value: 'kan_batterij_niet_vervangen', label: 'Ik kan de batterij niet vervangen' },
+          { value: 'batterij_vervangen_geen_succes', label: 'Ik heb de batterij vervangen maar het piepen stopt niet' },
+          { value: 'geen_batterij_vast_aangesloten', label: 'Er is geen batterij (vast aangesloten melder)' }
         ]
       }
     ]
@@ -300,11 +325,13 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
       {
         id: 'battery_replaced',
         type: 'radio',
-        label: 'Heeft u de batterij al vervangen?',
+        label:
+          'In bijna alle gevallen betekent dit dat de batterij leeg is.\n👉 Vervang alstublieft de batterij.\n\nGa alleen verder als dit niet lukt of geen succes biedt:',
         required: false,
         options: [
-          { value: 'ja', label: 'Ja' },
-          { value: 'nee', label: 'Nee' }
+          { value: 'kan_batterij_niet_vervangen', label: 'Ik kan de batterij niet vervangen' },
+          { value: 'batterij_vervangen_geen_succes', label: 'Ik heb de batterij vervangen maar het piepen stopt niet' },
+          { value: 'geen_batterij_vast_aangesloten', label: 'Er is geen batterij (vast aangesloten melder)' }
         ]
       }
     ]
@@ -327,11 +354,13 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
       {
         id: 'battery_replaced',
         type: 'radio',
-        label: 'Heeft u de batterij al vervangen?',
+        label:
+          'In bijna alle gevallen betekent dit dat de batterij leeg is.\n👉 Vervang alstublieft de batterij.\n\nGa alleen verder als dit niet lukt of geen succes biedt:',
         required: false,
         options: [
-          { value: 'ja', label: 'Ja' },
-          { value: 'nee', label: 'Nee' }
+          { value: 'kan_batterij_niet_vervangen', label: 'Ik kan de batterij niet vervangen' },
+          { value: 'batterij_vervangen_geen_succes', label: 'Ik heb de batterij vervangen maar het piepen stopt niet' },
+          { value: 'geen_batterij_vast_aangesloten', label: 'Er is geen batterij (vast aangesloten melder)' }
         ]
       }
     ]
@@ -495,6 +524,18 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
     description: 'Water druppelt van het plafond',
     questions: [
       {
+        id: 'ceiling_leak_source',
+        type: 'select',
+        label: 'Waar komt de lekkage vandaan?',
+        required: true,
+        options: [
+          { value: 'dak', label: 'Dak' },
+          { value: 'bovenburen', label: 'Bovenburen' },
+          { value: 'plafond_zelf', label: 'Plafond (installatie/leiding)' },
+          { value: 'onbekend', label: 'Onbekend' }
+        ]
+      },
+      {
         id: 'drip_frequency',
         type: 'radio',
         label: 'Hoe vaak druppelt het?',
@@ -509,7 +550,7 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
         id: 'water_type',
         type: 'radio',
         label: 'Wat voor water is het?',
-        required: true,
+        required: false,
         options: [
           { value: 'helder', label: 'Helder water' },
           { value: 'vuil_bruin', label: 'Vuil/bruin water' }
@@ -550,7 +591,8 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
         id: 'boiler_photo_required',
         type: 'checkbox',
         label: 'Ik ga een foto uploaden van de ketel/boiler',
-        required: true
+        required: true,
+        variant: 'boolean'
       },
       {
         id: 'error_code',
@@ -653,12 +695,75 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
       {
         id: 'gutter_dirty',
         type: 'radio',
-        label: 'Is de goot eronder vol met vuil?',
+        label: 'LET OP: Indien er een goot aanwezig is onder het raam is het belangrijk deze eerst schoon te maken. Ga alleen door als u dit geprobeerd heeft.',
         required: true,
         options: [
-          { value: 'ja', label: 'Ja' },
-          { value: 'nee', label: 'Nee' },
-          { value: 'kan_niet_zien', label: 'Kan niet zien' }
+          { value: 'kan_niet_schoonmaken', label: 'Het lukt mij niet deze schoon te maken.' },
+          { value: 'schoon_maar_lekt_nog', label: 'De goot is schoon maar het lekt nog altijd.' }
+        ]
+      }
+    ]
+  },
+  'issue.v1.leakage.kitchen.appliance_connection': {
+    title: 'Lekkage Keuken – Aansluiting vaatwasser/wasmachine',
+    description: 'Help ons de lekkage situatie beter te begrijpen',
+    questions: [
+      {
+        id: 'water_type',
+        type: 'radio',
+        label: 'Wat voor water lekt er?',
+        required: true,
+        options: [
+          { value: 'helder_schoon', label: 'Helder/schoon water (toevoerleiding)' },
+          { value: 'vuil_verkleurd', label: 'Vuil/verkleurd water (afvoer)' }
+        ]
+      }
+    ]
+  },
+  'issue.v1.leakage.bathroom.toilet_cistern': {
+    title: 'Lekkage Badkamer – Toilet/Stortbak',
+    description: 'Help ons de lekkage situatie beter te begrijpen',
+    questions: [
+      {
+        id: 'water_type',
+        type: 'radio',
+        label: 'Wat voor water lekt er?',
+        required: true,
+        options: [
+          { value: 'helder_schoon', label: 'Helder/schoon water (toevoerleiding)' },
+          { value: 'vuil_verkleurd', label: 'Vuil/verkleurd water (afvoer)' }
+        ]
+      }
+    ]
+  },
+  'issue.v1.leakage.bathroom.shower_bath_drain': {
+    title: 'Lekkage Badkamer – Douche/Bad/Afvoerput',
+    description: 'Help ons de lekkage situatie beter te begrijpen',
+    questions: [
+      {
+        id: 'water_type',
+        type: 'radio',
+        label: 'Wat voor water lekt er?',
+        required: true,
+        options: [
+          { value: 'helder_schoon', label: 'Helder/schoon water (toevoerleiding)' },
+          { value: 'vuil_verkleurd', label: 'Vuil/verkleurd water (afvoer)' }
+        ]
+      }
+    ]
+  },
+  'issue.v1.drainage.pipe.leak': {
+    title: 'Lekkage Afvoer/Pijp',
+    description: 'Help ons de lekkage situatie beter te begrijpen',
+    questions: [
+      {
+        id: 'water_type',
+        type: 'radio',
+        label: 'Wat voor water lekt er?',
+        required: true,
+        options: [
+          { value: 'helder_schoon', label: 'Helder/schoon water (toevoerleiding)' },
+          { value: 'vuil_verkleurd', label: 'Vuil/verkleurd water (afvoer)' }
         ]
       }
     ]
@@ -864,7 +969,8 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
         id: 'photo_info_tag',
         type: 'checkbox',
         label: 'Ik ga een foto uploaden van het typeplaatje/informatielabel',
-        required: true
+        required: true,
+        variant: 'boolean'
       },
       {
         id: 'dishwasher_problem',
@@ -1341,6 +1447,11 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
       }
     ]
   },
+  'issue.v1.pest.birds': {
+    title: 'Duiven of vogels',
+    description: 'LET OP: Helaas is het ons vanwege de Wet natuurbescherming niet toegestaan duivennesten te verwijderen.',
+    questions: []
+  },
   'issue.v1.ventilation.noisy': {
     title: 'Ventilatie Maakt Lawaai',
     description: 'Ventilatie systeem maakt geluid',
@@ -1385,7 +1496,8 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
         id: 'cleaning_responsibility_acknowledged',
         type: 'checkbox',
         label: 'Ik begrijp dat het schoonmaken van filters mijn verantwoordelijkheid als huurder is',
-        required: false
+        required: false,
+        variant: 'boolean'
       },
       {
         id: 'noise_description',
@@ -1418,6 +1530,7 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
         type: 'checkbox',
         label: 'Waar ziet u het probleem?',
         required: true,
+        variant: 'multi',
         options: [
           { value: 'badkamer', label: 'Badkamer' },
           { value: 'keuken', label: 'Keuken' },
@@ -1581,12 +1694,11 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
       {
         id: 'gutter_full_of_dirt',
         type: 'radio',
-        label: 'Is de goot onder het raam vol met vuil?',
+        label: 'LET OP: Indien er een goot aanwezig is onder het raam is het belangrijk deze eerst schoon te maken. Ga alleen door als u dit geprobeerd heeft.',
         required: true,
         options: [
-          { value: 'ja', label: 'Ja' },
-          { value: 'nee', label: 'Nee' },
-          { value: 'onbekend', label: 'Onbekend' }
+          { value: 'kan_niet_schoonmaken', label: 'Het lukt mij niet deze schoon te maken.' },
+          { value: 'schoon_maar_lekt_nog', label: 'De goot is schoon maar het lekt nog altijd.' }
         ]
       }
     ]
@@ -1919,99 +2031,4 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
       }
     ]
   },
-
-  // ROOK- OF CO-MELDER FINAL NODES
-  'issue.v1.smoke_alarm.chirping': {
-    title: 'Rookmelder Piept',
-    description: 'Rookmelder maakt piepgeluiden',
-    questions: [
-      {
-        id: 'connection_type',
-        type: 'radio',
-        label: 'Is de rookmelder aangesloten op elektriciteit of standalone?',
-        required: true,
-        options: [
-          { value: 'elektriciteit', label: 'Aangesloten op elektriciteit' },
-          { value: 'standalone_batterij', label: 'Standalone (alleen batterij)' },
-          { value: 'onbekend', label: 'Onbekend' }
-        ]
-      },
-      {
-        id: 'battery_replaced',
-        type: 'radio',
-        label: 'Heeft u de batterij vervangen?',
-        required: true,
-        options: [
-          { value: 'ja', label: 'Ja' },
-          { value: 'nee', label: 'Nee' }
-        ]
-      },
-      {
-        id: 'worked_after_battery_replacement',
-        type: 'radio',
-        label: 'Werkte het na het vervangen van de batterij?',
-        required: false,
-        options: [
-          { value: 'ja', label: 'Ja' },
-          { value: 'nee', label: 'Nee' },
-          { value: 'niet_van_toepassing', label: 'Niet van toepassing' }
-        ]
-      },
-      {
-        id: 'system_type_if_broken',
-        type: 'radio',
-        label: 'Als het nog steeds kapot is: is het een gecombineerd systeem of alleen batterij?',
-        required: false,
-        options: [
-          { value: 'gecombineerd_systeem', label: 'Gecombineerd systeem' },
-          { value: 'alleen_batterij', label: 'Alleen batterij' },
-          { value: 'onbekend', label: 'Onbekend' }
-        ]
-      }
-    ]
-  },
-
-  // INTERCOM FINAL NODES
-  'issue.v1.intercom.fault': {
-    title: 'Intercom Defect',
-    description: 'Intercom werkt niet goed',
-    questions: [
-      {
-        id: 'intercom_type',
-        type: 'select',
-        label: 'Wat voor type intercom is het?',
-        required: true,
-        options: [
-          { value: 'video', label: 'Video intercom' },
-          { value: 'audio', label: 'Audio intercom' },
-          { value: 'buzzer_only', label: 'Alleen zoemer' },
-          { value: 'onbekend', label: 'Onbekend' }
-        ]
-      },
-      {
-        id: 'what_fails',
-        type: 'checkbox',
-        label: 'Wat werkt er niet?',
-        required: true,
-        options: [
-          { value: 'bel_geluid', label: 'Bel/geluid' },
-          { value: 'deur_openen', label: 'Deur openen' },
-          { value: 'video_beeld', label: 'Video beeld' },
-          { value: 'spraak', label: 'Spraak/audio' },
-          { value: 'anders', label: 'Anders' }
-        ]
-      },
-      {
-        id: 'neighbors_same_problem',
-        type: 'radio',
-        label: 'Hebben buren hetzelfde probleem?',
-        required: true,
-        options: [
-          { value: 'ja', label: 'Ja (gebouwprobleem)' },
-          { value: 'nee', label: 'Nee (alleen mijn woning)' },
-          { value: 'onbekend', label: 'Onbekend' }
-        ]
-      }
-    ]
-  }
 };
