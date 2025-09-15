@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { CustomQuestionField } from '@/components/ui/CustomQuestionField';
-import { CUSTOM_QUESTIONS_CONFIG, CustomQuestion } from '@/types/custom-questions';
+import { STEP2_QUESTIONS_CONFIG, CustomQuestion } from '@/types/custom-questions';
 
 interface ContactDetailsProps {
   onBack: () => void;
@@ -52,7 +52,7 @@ export default function ContactDetails({
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Get custom questions configuration for this leaf_reason
-  const customQuestionsConfig = CUSTOM_QUESTIONS_CONFIG[leafReason];
+  const customQuestionsConfig = STEP2_QUESTIONS_CONFIG[leafReason];
   const hasCustomQuestions = customQuestionsConfig && customQuestionsConfig.questions.length > 0;
 
   // Log the leaf_reason for backend analytics

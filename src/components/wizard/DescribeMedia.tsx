@@ -43,6 +43,12 @@ export const DescribeMedia = ({
   const issueId = leafNode.node_id;
   const customQuestionsConfig = STEP2_QUESTIONS_CONFIG[issueId];
   const hasCustomQuestions = customQuestionsConfig && customQuestionsConfig.questions.length > 0;
+  
+  // Debug logging
+  console.log('DescribeMedia - Issue ID:', issueId);
+  console.log('DescribeMedia - Available Config Keys:', Object.keys(STEP2_QUESTIONS_CONFIG));
+  console.log('DescribeMedia - Custom Questions Config:', customQuestionsConfig);
+  console.log('DescribeMedia - Has Custom Questions:', hasCustomQuestions);
   const isVideoOnly = issueId === 'issue.video' && !showRegularForm;
   const isTenantResponsibility = issueId === 'issue.uw_responsability';
   const isEmergency = issueId === 'issue.emergency';

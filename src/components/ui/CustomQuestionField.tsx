@@ -189,6 +189,34 @@ export const CustomQuestionField: React.FC<CustomQuestionFieldProps> = ({
           </div>
         );
 
+      case 'file':
+        return (
+          <div className="space-y-2">
+            <Label htmlFor={id}>
+              {label}
+              {required && <span className="text-red-500 ml-1">*</span>}
+            </Label>
+            {question.description && (
+              <p className="text-sm text-muted-foreground">{question.description}</p>
+            )}
+            <Input
+              id={id}
+              type="file"
+              accept={question.accept || 'image/*'}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                onChange(file || null);
+              }}
+              className={error ? 'border-red-500' : ''}
+            />
+            {currentValue && (
+              <p className="text-sm text-green-600">
+                Bestand geselecteerd: {currentValue.name || 'Bestand'}
+              </p>
+            )}
+          </div>
+        );
+
       default:
         return null;
     }
