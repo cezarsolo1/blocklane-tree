@@ -490,10 +490,21 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
       }
     ]
   },
-  'issue.v1.leakage.ceiling.stain': {
-    title: 'Plafondvlekken',
-    description: 'Vlekken in het plafond door lekkage',
+
+  'issue.v1.leakage.ceiling_wall_roof.combined': {
+    title: 'Plafond, Dak of Muren',
+    description: 'Beantwoord de vragen hieronder voor snellere afhandeling.',
     questions: [
+      {
+        id: 'has_ceiling_stains',
+        type: 'radio',
+        label: 'Zijn er plafondvlekken?',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
       {
         id: 'ceiling_leak_source',
         type: 'select',
@@ -513,26 +524,8 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
         required: true,
         options: [
           { value: 'klein', label: 'Klein (< 30cm)' },
-          { value: 'middel', label: 'Middel (30-100cm)' },
+          { value: 'middel', label: 'Middel (30–100cm)' },
           { value: 'groot', label: 'Groot (> 100cm)' }
-        ]
-      }
-    ]
-  },
-  'issue.v1.leakage.ceiling.drip_from_above': {
-    title: 'Druppelt van Boven',
-    description: 'Water druppelt van het plafond',
-    questions: [
-      {
-        id: 'ceiling_leak_source',
-        type: 'select',
-        label: 'Waar komt de lekkage vandaan?',
-        required: true,
-        options: [
-          { value: 'dak', label: 'Dak' },
-          { value: 'bovenburen', label: 'Bovenburen' },
-          { value: 'plafond_zelf', label: 'Plafond (installatie/leiding)' },
-          { value: 'onbekend', label: 'Onbekend' }
         ]
       },
       {
@@ -550,14 +543,29 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
         id: 'water_type',
         type: 'radio',
         label: 'Wat voor water is het?',
-        required: false,
+        required: true,
         options: [
           { value: 'helder', label: 'Helder water' },
           { value: 'vuil_bruin', label: 'Vuil/bruin water' }
         ]
+      },
+      {
+        id: 'room_location',
+        type: 'text',
+        label: 'In welke kamer bevindt het zich?',
+        placeholder: 'Geef alstublieft een zo gedetailleerd mogelijke beschrijving van de locatie',
+        required: true
+      },
+      {
+        id: 'photos_instruction',
+        type: 'info',
+        label: 'Om u te helpen is het heel belangrijk voor ons om een beeld te krijgen van de lekkage.\nUpload hieronder alstublieft minstens twee foto’s: één van de hele situatie, en één van waar het water vandaan komt.',
+        required: false
       }
     ]
   },
+
+
   // VERWARMING FINAL NODES - Using correct decision tree node IDs
   'issue.v1.heating.radiator.no_heat': {
     title: 'Radiator Verwarming',
@@ -689,6 +697,12 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
         label: 'Omschrijf probleem',
         placeholder: 'Beschrijf het probleem zo gedetailleerd mogelijk...',
         required: true
+      },
+      {
+        id: 'photos_instruction',
+        type: 'info',
+        label: 'Om u te helpen is het heel belangrijk voor ons om een beeld te krijgen van het probleem.\nUpload hieronder alstublieft minstens twee foto’s: één van de hele deur, en één van het probleem.',
+        required: false
       }
     ]
   },
@@ -727,7 +741,7 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
         id: 'room_location',
         type: 'text',
         label: 'In welke kamer bevindt het zich?',
-        placeholder: 'bijv. woonkamer, slaapkamer + Voorzijde/achterzijde',
+        placeholder: 'Geef alstublieft een zo gedetailleerd mogelijke beschrijving van de locatie',
         required: true
       },
       {
@@ -754,8 +768,7 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
       {
         id: 'gutter_clean',
         type: 'radio',
-        label: 'Gootje schoon maken',
-        description: 'LET OP: Indien er een goot aanwezig is onder het raam is het belangrijk deze eerst schoon te maken.',
+        label: 'LET OP: Indien er een goot aanwezig is onder het raam is het belangrijk deze eerst schoon te maken. Is deze schoon?',
         required: true,
         options: [
           { value: 'gootje_schoon', label: 'Gootje is schoon gemaakt' },
@@ -763,9 +776,9 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
         ]
       },
       {
-        id: 'photo_instructions',
+        id: 'photos_instruction',
         type: 'info',
-        label: 'Maak een foto van de hele situatie.\nMaak een foto waar het water vandaan komt.',
+        label: 'Om u te helpen is het heel belangrijk voor ons om een beeld te krijgen van de lekkage.\nUpload hieronder alstublieft minstens twee foto’s: één van de hele situatie, en één van waar het water vandaan komt.',
         required: false
       }
     ]
@@ -798,9 +811,9 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
         ]
       },
       {
-        id: 'photo_instructions',
+        id: 'photos_instruction',
         type: 'info',
-        label: 'Maak een foto van de hele situatie.\nMaak een foto waar het water vandaan komt.',
+        label: 'Om u te helpen is het heel belangrijk voor ons om een beeld te krijgen van de lekkage.\nUpload hieronder alstublieft minstens twee foto’s: één van de hele situatie, en één van waar het water vandaan komt.',
         required: false
       }
     ]
@@ -2160,47 +2173,25 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
       {
         id: 'siphon_cleaned',
         type: 'radio',
-        label: 'Is de sifon schoongemaakt?',
+        label: 'Het is belangrijk om de sifon goed te reinigen, omdat vuilophoping vaak de oorzaak is van lekkage.\nKunt u alstublieft bevestigen dat de sifon is schoongemaakt en dat de lekkage daarna nog steeds aanwezig is?',
         required: true,
         options: [
-          { value: 'nee_maak_schoon', label: 'NEE → maak schoon' },
-          { value: 'ja_schoon', label: 'Ja, is schoon' }
-        ]
-      },
-      {
-        id: 'still_leaking_after_clean',
-        type: 'radio',
-        label: 'Heeft u nog steeds last van lekkage?',
-        required: true,
-        options: [
-          { value: 'ja', label: 'Ja' },
-          { value: 'nee', label: 'Nee' }
+          { value: 'ja_schoongemaakt', label: 'Ja, dat bevestig ik.' }
         ]
       },
       {
         id: 'connections_tight',
         type: 'radio',
-        label: 'Zijn de sluitingen goed aangedraaid?',
+        label: 'Ook is het belangrijk om de sluitingen goed aangedraaid te houden. Zijn de sluitingen goed aangedraaid en heeft u alsnog last van de lekkage?',
         required: true,
         options: [
-          { value: 'nee_draai_aan', label: 'Nee → draai aan' },
-          { value: 'ja_goed_vast', label: 'Ja, goed vastgedraaid' }
+          { value: 'ja_goed_vast', label: 'Ja, dat bevestig ik.' }
         ]
       },
       {
-        id: 'still_leaking_after_tighten',
-        type: 'radio',
-        label: 'Heeft u nog steeds last van lekkage?',
-        required: true,
-        options: [
-          { value: 'ja', label: 'Ja' },
-          { value: 'nee', label: 'Nee' }
-        ]
-      },
-      {
-        id: 'photo_instructions',
+        id: 'photos_instruction',
         type: 'info',
-        label: 'Maak een foto van de hele situatie.\nMaak een foto waar het water vandaan komt.',
+        label: 'Om u te helpen is het heel belangrijk voor ons om een beeld te krijgen van de lekkage.\nUpload hieronder alstublieft minstens twee foto’s: één van de hele situatie, en één van waar het water vandaan komt.',
         required: false
       }
     ]
@@ -2226,12 +2217,12 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
       {
         id: 'rubber_connection',
         type: 'radio',
-        label: 'Is de aansluiting van rubber (valpijpsok)?',
-        description: 'Alleen beantwoorden als u "Afvoer van het toilet" heeft geselecteerd',
-        required: false,
+        label: 'Indien u "Afvoer van het toilet" heeft geselecteerd: is de aansluiting van rubber (valpijpsok)?',
+        required: true,
         options: [
-          { value: 'ja_huurder_rekening', label: 'JA → rekening huurder' },
-          { value: 'nee_verder_melding', label: 'Nee → verder melding' }
+          { value: 'ja_huurder_rekening', label: 'Ja' },
+          { value: 'nee_verder_melding', label: 'Nee' },
+          { value: 'niet_van_toepassing', label: 'Het probleem is niet de afvoer van het toilet' }
         ]
       },
       {
@@ -2244,7 +2235,7 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
       {
         id: 'photo_instructions',
         type: 'info',
-        label: 'Maak een foto waar het water vandaan komt.',
+        label: 'Om u te helpen is het heel belangrijk voor ons om een beeld te krijgen van de lekkage.\nUpload hieronder alstublieft minstens twee foto’s: één van de hele situatie, en één van waar het water vandaan komt.',
         required: false
       }
     ]
@@ -2268,18 +2259,17 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
       {
         id: 'tap_type',
         type: 'radio',
-        label: 'Meng kraan of Thermostatische kraan?',
-        description: 'Alleen beantwoorden als u "Douche kraan" heeft geselecteerd',
+        label: 'Beantwoord alleen als u "Douche kraan" heeft geselecteerd: Betreeft het een mengkraan of thermostatische kraan?',
         required: false,
         options: [
-          { value: 'mengkraan', label: 'Mengkraan' },
-          { value: 'thermostatisch', label: 'Thermostatische kraan' }
+          { value: 'mengkraan', label: 'Mengkraan (één hendel of twee knoppen waarmee u zelf warm en koud mengt)' },
+          { value: 'thermostatisch', label: 'Thermostatische kraan (met temperatuurinstelling, houdt water automatisch op vaste temperatuur)' }
         ]
       },
       {
         id: 'photo_instructions',
         type: 'info',
-        label: 'Maak een foto waar het water vandaan komt.',
+        label: 'Om u te helpen is het heel belangrijk voor ons om een beeld te krijgen van de lekkage.\nUpload hieronder alstublieft minstens twee foto’s: één van de hele situatie, en één van waar het water vandaan komt.',
         required: false
       }
     ]
@@ -2325,7 +2315,7 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
       {
         id: 'photo_instructions',
         type: 'info',
-        label: 'Maak een foto waar het water vandaan komt.',
+        label: 'Om u te helpen is het heel belangrijk voor ons om een beeld te krijgen van de lekkage.\nUpload hieronder alstublieft minstens twee foto’s: één van de hele situatie, en één van waar het water vandaan komt.',
         required: false
       }
     ]
@@ -2339,47 +2329,25 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
       {
         id: 'siphon_cleaned',
         type: 'radio',
-        label: 'Is de sifon schoongemaakt?',
+        label: 'Het is belangrijk om de sifon goed te reinigen, omdat vuilophoping vaak de oorzaak is van lekkage.\nKunt u alstublieft bevestigen dat de sifon is schoongemaakt en dat de lekkage daarna nog steeds aanwezig is?',
         required: true,
         options: [
-          { value: 'nee_maak_schoon', label: 'NEE → maak schoon' },
-          { value: 'ja_schoon', label: 'Ja, is schoon' }
-        ]
-      },
-      {
-        id: 'still_leaking_after_clean',
-        type: 'radio',
-        label: 'Heeft u nog steeds last van lekkage?',
-        required: true,
-        options: [
-          { value: 'ja', label: 'Ja' },
-          { value: 'nee', label: 'Nee' }
+          { value: 'ja_schoongemaakt', label: 'Ja, dat bevestig ik.' }
         ]
       },
       {
         id: 'connections_tight',
         type: 'radio',
-        label: 'Zijn de sluitingen goed aangedraaid?',
+        label: 'Ook is het belangrijk om de sluitingen goed aangedraaid te houden. Zijn de sluitingen goed aangedraaid en heeft u alsnog last van de lekkage?',
         required: true,
         options: [
-          { value: 'nee_draai_aan', label: 'Nee → draai aan' },
-          { value: 'ja_goed_vast', label: 'Ja, goed vastgedraaid' }
+          { value: 'ja_goed_vast', label: 'Ja, dat bevestig ik.' }
         ]
       },
       {
-        id: 'still_leaking_after_tighten',
-        type: 'radio',
-        label: 'Heeft u nog steeds last van lekkage?',
-        required: true,
-        options: [
-          { value: 'ja', label: 'Ja' },
-          { value: 'nee', label: 'Nee' }
-        ]
-      },
-      {
-        id: 'photo_instructions',
+        id: 'photos_instruction',
         type: 'info',
-        label: 'Maak een foto van de hele situatie.\nMaak een foto waar het water vandaan komt.',
+        label: 'Om u te helpen is het heel belangrijk voor ons om een beeld te krijgen van de lekkage.\nUpload hieronder alstublieft minstens twee foto’s: één van de hele situatie, en één van waar het water vandaan komt.',
         required: false
       }
     ]
@@ -2391,13 +2359,13 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
     description: 'Lekkage bij kranen',
     questions: [
       {
-        id: 'tap_descaled',
+        id: 'kraan_ontkalkt',
         type: 'radio',
-        label: 'Is de kraan ontkalkt?',
+        label: 'Als de kraan druppelt uit de tuit, kan dit komen door kalkaanslag. In dat geval is het belangrijk om de kraan te ontkalken.\nKunt u bevestigen dat de kraan is ontkalkt en dat de lekkage daarna nog steeds aanwezig is?',
         required: true,
         options: [
-          { value: 'ja', label: 'Ja' },
-          { value: 'nee', label: 'Nee' }
+          { value: 'ja_ontkalkt', label: 'Ja, ik heb de kraan ontkalkt.' },
+          { value: 'niet_van_toepassing', label: 'Niet van toepassing (de kraan lekt op een andere plek).' }
         ]
       },
       {
@@ -2415,9 +2383,9 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
         required: false
       },
       {
-        id: 'photo_instructions',
+        id: 'photos_instruction',
         type: 'info',
-        label: 'Maak een foto van de hele situatie.',
+        label: 'Om u te helpen is het heel belangrijk voor ons om een beeld te krijgen van de lekkage.\nUpload hieronder alstublieft minstens twee foto’s: één van de hele situatie, en één van waar het water vandaan komt.',
         required: false
       }
     ]
@@ -2425,18 +2393,14 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
 
   // APPARATEN LEKKAGE NODE (COMBINED) - wasmachine, vaatwasser
   'issue.v1.leakage.appliances.combined': {
-    title: 'Apparaten Lekkage (wasmachine, vaatwasser)',
+    title: 'Apparaten Lekkage (wasmachine, vaatwasser, ...)',
     description: 'Lekkage bij wasmachine of vaatwasser',
     questions: [
       {
         id: 'appliance_type',
-        type: 'radio',
+        type: 'textarea',
         label: 'Welk apparaat lekt?',
         required: true,
-        options: [
-          { value: 'wasmachine', label: 'Wasmachine' },
-          { value: 'vaatwasser', label: 'Vaatwasser' }
-        ]
       },
       {
         id: 'leak_timing',
@@ -2453,12 +2417,12 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
         type: 'textarea',
         label: 'Beschrijf het probleem met het apparaat',
         placeholder: 'Beschrijf waar het apparaat lekt, hoe erg het is, eventuele foutmeldingen, en andere details...',
-        required: false
+        required: true
       },
       {
         id: 'photo_instructions',
         type: 'info',
-        label: '1. Merk en model van het apparaat (via foto of text).\n2. Maak een foto van de hele wasmachine/vaatwasser.\n3. Maak een foto waar het water vandaan komt.',
+        label: 'Om u goed te helpen zijn een aantal zaken heel belangrijk: \n1. Zorg alstublieft dat u ofwel hierboven typt ofwel hieronder een foto uploadt, met het merk en model van het apparaat.\n2. Upload alstublieft foto’s van het apparaat inclusief eventuele meldingen. \n3. Upload alstublieft een foto van waar het water vandaan komt.',
         required: false
       }
     ]

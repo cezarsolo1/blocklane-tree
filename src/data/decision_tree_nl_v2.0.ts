@@ -43,7 +43,7 @@ export const maintenanceTreeData = {
       "type": "menu",
       "title": "Lekkage",
       "options": [
-        { "label": "Plafond, Dak of Muren", "next": "cat.lekkage.plafond_dak", "aliases": ["plafond","dak","muur","muren","plafond vlek","plafond druppelt","dak lekt","bovenburen lek","muur nat","vochtplek muur","plafondlekkage","daklekkage"] },
+        { "label": "Plafond, Dak of Muren", "next": "issue.v1.leakage.ceiling_wall_roof.combined", "aliases": ["plafond","dak","muur","muren","plafond vlek","plafond druppelt","dak lekt","bovenburen lek","muur nat","vochtplek muur","plafondlekkage","daklekkage"] },
         { "label": "Gevel (incl. Ramen)", "next": "cat.lekkage.gevel_ramen", "aliases": ["gevel","raam","ramen","kozijn","inregenen","gevel lekt","buitenmuur nat","raam lekt","kozijn lekt","voegwerk","scheur gevel"] },
         { "label": "CV en radiatoren", "next": "cat.lekkage.cv_radiatoren", "aliases": ["cv","radiator","radiatoren","verwarming","cv-lek","leiding lekt","cv leiding lekt","radiator lekt","verwarmingsleiding"] },
         { "label": "Wasbak, afvoer, of toilet", "next": "cat.lekkage.wasbak_afvoer_toilet", "aliases": ["wasbak","afvoer","toilet","wc","gootsteen","spoelbak","wastafel","sifon","afvoerpijp","rioolpijp","douche","bad","doucheputje"] },
@@ -81,15 +81,6 @@ export const maintenanceTreeData = {
         { "label": "Onder gootsteen", "next": "issue.v1.leakage.kitchen.sink_cabinet", "aliases": ["gootsteen","spoelbak","gootsteenkastje","sifon keuken"] },
         { "label": "Aansluiting vaatwasser of wasmachine", "next": "issue.v1.leakage.kitchen.appliance_connection", "aliases": ["vaatwasser slang","inlaatkraan","afvoerslang","wasmachine aansluiting"] },
         { "label": "Kraan lekt of defect", "next": "issue.v1.tap.kitchen.leak_or_fault", "aliases": ["keukenkraan","mengkraan keuken","kraan lekt","kraan drupt"] }
-      ]
-    },
-    {
-      "id": "cat.lekkage.plafond_dak",
-      "type": "menu",
-      "title": "Lekkage — Plafond of dak",
-      "options": [
-        { "label": "Plafondvlekken", "next": "issue.v1.leakage.ceiling.stain", "aliases": ["plafond vlek","gele vlek","vochtplek plafond","doorslaan verf"] },
-        { "label": "Druppelt van boven", "next": "issue.v1.leakage.ceiling.drip_from_above", "aliases": ["van boven","bovenburen","druppelt","plafond drupt"] }
       ]
     },
     {
