@@ -1,6 +1,6 @@
 export interface CustomQuestion {
   id: string;
-  type: 'text' | 'textarea' | 'select' | 'radio' | 'checkbox' | 'number' | 'date' | 'file';
+  type: 'text' | 'textarea' | 'select' | 'radio' | 'checkbox' | 'number' | 'date' | 'file' | 'info';
   label: string;
   placeholder?: string;
   required?: boolean;
@@ -654,6 +654,44 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
       }
     ]
   },
+  'issue.v1.doors.general': {
+    title: 'Deur Probleem',
+    description: '',
+    questions: [
+      {
+        id: 'door_location',
+        type: 'select',
+        label: 'Om welke deur gaat het?',
+        required: true,
+        options: [
+          { value: 'deur_naar_straat', label: 'Deur naar de straat' },
+          { value: 'deur_naar_woning', label: 'Deur naar mijn woning' },
+          { value: 'deur_naar_woning_eigen_opgang', label: 'Deur naar mijn woning (Ik heb een eigen opgang)' },
+          { value: 'deur_binnen_woning', label: 'Deur binnen mijn woning' },
+          { value: 'deur_naar_balkon_terras', label: 'Deur naar balkon/terras' }
+        ]
+      },
+      {
+        id: 'door_problem_type',
+        type: 'select',
+        label: 'Wat is het probleem?',
+        required: true,
+        options: [
+          { value: 'sluit_niet_goed_af', label: 'De deur sluit niet goed af' },
+          { value: 'valt_niet_goed_in_slot', label: 'De deur valt niet goed in het slot' },
+          { value: 'gaat_niet_open', label: 'Deur gaat niet open' },
+          { value: 'anders', label: 'Anders, namelijk …' }
+        ]
+      },
+      {
+        id: 'problem_description',
+        type: 'textarea',
+        label: 'Omschrijf probleem',
+        placeholder: 'Beschrijf het probleem zo gedetailleerd mogelijk...',
+        required: true
+      }
+    ]
+  },
   'issue.v1.doors.apartment.lock_cylinder_issue': {
     title: 'Woningdeur Slot Probleem',
     description: 'Slot of cilinder van woningdeur werkt niet',
@@ -682,25 +720,88 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
   },
   // RAMEN & KOZIJNEN FINAL NODES
   'issue.v1.window.leak_perimeter': {
-    title: 'Raam Lekkage Rondom Kozijn',
-    description: 'Raam lekt rondom het kozijn',
+    title: 'Kozijn of rond het kozijn',
+    description: 'Lekkage rondom het kozijn.',
     questions: [
       {
-        id: 'window_room',
+        id: 'room_location',
         type: 'text',
-        label: 'In welke kamer is het raam?',
-        placeholder: 'bijv. woonkamer, slaapkamer voorkant',
+        label: 'In welke kamer bevindt het zich?',
+        placeholder: 'bijv. woonkamer, slaapkamer + Voorzijde/achterzijde',
         required: true
       },
       {
-        id: 'gutter_dirty',
+        id: 'house_side',
         type: 'radio',
-        label: 'LET OP: Indien er een goot aanwezig is onder het raam is het belangrijk deze eerst schoon te maken. Ga alleen door als u dit geprobeerd heeft.',
+        label: 'Voorzijde of achterzijde van de woning?',
         required: true,
         options: [
-          { value: 'kan_niet_schoonmaken', label: 'Het lukt mij niet deze schoon te maken.' },
-          { value: 'schoon_maar_lekt_nog', label: 'De goot is schoon maar het lekt nog altijd.' }
+          { value: 'voorzijde', label: 'Voorzijde' },
+          { value: 'achterzijde', label: 'Achterzijde' }
         ]
+      },
+      {
+        id: 'frame_material',
+        type: 'radio',
+        label: 'Materiaal kozijn?',
+        required: true,
+        options: [
+          { value: 'kunststof', label: 'Kunststof' },
+          { value: 'aluminium', label: 'Aluminium' },
+          { value: 'hout', label: 'Hout' }
+        ]
+      },
+      {
+        id: 'gutter_clean',
+        type: 'radio',
+        label: 'Gootje schoon maken',
+        description: 'LET OP: Indien er een goot aanwezig is onder het raam is het belangrijk deze eerst schoon te maken.',
+        required: true,
+        options: [
+          { value: 'gootje_schoon', label: 'Gootje is schoon gemaakt' },
+          { value: 'geen_gootje', label: 'Er is geen gootje aanwezig' }
+        ]
+      },
+      {
+        id: 'photo_instructions',
+        type: 'info',
+        label: 'Maak een foto van de hele situatie.\nMaak een foto waar het water vandaan komt.',
+        required: false
+      }
+    ]
+  },
+  'issue.v1.facade.wall.leak': {
+    title: 'Buitenmuur',
+    description: 'Lekkage aan de buitenmuur',
+    questions: [
+      {
+        id: 'leak_frequency',
+        type: 'radio',
+        label: 'Lekt het continu of bij (hevige) regenval?',
+        required: true,
+        options: [
+          { value: 'continu', label: 'Continu' },
+          { value: 'bij_regen', label: 'Bij regenval' },
+          { value: 'bij_hevige_regen', label: 'Bij hevige regenval' }
+        ]
+      },
+      {
+        id: 'above_leak',
+        type: 'radio',
+        label: 'Wat zit er boven de lekkage?',
+        required: true,
+        options: [
+          { value: 'dak', label: 'Dak' },
+          { value: 'badkamer_buren', label: 'Badkamer buren' },
+          { value: 'keuken_buren', label: 'Keuken buren' },
+          { value: 'buren_andere_ruimte', label: 'Buren (andere ruimte of geen idee welke ruimte)' }
+        ]
+      },
+      {
+        id: 'photo_instructions',
+        type: 'info',
+        label: 'Maak een foto van de hele situatie.\nMaak een foto waar het water vandaan komt.',
+        required: false
       }
     ]
   },
@@ -2027,6 +2128,337 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
         type: 'text',
         label: 'Voer de exacte foutcode in (indien zichtbaar)',
         placeholder: 'bijv. E1, F12, E9',
+        required: false
+      }
+    ]
+  },
+
+  // WASBAK LEKKAGE NODE (COMBINED)
+  'issue.v1.leakage.sink.combined': {
+    title: 'Wasbak Lekkage',
+    description: 'Lekkage bij wasbak',
+    questions: [
+      {
+        id: 'sink_location',
+        type: 'radio',
+        label: 'Waar zit de wasbak?',
+        required: true,
+        options: [
+          { value: 'badkamer', label: 'Badkamer' },
+          { value: 'toilet', label: 'Toilet' },
+          { value: 'keuken', label: 'Keuken' },
+          { value: 'anders', label: 'Anders' }
+        ]
+      },
+      {
+        id: 'location_specify',
+        type: 'text',
+        label: 'Anders? Namelijk...',
+        placeholder: 'bijv. bijkeuken, berging, garage',
+        required: false
+      },
+      {
+        id: 'siphon_cleaned',
+        type: 'radio',
+        label: 'Is de sifon schoongemaakt?',
+        required: true,
+        options: [
+          { value: 'nee_maak_schoon', label: 'NEE → maak schoon' },
+          { value: 'ja_schoon', label: 'Ja, is schoon' }
+        ]
+      },
+      {
+        id: 'still_leaking_after_clean',
+        type: 'radio',
+        label: 'Heeft u nog steeds last van lekkage?',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'connections_tight',
+        type: 'radio',
+        label: 'Zijn de sluitingen goed aangedraaid?',
+        required: true,
+        options: [
+          { value: 'nee_draai_aan', label: 'Nee → draai aan' },
+          { value: 'ja_goed_vast', label: 'Ja, goed vastgedraaid' }
+        ]
+      },
+      {
+        id: 'still_leaking_after_tighten',
+        type: 'radio',
+        label: 'Heeft u nog steeds last van lekkage?',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'photo_instructions',
+        type: 'info',
+        label: 'Maak een foto van de hele situatie.\nMaak een foto waar het water vandaan komt.',
+        required: false
+      }
+    ]
+  },
+
+  // TOILET LEKKAGE NODE (COMBINED)
+  'issue.v1.leakage.toilet.combined': {
+    title: 'Toilet Lekkage',
+    description: 'Lekkage bij toilet',
+    questions: [
+      {
+        id: 'toilet_issue_type',
+        type: 'radio',
+        label: 'Wat is het probleem met het toilet?',
+        required: true,
+        options: [
+          { value: 'kitwerk', label: 'Er komt water uit het kitwerk' },
+          { value: 'stortbak', label: 'De stortbak lekt' },
+          { value: 'afvoer', label: 'Afvoer van het toilet' },
+          { value: 'loopt_door', label: 'Toilet loopt door' }
+        ]
+      },
+      {
+        id: 'rubber_connection',
+        type: 'radio',
+        label: 'Is de aansluiting van rubber (valpijpsok)?',
+        description: 'Alleen beantwoorden als u "Afvoer van het toilet" heeft geselecteerd',
+        required: false,
+        options: [
+          { value: 'ja_huurder_rekening', label: 'JA → rekening huurder' },
+          { value: 'nee_verder_melding', label: 'Nee → verder melding' }
+        ]
+      },
+      {
+        id: 'cleaning_instructions',
+        type: 'info',
+        label: 'Uitleg reinigen stortbak en schoonmaken/vervangen vlotter.',
+        description: 'Deze instructies zijn relevant als het toilet doorloopt',
+        required: false
+      },
+      {
+        id: 'photo_instructions',
+        type: 'info',
+        label: 'Maak een foto waar het water vandaan komt.',
+        required: false
+      }
+    ]
+  },
+
+  // BADKAMER/DOUCHE LEKKAGE NODE (COMBINED)
+  'issue.v1.leakage.shower.combined': {
+    title: 'Badkamer/Douche Lekkage',
+    description: 'Lekkage in badkamer/douche',
+    questions: [
+      {
+        id: 'shower_issue_type',
+        type: 'radio',
+        label: 'Wat is het probleem in de badkamer/douche?',
+        required: true,
+        options: [
+          { value: 'douche_kraan', label: 'Douche kraan' },
+          { value: 'douche_kop', label: 'Douche kop' }
+        ]
+      },
+      {
+        id: 'tap_type',
+        type: 'radio',
+        label: 'Meng kraan of Thermostatische kraan?',
+        description: 'Alleen beantwoorden als u "Douche kraan" heeft geselecteerd',
+        required: false,
+        options: [
+          { value: 'mengkraan', label: 'Mengkraan' },
+          { value: 'thermostatisch', label: 'Thermostatische kraan' }
+        ]
+      },
+      {
+        id: 'photo_instructions',
+        type: 'info',
+        label: 'Maak een foto waar het water vandaan komt.',
+        required: false
+      }
+    ]
+  },
+
+  // APPARAAT LEKKAGE NODE (COMBINED)
+  'issue.v1.leakage.appliance.combined': {
+    title: 'Apparaat Lekkage',
+    description: 'Lekkage bij apparaat',
+    questions: [
+      {
+        id: 'appliance_type',
+        type: 'radio',
+        label: 'Soort apparaat?',
+        required: true,
+        options: [
+          { value: 'wasmachine', label: 'Wasmachine' },
+          { value: 'vaatwasser', label: 'Vaatwasser' },
+          { value: 'anders', label: 'Anders' }
+        ]
+      },
+      {
+        id: 'appliance_other_specify',
+        type: 'text',
+        label: 'Anders? Namelijk...',
+        placeholder: 'bijv. droger, boiler, andere',
+        required: false
+      },
+      {
+        id: 'brand_model',
+        type: 'text',
+        label: 'Merk en model (evt. via foto van label)',
+        placeholder: 'bijv. Bosch WAT28400NL, Siemens SN236I00ME',
+        required: true
+      },
+      {
+        id: 'appliance_message',
+        type: 'textarea',
+        label: 'Melding van apparaat zelf (maak foto)',
+        placeholder: 'Beschrijf eventuele foutmeldingen of codes',
+        required: false
+      },
+      {
+        id: 'photo_instructions',
+        type: 'info',
+        label: 'Maak een foto waar het water vandaan komt.',
+        required: false
+      }
+    ]
+  },
+
+  // KEUKENAFVOER LEKKAGE NODE (COMBINED)
+  'issue.v1.leakage.kitchen_drain.combined': {
+    title: 'Keukenafvoer Lekkage',
+    description: 'Lekkage bij keukenafvoer',
+    questions: [
+      {
+        id: 'siphon_cleaned',
+        type: 'radio',
+        label: 'Is de sifon schoongemaakt?',
+        required: true,
+        options: [
+          { value: 'nee_maak_schoon', label: 'NEE → maak schoon' },
+          { value: 'ja_schoon', label: 'Ja, is schoon' }
+        ]
+      },
+      {
+        id: 'still_leaking_after_clean',
+        type: 'radio',
+        label: 'Heeft u nog steeds last van lekkage?',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'connections_tight',
+        type: 'radio',
+        label: 'Zijn de sluitingen goed aangedraaid?',
+        required: true,
+        options: [
+          { value: 'nee_draai_aan', label: 'Nee → draai aan' },
+          { value: 'ja_goed_vast', label: 'Ja, goed vastgedraaid' }
+        ]
+      },
+      {
+        id: 'still_leaking_after_tighten',
+        type: 'radio',
+        label: 'Heeft u nog steeds last van lekkage?',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'photo_instructions',
+        type: 'info',
+        label: 'Maak een foto van de hele situatie.\nMaak een foto waar het water vandaan komt.',
+        required: false
+      }
+    ]
+  },
+
+  // KRANEN LEKKAGE NODE (COMBINED)
+  'issue.v1.leakage.tap.combined': {
+    title: 'Kranen Lekkage',
+    description: 'Lekkage bij kranen',
+    questions: [
+      {
+        id: 'tap_descaled',
+        type: 'radio',
+        label: 'Is de kraan ontkalkt?',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'problem_description',
+        type: 'textarea',
+        label: 'Beschrijf het probleem met de kraan',
+        placeholder: 'Beschrijf waar de kraan lekt, hoe erg het is, en eventuele andere details...',
+        required: false
+      },
+      {
+        id: 'problem_explanation',
+        type: 'info',
+        label: 'Uitleg probleem',
+        description: 'Kalk kan ervoor zorgen dat kranen gaan lekken. Regelmatig ontkalken helpt dit te voorkomen.',
+        required: false
+      },
+      {
+        id: 'photo_instructions',
+        type: 'info',
+        label: 'Maak een foto van de hele situatie.',
+        required: false
+      }
+    ]
+  },
+
+  // APPARATEN LEKKAGE NODE (COMBINED) - wasmachine, vaatwasser
+  'issue.v1.leakage.appliances.combined': {
+    title: 'Apparaten Lekkage (wasmachine, vaatwasser)',
+    description: 'Lekkage bij wasmachine of vaatwasser',
+    questions: [
+      {
+        id: 'appliance_type',
+        type: 'radio',
+        label: 'Welk apparaat lekt?',
+        required: true,
+        options: [
+          { value: 'wasmachine', label: 'Wasmachine' },
+          { value: 'vaatwasser', label: 'Vaatwasser' }
+        ]
+      },
+      {
+        id: 'leak_timing',
+        type: 'radio',
+        label: 'Lekt het altijd of alleen bij het gebruiken?',
+        required: true,
+        options: [
+          { value: 'altijd', label: 'Altijd' },
+          { value: 'alleen_bij_gebruik', label: 'Alleen bij het gebruiken' }
+        ]
+      },
+      {
+        id: 'problem_description',
+        type: 'textarea',
+        label: 'Beschrijf het probleem met het apparaat',
+        placeholder: 'Beschrijf waar het apparaat lekt, hoe erg het is, eventuele foutmeldingen, en andere details...',
+        required: false
+      },
+      {
+        id: 'photo_instructions',
+        type: 'info',
+        label: '1. Merk en model van het apparaat (via foto of text).\n2. Maak een foto van de hele wasmachine/vaatwasser.\n3. Maak een foto waar het water vandaan komt.',
         required: false
       }
     ]

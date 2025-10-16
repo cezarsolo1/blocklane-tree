@@ -135,7 +135,7 @@ export const DescribeMedia = ({
   );
   
   // For video fallback cases, we need description validation
-  const needsDescription = showRegularForm || (!isVideoOnly && !isTenantResponsibility && !isEmergency);
+  const needsDescription = showRegularForm || (!isVideoOnly && !isTenantResponsibility && !isEmergency && !hasCustomQuestions);
   const needsCustomQuestions = hasCustomQuestions && !showRegularForm && !isTenantResponsibility && !isEmergency;
   const canProceed = isVideoOnly || isTenantResponsibility || isEmergency || 
                     (needsDescription ? isDescriptionValid : true) && 
@@ -172,17 +172,10 @@ export const DescribeMedia = ({
         />
       )}
 
-      {/* Custom questions description info box */}
-      {customQuestionsConfig?.description && !isVideoOnly && !isTenantResponsibility && !isEmergency && (
-        <InfoBox
-          title={customQuestionsConfig.title || "Let op"}
-          body={customQuestionsConfig.description}
-          variant="info"
-        />
-      )}
+      {/* Custom questions description info box - REMOVED */}
 
-      {/* Description - Show for regular cases and video fallback */}
-      {(showRegularForm || (!isVideoOnly && !isTenantResponsibility && !isEmergency)) && (
+      {/* Description - Show for regular cases and video fallback, but not when custom questions are present */}
+      {(showRegularForm || (!isVideoOnly && !isTenantResponsibility && !isEmergency && !hasCustomQuestions)) && (
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Description</CardTitle>
@@ -242,7 +235,7 @@ export const DescribeMedia = ({
         </Card>
       )}
 
-      {/* Photos - Show for regular cases and video fallback */}
+      {/* Photos - Show for regular cases, video fallback, and when custom questions are present */}
       {(showRegularForm || (!isVideoOnly && !isTenantResponsibility && !isEmergency)) && (
         <Card>
           <CardHeader>

@@ -28,8 +28,7 @@ export const maintenanceTreeData = {
         { "label": "Afvoer & Riolering", "next": "cat.afvoer", "aliases": ["verstopping","afvoer","riool","rioollucht","wc verstopt","toilet verstopt","gootsteen verstopt","putje"] },
         { "label": "Verwarming of géén warm water", "next": "cat.verwarming", "aliases": ["verwarming","cv","ketel","radiator koud","geen warmte","geen warm water","boiler","thermostaat"] },
         { "label": "Stroom of elektra", "next": "cat.stroom", "aliases": ["stroom","elektra","stroomstoring","stroom uit","aardlek","kortsluiting","groepenkast","stoppen","zekering"] },
-        { "label": "Deuren, sloten & toegang", "next": "cat.deuren", "aliases": ["deur","slot","sleutel","balkondeur","schuifpui","dranger","toegang","portiekdeur","garagepoort","hek"] },
-        { "label": "Ramen & kozijnen", "next": "cat.ramen", "aliases": ["raam","kozijn","glas","ruit","espagnolet","sluiting","tocht","kit","dakraam","schuifraam"] },
+        { "label": "Deuren, Ramen, sloten & toegang", "next": "cat.deuren", "aliases": ["deur","slot","sleutel","balkondeur","schuifpui","dranger","toegang","portiekdeur","garagepoort","hek","raam","kozijn","glas","ruit","espagnolet","sluiting","tocht","kit","dakraam","schuifraam"] },
         { "label": "Dak of gevel", "next": "cat.dak", "aliases": ["dak","gevel","dakgoot","regenpijp","balkon","lichtkoepel","daklekkage","voegwerk","scheur"] },
         { "label": "Ventilatie, schimmel & ongedierte", "next": "cat.vent", "aliases": ["ventilatie","afzuiging","wtw","mechanische ventilatie","schimmel","vocht","stank","geur","muizen","ongedierte","insecten","duiven"] },
         { "label": "Apparaten (keuken, witgoed, airco)", "next": "cat.apparaten", "aliases": ["apparaat","vaatwasser","oven","fornuis","kookplaat","inductie","koelkast","vriezer","wasmachine","droger","afzuigkap","airco","boiler"] },
@@ -44,15 +43,23 @@ export const maintenanceTreeData = {
       "type": "menu",
       "title": "Lekkage",
       "options": [
-        { "label": "Badkamer", "next": "cat.lekkage.badkamer", "aliases": ["badkamer lekkage","douche lekt","bad lekt","kit badkamer","voegen badkamer"] },
-        { "label": "Keuken", "next": "cat.lekkage.keuken", "aliases": ["keuken lekkage","gootsteen lekt","spoelbak lekt","vaatwasser lekt"] },
-        { "label": "Plafond of dak", "next": "cat.lekkage.plafond_dak", "aliases": ["plafond vlek","plafond druppelt","dak lekt","bovenburen lek"] },
-        { "label": "Ramen of gevel", "next": "cat.lekkage.ramen_gevel", "aliases": ["raam lekt","kozijn lekt","inregenen","gevel lekt","buitenmuur nat"] },
-        { "label": "Radiator of leiding lekt", "next": "issue.v1.heating.radiator.leak", "aliases": ["radiator lekt","cv-lek","leiding lekt","cv leiding lekt"] },
-        { "label": "Lekkage van leiding of slang (toevoerwater)", "next": "issue.v1.water.supply.hose_leak", "aliases": ["toevoer","waterslang","inlaat","aansluitslang","aquastop","koud water slang"] },
-        { "label": "Lekkage uit afvoer of pijp (afvoerwater)", "next": "issue.v1.drainage.pipe.leak", "aliases": ["afvoer lekt","pvc lekt","sifon lekt","rioolpijp lekt"] },
-        { "label": "Geen water (hele woning)", "next": "issue.v1.water.supply.no_water", "aliases": ["geen water","waterstoring","kraan doet niets","water uit"] },
-        { "label": "Lage waterdruk", "next": "issue.v1.water.supply.low_pressure", "aliases": ["lage druk","zwakke straal","weinig water","drukprobleem"] }
+        { "label": "Plafond, Dak of Muren", "next": "cat.lekkage.plafond_dak", "aliases": ["plafond","dak","muur","muren","plafond vlek","plafond druppelt","dak lekt","bovenburen lek","muur nat","vochtplek muur","plafondlekkage","daklekkage"] },
+        { "label": "Gevel (incl. Ramen)", "next": "cat.lekkage.gevel_ramen", "aliases": ["gevel","raam","ramen","kozijn","inregenen","gevel lekt","buitenmuur nat","raam lekt","kozijn lekt","voegwerk","scheur gevel"] },
+        { "label": "CV en radiatoren", "next": "cat.lekkage.cv_radiatoren", "aliases": ["cv","radiator","radiatoren","verwarming","cv-lek","leiding lekt","cv leiding lekt","radiator lekt","verwarmingsleiding"] },
+        { "label": "Wasbak, afvoer, of toilet", "next": "cat.lekkage.wasbak_afvoer_toilet", "aliases": ["wasbak","afvoer","toilet","wc","gootsteen","spoelbak","wastafel","sifon","afvoerpijp","rioolpijp","douche","bad","doucheputje"] },
+        { "label": "Kranen", "next": "issue.v1.leakage.tap.combined", "aliases": ["kraan","kranen","mengkraan","thermostaatkraan","keukenkraan","badkamerkraan","kraan lekt","kraan drupt"] },
+        { "label": "Apparaten (wasmachine of vaatwasser)", "next": "issue.v1.leakage.appliances.combined", "aliases": ["apparaat","apparaten","wasmachine","vaatwasser","afwasmachine","slang","aansluiting","aquastop","toevoerslang","afvoerslang"] }
+      
+        // Commented out original options - will be reconnected later
+        // { "label": "Badkamer", "next": "cat.lekkage.badkamer", "aliases": ["badkamer lekkage","douche lekt","bad lekt","kit badkamer","voegen badkamer"] },
+        // { "label": "Keuken", "next": "cat.lekkage.keuken", "aliases": ["keuken lekkage","gootsteen lekt","spoelbak lekt","vaatwasser lekt"] },
+        // { "label": "Plafond of dak", "next": "cat.lekkage.plafond_dak", "aliases": ["plafond vlek","plafond druppelt","dak lekt","bovenburen lek"] },
+        // { "label": "Ramen of gevel", "next": "cat.lekkage.ramen_gevel", "aliases": ["raam lekt","kozijn lekt","inregenen","gevel lekt","buitenmuur nat"] },
+        // { "label": "Radiator of leiding lekt", "next": "issue.v1.heating.radiator.leak", "aliases": ["radiator lekt","cv-lek","leiding lekt","cv leiding lekt"] },
+        // { "label": "Lekkage van leiding of slang (toevoerwater)", "next": "issue.v1.water.supply.hose_leak", "aliases": ["toevoer","waterslang","inlaat","aansluitslang","aquastop","koud water slang"] },
+        // { "label": "Lekkage uit afvoer of pijp (afvoerwater)", "next": "issue.v1.drainage.pipe.leak", "aliases": ["afvoer lekt","pvc lekt","sifon lekt","rioolpijp lekt"] },
+        // { "label": "Geen water (hele woning)", "next": "issue.v1.water.supply.no_water", "aliases": ["geen water","waterstoring","kraan doet niets","water uit"] },
+        // { "label": "Lage waterdruk", "next": "issue.v1.water.supply.low_pressure", "aliases": ["lage druk","zwakke straal","weinig water","drukprobleem"] }
       ]
     },
     {
@@ -92,6 +99,27 @@ export const maintenanceTreeData = {
       "options": [
         { "label": "Rond kozijn", "next": "issue.v1.window.leak_perimeter", "aliases": ["raam lekt","kozijn lekt","inregenen","langs raam"] },
         { "label": "Buitenmuur", "next": "issue.v1.facade.wall.leak", "aliases": ["gevel lekt","natte muur","voegwerk","scheur metselwerk"] }
+      ]
+    },
+    {
+      "id": "cat.lekkage.gevel_ramen",
+      "type": "menu",
+      "title": "Lekkage — Gevel (incl. Ramen)",
+      "options": [
+        { "label": "Kozijn of rond het kozijn", "next": "issue.v1.window.leak_perimeter", "aliases": ["kozijn","rond kozijn","raam lekt","kozijn lekt","inregenen","langs raam","rondom raam"] },
+        { "label": "Buitenmuur", "next": "issue.v1.facade.wall.leak", "aliases": ["buitenmuur","gevel lekt","natte muur","voegwerk","scheur metselwerk","gevel"] }
+      ]
+    },
+    {
+      "id": "cat.lekkage.wasbak_afvoer_toilet",
+      "type": "menu",
+      "title": "Lekkage — Wasbak, afvoer, of toilet",
+      "options": [
+        { "label": "Wasbak", "next": "issue.v1.leakage.sink.combined", "aliases": ["wasbak","wastafel","gootsteen","spoelbak","sifon"] },
+        { "label": "Toilet", "next": "issue.v1.leakage.toilet.combined", "aliases": ["toilet","wc","stortbak","closet"] },
+        { "label": "Badkamer/douche", "next": "issue.v1.leakage.shower.combined", "aliases": ["badkamer","douche","doucheputje","bad","mengkraan"] },
+        { "label": "Apparaat", "next": "issue.v1.leakage.appliance.combined", "aliases": ["apparaat","wasmachine","vaatwasser","slang"] },
+        { "label": "Keukenafvoer", "next": "issue.v1.leakage.kitchen_drain.combined", "aliases": ["keuken afvoer","gootsteen afvoer","spoelbak afvoer"] } 
       ]
     },
 
@@ -197,20 +225,33 @@ export const maintenanceTreeData = {
       ]
     },
 
-    /* ---------------- DEUREN / SLOTEN / TOEGANG ---------------- */
+    /* ---------------- DEUREN / RAMEN / SLOTEN / TOEGANG ---------------- */
     {
       "id": "cat.deuren",
       "type": "menu",
-      "title": "Deuren, sloten & toegang",
+      "title": "Deuren, Ramen, Sloten & Toegang",
       "options": [
-        { "label": "Woningdeur (voor of achter)", "next": "cat.deuren.woningdeur", "aliases": ["voordeur","achterdeur","woningdeur","huisdeur"] },
-        { "label": "Binnendeur", "next": "cat.deuren.binnendeur", "aliases": ["binnendeur","kamerdeur"] },
-        { "label": "Balkondeur of schuifpui", "next": "cat.deuren.balkon", "aliases": ["balkondeur","schuifpui","pui"] },
-        { "label": "Entree of portiekdeur (gemeenschappelijk)", "next": "cat.deuren.portiek", "aliases": ["portiekdeur","entree deur","algemene deur"] },
-        { "label": "Garage of poort", "next": "cat.deuren.poort", "aliases": ["garagepoort","hek","toegangspoort","schuifhek"] },
-        { "label": "Berging of fietsenstalling", "next": "cat.deuren.berging", "aliases": ["berging","box","fietsenstalling"] },
-        { "label": "Lift", "next": "cat.deuren.lift", "aliases": ["lift","elevator"] },
-        { "label": "Intercom en bellentableau", "next": "cat.stroom.intercom", "aliases": ["intercom","bellentableau","deurbel","buzzer"] }
+        { "label": "Deuren", "next": "issue.v1.doors.general", "aliases": ["deur","voordeur","achterdeur","woningdeur","huisdeur","binnendeur","kamerdeur","balkondeur","schuifpui","pui","portiekdeur","entree deur","algemene deur","garagepoort","hek","toegangspoort","schuifhek","berging","box","fietsenstalling","lift","elevator"] },
+        { "label": "Ramen", "next": "cat.deuren.ramen", "aliases": ["raam","raam vast","raam opent niet","raam sluit niet","espagnolet","raam sluiting","raamklink stuk","tocht","kit vervangen","rubbers slecht","kieren","glas kapot","barst in ruit","ruitschade","raam lekt","kozijn lekt","inregenen raam","dakraam","velux","lichtkoepel","schuifraam","balkonraam","pui raam"] },
+        { "label": "Sloten", "next": "cat.deuren.sloten", "aliases": ["slot","sleutel","cilinder","slot kapot","cilinder stuk","kan niet op slot","sleutel draait niet","sleutel kwijt","sleutel afgebroken","buitengesloten"] },
+        { "label": "Intercom", "next": "cat.stroom.intercom", "aliases": ["intercom","bellentableau","deurbel","buzzer","videofoon","spreekinstallatie","deuropener"] }
+        
+        // Commented out original options - will be reconnected later
+        // { "label": "Woningdeur (voor of achter)", "next": "cat.deuren.woningdeur", "aliases": ["voordeur","achterdeur","woningdeur","huisdeur"] },
+        // { "label": "Binnendeur", "next": "cat.deuren.binnendeur", "aliases": ["binnendeur","kamerdeur"] },
+        // { "label": "Balkondeur of schuifpui", "next": "cat.deuren.balkon", "aliases": ["balkondeur","schuifpui","pui"] },
+        // { "label": "Entree of portiekdeur (gemeenschappelijk)", "next": "cat.deuren.portiek", "aliases": ["portiekdeur","entree deur","algemene deur"] },
+        // { "label": "Garage of poort", "next": "cat.deuren.poort", "aliases": ["garagepoort","hek","toegangspoort","schuifhek"] },
+        // { "label": "Berging of fietsenstalling", "next": "cat.deuren.berging", "aliases": ["berging","box","fietsenstalling"] },
+        // { "label": "Lift", "next": "cat.deuren.lift", "aliases": ["lift","elevator"] },
+        // { "label": "Intercom en bellentableau", "next": "cat.stroom.intercom", "aliases": ["intercom","bellentableau","deurbel","buzzer"] },
+        // { "label": "Raam gaat niet open of dicht", "next": "issue.v1.windows.open_close_issue", "aliases": ["raam vast","raam opent niet","raam sluit niet"] },
+        // { "label": "Sluiting of espagnolet defect", "next": "issue.v1.windows.locking_mechanism_fault", "aliases": ["espagnolet","raam sluiting","raamklink stuk"] },
+        // { "label": "Tocht of versleten kit", "next": "issue.v1.windows.draught_or_sealant", "aliases": ["tocht","kit vervangen","rubbers slecht","kieren"] },
+        // { "label": "Glasbreuk of barst", "next": "issue.v1.windows.glass.breakage", "aliases": ["glas kapot","barst in ruit","ruitschade"] },
+        // { "label": "Lek rondom raam (water)", "next": "issue.v1.window.leak_perimeter", "aliases": ["raam lekt","kozijn lekt","inregenen raam"] },
+        // { "label": "Dakraam", "next": "issue.v1.roof_window.issue", "aliases": ["dakraam","velux","lichtkoepel"] },
+        // { "label": "Balkonraam of schuifpui", "next": "issue.v1.windows.balcony_slider.issue", "aliases": ["schuifraam","balkonraam","pui raam"] }
       ]
     },
     {
@@ -278,22 +319,6 @@ export const maintenanceTreeData = {
         { "label": "Deuren openen of sluiten niet", "next": "issue.v1.lift.door_issue", "aliases": ["liftdeuren","deuren lift","lift deur storingen"] },
         { "label": "Alarm of spreekverbinding werkt niet", "next": "issue.v1.lift.alarm_comms_fault", "aliases": ["lift alarm","spreekluister lift","intercom lift"] },
         { "label": "Storingsmelding", "next": "issue.v1.lift.error_code", "aliases": ["lift storing","error lift","storingcode lift"] }
-      ]
-    },
-
-    /* ---------------- RAMEN & KOZIJNEN ---------------- */
-    {
-      "id": "cat.ramen",
-      "type": "menu",
-      "title": "Ramen & kozijnen",
-      "options": [
-        { "label": "Raam gaat niet open of dicht", "next": "issue.v1.windows.open_close_issue", "aliases": ["raam vast","raam opent niet","raam sluit niet"] },
-        { "label": "Sluiting of espagnolet defect", "next": "issue.v1.windows.locking_mechanism_fault", "aliases": ["espagnolet","raam sluiting","raamklink stuk"] },
-        { "label": "Tocht of versleten kit", "next": "issue.v1.windows.draught_or_sealant", "aliases": ["tocht","kit vervangen","rubbers slecht","kieren"] },
-        { "label": "Glasbreuk of barst", "next": "issue.v1.windows.glass.breakage", "aliases": ["glas kapot","barst in ruit","ruitschade"] },
-        { "label": "Lek rondom raam (water)", "next": "issue.v1.window.leak_perimeter", "aliases": ["raam lekt","kozijn lekt","inregenen raam"] },
-        { "label": "Dakraam", "next": "issue.v1.roof_window.issue", "aliases": ["dakraam","velux","lichtkoepel"] },
-        { "label": "Balkonraam of schuifpui", "next": "issue.v1.windows.balcony_slider.issue", "aliases": ["schuifraam","balkonraam","pui raam"] }
       ]
     },
 

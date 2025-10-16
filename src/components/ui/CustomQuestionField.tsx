@@ -217,6 +217,18 @@ export const CustomQuestionField: React.FC<CustomQuestionFieldProps> = ({
           </div>
         );
 
+      case 'info':
+        return (
+          <div className="p-4 bg-blue-50 border border-blue-200 rounded-md">
+            <div className="text-sm text-blue-800 whitespace-pre-line">
+              {label}
+            </div>
+            {question.description && (
+              <p className="text-sm text-blue-600 mt-2">{question.description}</p>
+            )}
+          </div>
+        );
+
       default:
         return null;
     }
@@ -224,7 +236,7 @@ export const CustomQuestionField: React.FC<CustomQuestionFieldProps> = ({
 
   return (
     <div className="space-y-2">
-      {type !== 'checkbox' && type !== 'text' && (
+      {type !== 'checkbox' && type !== 'text' && type !== 'info' && (
         <Label htmlFor={id}>
           {label} {required && id !== 'video_url' && <span className="text-red-500">*</span>}
         </Label>
