@@ -31,7 +31,7 @@ export const maintenanceTreeData = {
         { "label": "Deuren, Ramen, sloten & toegang", "next": "cat.deuren", "aliases": ["deur","slot","sleutel","balkondeur","schuifpui","dranger","toegang","portiekdeur","garagepoort","hek","raam","kozijn","glas","ruit","espagnolet","sluiting","tocht","kit","dakraam","schuifraam"] },
         { "label": "Dak of gevel", "next": "cat.dak", "aliases": ["dak","gevel","dakgoot","regenpijp","balkon","lichtkoepel","daklekkage","voegwerk","scheur"] },
         { "label": "Ventilatie, schimmel & ongedierte", "next": "cat.vent", "aliases": ["ventilatie","afzuiging","wtw","mechanische ventilatie","schimmel","vocht","stank","geur","muizen","ongedierte","insecten","duiven"] },
-        { "label": "Witgoed/Keukenapparatuur (tegels)", "next": "cat.apparaten", "aliases": ["apparaat","vaatwasser","oven","fornuis","kookplaat","inductie","koelkast","vriezer","wasmachine","droger","afzuigkap","airco","boiler"] },
+        { "label": "Witgoed/Keukenapparatuur ", "next": "cat.apparaten", "aliases": ["apparaat","vaatwasser","oven","fornuis","kookplaat","inductie","koelkast","vriezer","wasmachine","droger","afzuigkap","airco","boiler"] },
         { "label": "Rook- of CO-melder", "next": "cat.stroom.smoke", "aliases": ["rookmelder","co-melder","brandmelder","koolmonoxide","piept","batterij"] },
         { "label": "Ruikt u gas?", "next": "issue.emergency", "aliases": ["gas","gaslucht","ruikt gas","gaskraan","co","koolmonoxide gas"] }
       ]
@@ -199,9 +199,62 @@ export const maintenanceTreeData = {
       "type": "menu",
       "title": "Rook- of CO-melder",
       "options": [
-        { "label": "Piept of batterijmelding", "next": "issue.v1.electrical.smoke_alarm.chirping", "aliases": ["piept","batterij leeg","batterijmelding","twee piepjes"] },
-        { "label": "Gaat onterecht af", "next": "issue.v1.electrical.smoke_alarm.false_alarm", "aliases": ["vals alarm","onterecht af","piept alarm"] },
-        { "label": "Werkt niet", "next": "issue.v1.electrical.smoke_alarm.not_working", "aliases": ["rookmelder doet het niet","defect","lampje uit"] }
+        { "label": "Rookmelder", "next": "cat.smoke.rookmelder", "aliases": ["rookmelder","brandmelder","rook detector"] },
+        { "label": "CO-melder", "next": "cat.smoke.co_melder", "aliases": ["co-melder","koolmonoxide melder","co detector"] }
+      ]
+    },
+    {
+      "id": "cat.smoke.rookmelder",
+      "type": "menu",
+      "title": "Rookmelder",
+      "options": [
+        { "label": "Melder in het gehuurde pand", "next": "cat.smoke.rookmelder.gehuurde", "aliases": ["eigen woning","in huis","binnen"] },
+        { "label": "Melder in algemene ruimte/trappenhuis", "next": "cat.smoke.rookmelder.algemeen", "aliases": ["trappenhuis","gang","portiek","algemene ruimte"] },
+        { "label": "Melder bij de buren", "next": "cat.smoke.rookmelder.buren", "aliases": ["buren","naast","buurman","buurvrouw"] }
+      ]
+    },
+    {
+      "id": "cat.smoke.rookmelder.gehuurde",
+      "type": "menu",
+      "title": "Melder in het gehuurde pand",
+      "options": [
+        { "label": "Geeft periodiek een signaal", "next": "issue.v1.smoke.battery_replace", "aliases": ["piept","batterij","signaal","twee piepjes"] },
+        { "label": "Gaat af als alarm", "next": "issue.v1.smoke.fire_alarm", "aliases": ["alarm","brand","gaat af","continu geluid"] }
+      ]
+    },
+    {
+      "id": "cat.smoke.rookmelder.algemeen",
+      "type": "menu",
+      "title": "Melder in algemene ruimte/trappenhuis",
+      "options": [
+        { "label": "Geeft periodiek een signaal", "next": "issue.v1.smoke.battery_replace", "aliases": ["piept","batterij","signaal","twee piepjes"] },
+        { "label": "Gaat af als alarm", "next": "issue.v1.smoke.fire_alarm", "aliases": ["alarm","brand","gaat af","continu geluid"] }
+      ]
+    },
+    {
+      "id": "cat.smoke.rookmelder.buren",
+      "type": "menu",
+      "title": "Melder bij de buren",
+      "options": [
+        { "label": "Is de woning bewoond?", "next": "cat.smoke.buren.bewoond", "aliases": ["bewoond","iemand thuis","bewoners"] }
+      ]
+    },
+    {
+      "id": "cat.smoke.buren.bewoond",
+      "type": "menu",
+      "title": "Is de woning bewoond?",
+      "options": [
+        { "label": "JA - heeft u de buren zelf al benaderd?", "next": "issue.v1.smoke.buren_contact", "aliases": ["ja","bewoond","aangeklopt","contact"] },
+        { "label": "NEE - om welke buren gaat het?", "next": "issue.v1.smoke.buren_info", "aliases": ["nee","niet bewoond","leeg","huisnummer"] }
+      ]
+    },
+    {
+      "id": "cat.smoke.co_melder",
+      "type": "menu",
+      "title": "CO-melder",
+      "options": [
+        { "label": "Geeft periodiek een signaal", "next": "issue.v1.smoke.battery_replace", "aliases": ["piept","batterij","signaal","twee piepjes"] },
+        { "label": "Gaat af als alarm", "next": "issue.v1.co.alarm", "aliases": ["alarm","co alarm","koolmonoxide","gaat af"] }
       ]
     },
     {
@@ -354,12 +407,12 @@ export const maintenanceTreeData = {
       "type": "menu",
       "title": "Apparaten (wasmachine of vaatwasser)",
       "options": [
-        { "label": "Vaatwasser", "next": "issue.uw_responsability", "aliases": ["keukenapparaat","vaatwasser","oven","fornuis","kookplaat","inductie","koelkast","vriezer","wasmachine","droger","afzuigkap","airco","boiler"] },
-        { "label": "Oven", "next": "issue.uw_responsability", "aliases": ["witgoed","wasmachine","droger"] },
-        { "label": "Inbouw Koelkast", "next": "issue.uw_responsability", "aliases": ["airco","ventilatie unit","wtw"] },
-        { "label": "Inbouw Vriezer", "next": "issue.uw_responsability", "aliases": ["aardlek door apparaat","rcd valt","aardlek trip","stroom valt uit bij apparaat"] },
-        { "label": "Inbouw Koel/vries combi", "next": "issue.uw_responsability", "aliases": ["aardlek door apparaat","rcd valt","aardlek trip","stroom valt uit bij apparaat"] },
-        { "label": "Vrijstaande koelkast/vriezer/koel vries combi", "next": "issue.uw_responsability", "aliases": ["aardlek door apparaat","rcd valt","aardlek trip","stroom valt uit bij apparaat"] }     
+        { "label": "Vaatwasser", "next": "issue.uw_responsabilitya", "aliases": ["keukenapparaat","vaatwasser","oven","fornuis","kookplaat","inductie","koelkast","vriezer","wasmachine","droger","afzuigkap","airco","boiler"] },
+        { "label": "Oven", "next": "issue.uw_responsabilityb", "aliases": ["witgoed","wasmachine","droger"] },
+        { "label": "Inbouw Koelkast", "next": "issue.uw_responsabilityc", "aliases": ["airco","ventilatie unit","wtw"] },
+        { "label": "Inbouw Vriezer", "next": "issue.uw_responsabilityd", "aliases": ["aardlek door apparaat","rcd valt","aardlek trip","stroom valt uit bij apparaat"] },
+        { "label": "Inbouw Koel/vries combi", "next": "issue.uw_responsabilitye", "aliases": ["aardlek door apparaat","rcd valt","aardlek trip","stroom valt uit bij apparaat"] },
+        { "label": "Vrijstaande koelkast/vriezer/koel vries combi", "next": "issue.uw_responsabilityf", "aliases": ["aardlek door apparaat","rcd valt","aardlek trip","stroom valt uit bij apparaat"] }     
       ]
     },
     {

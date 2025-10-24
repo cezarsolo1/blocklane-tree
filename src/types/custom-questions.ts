@@ -2671,4 +2671,212 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
       }
     ]
   },
+
+  // Smoke and CO Detector configurations
+  'issue.v1.smoke.battery_replace': {
+    title: 'Rookmelder/CO-melder batterij vervangen',
+    description: 'De melder geeft een periodiek signaal, dit betekent dat de batterij vervangen moet worden',
+    questions: [
+      {
+        id: 'detector_type',
+        type: 'radio',
+        label: 'Wat voor melder betreft het?',
+        options: [
+          { value: 'rookmelder', label: 'Rookmelder' },
+          { value: 'co_melder', label: 'CO-melder' },
+          { value: 'combi', label: 'Combinatie rookmelder/CO-melder' }
+        ],
+        required: true
+      },
+      {
+        id: 'detector_location',
+        type: 'radio',
+        label: 'Waar bevindt de melder zich?',
+        options: [
+          { value: 'gehuurde_pand', label: 'In het gehuurde pand' },
+          { value: 'algemene_ruimte', label: 'In algemene ruimte/trappenhuis' }
+        ],
+        required: true
+      },
+      {
+        id: 'signal_frequency',
+        type: 'select',
+        label: 'Hoe vaak piept de melder?',
+        options: [
+          { value: 'elke_minuut', label: 'Elke minuut' },
+          { value: 'elke_paar_minuten', label: 'Elke paar minuten' },
+          { value: 'onregelmatig', label: 'Onregelmatig' }
+        ],
+        required: true
+      },
+      {
+        id: 'additional_info',
+        type: 'textarea',
+        label: 'Aanvullende informatie',
+        placeholder: 'Eventuele extra details over het probleem',
+        required: false
+      }
+    ]
+  },
+
+  'issue.v1.smoke.fire_alarm': {
+    title: 'NOODGEVAL - Rookmelder alarm',
+    description: 'Dit is een noodgeval! Bel direct 112 (brandweer) en daarna ons kantoor ter info',
+    questions: [
+      {
+        id: 'emergency_acknowledgment',
+        type: 'checkbox',
+        label: 'Ik begrijp dat ik direct 112 moet bellen en daarna het kantoor (020-5775333)',
+        required: true,
+        variant: 'boolean'
+      },
+      {
+        id: 'fire_visible',
+        type: 'radio',
+        label: 'Ziet u vuur of rook?',
+        options: [
+          { value: 'ja_vuur', label: 'Ja, ik zie vuur' },
+          { value: 'ja_rook', label: 'Ja, ik zie rook' },
+          { value: 'nee', label: 'Nee, alleen alarm' }
+        ],
+        required: true
+      },
+      {
+        id: 'location_evacuated',
+        type: 'radio',
+        label: 'Heeft u de woning verlaten?',
+        options: [
+          { value: 'ja', label: 'Ja, ik ben buiten' },
+          { value: 'nee', label: 'Nee, ik ben nog binnen' }
+        ],
+        required: true
+      }
+    ]
+  },
+
+  'issue.v1.co.alarm': {
+    title: 'NOODGEVAL - CO-melder alarm',
+    description: 'Dit is een noodgeval! Bel direct 112 (brandweer) en daarna ons kantoor ter info',
+    questions: [
+      {
+        id: 'emergency_acknowledgment',
+        type: 'checkbox',
+        label: 'Ik begrijp dat ik direct 112 moet bellen en daarna het kantoor (020-5775333)',
+        required: true,
+        variant: 'boolean'
+      },
+      {
+        id: 'symptoms',
+        type: 'checkbox',
+        label: 'Heeft u last van een van de volgende symptomen?',
+        options: [
+          { value: 'hoofdpijn', label: 'Hoofdpijn' },
+          { value: 'duizeligheid', label: 'Duizeligheid' },
+          { value: 'misselijkheid', label: 'Misselijkheid' },
+          { value: 'vermoeidheid', label: 'Vermoeidheid' },
+          { value: 'geen', label: 'Geen symptomen' }
+        ],
+        required: true
+      },
+      {
+        id: 'location_evacuated',
+        type: 'radio',
+        label: 'Heeft u de woning verlaten?',
+        options: [
+          { value: 'ja', label: 'Ja, ik ben buiten' },
+          { value: 'nee', label: 'Nee, ik ben nog binnen' }
+        ],
+        required: true
+      }
+    ]
+  },
+
+  'issue.v1.smoke.buren_contact': {
+    title: 'Rookmelder bij de buren - Contact opgenomen',
+    description: 'U heeft al contact opgenomen met de buren over de rookmelder',
+    questions: [
+      {
+        id: 'neighbor_response',
+        type: 'radio',
+        label: 'Wat was de reactie van de buren?',
+        options: [
+          { value: 'opgelost', label: 'Probleem is opgelost' },
+          { value: 'bewust', label: 'Ze zijn zich bewust van het probleem' },
+          { value: 'geen_reactie', label: 'Geen reactie gekregen' },
+          { value: 'niet_thuis', label: 'Niemand thuis' }
+        ],
+        required: true
+      },
+      {
+        id: 'alarm_type',
+        type: 'radio',
+        label: 'Wat voor geluid maakt de melder?',
+        options: [
+          { value: 'periodiek_piep', label: 'Periodiek piepje (batterij)' },
+          { value: 'continu_alarm', label: 'Continu alarm (brand)' }
+        ],
+        required: true
+      },
+      {
+        id: 'neighbor_address',
+        type: 'text',
+        label: 'Huisnummer van de buren',
+        placeholder: 'Bijv. 12A',
+        required: true
+      },
+      {
+        id: 'additional_info',
+        type: 'textarea',
+        label: 'Aanvullende informatie',
+        placeholder: 'Eventuele extra details',
+        required: false
+      }
+    ]
+  },
+
+  'issue.v1.smoke.buren_info': {
+    title: 'Rookmelder bij de buren - Woning niet bewoond',
+    description: 'De woning waar de rookmelder afgaat is niet bewoond',
+    questions: [
+      {
+        id: 'neighbor_address',
+        type: 'text',
+        label: 'Huisnummer van de betreffende woning',
+        placeholder: 'Bijv. 12A',
+        required: true
+      },
+      {
+        id: 'alarm_type',
+        type: 'radio',
+        label: 'Wat voor geluid maakt de melder?',
+        options: [
+          { value: 'periodiek_piep', label: 'Periodiek piepje (batterij)' },
+          { value: 'continu_alarm', label: 'Continu alarm (mogelijk brand)' }
+        ],
+        required: true
+      },
+      {
+        id: 'duration',
+        type: 'select',
+        label: 'Hoe lang gaat de melder al af?',
+        options: [
+          { value: 'net_begonnen', label: 'Net begonnen' },
+          { value: 'paar_uur', label: 'Een paar uur' },
+          { value: 'hele_dag', label: 'De hele dag' },
+          { value: 'meerdere_dagen', label: 'Meerdere dagen' }
+        ],
+        required: true
+      },
+      {
+        id: 'smoke_visible',
+        type: 'radio',
+        label: 'Ziet u rook of andere tekenen van brand?',
+        options: [
+          { value: 'ja', label: 'Ja, ik zie rook' },
+          { value: 'nee', label: 'Nee, geen rook zichtbaar' }
+        ],
+        required: true
+      }
+    ]
+  },
 };
