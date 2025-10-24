@@ -2427,4 +2427,248 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
       }
     ]
   },
+
+  // RAMEN FINAL NODES - Comprehensive window configuration
+  'issue.ramen_kozijnen_glas': {
+    title: 'Ramen',
+    description: 'Raam problemen - help ons het probleem beter te begrijpen',
+    questions: [
+      {
+        id: 'frame_material',
+        type: 'select',
+        label: 'Uit wat voor materiaal bestaat het kozijn?',
+        required: true,
+        options: [
+          { value: 'hout', label: 'Hout' },
+          { value: 'aluminium', label: 'Aluminium' },
+          { value: 'staal', label: 'Staal' },
+          { value: 'kunststof', label: 'Kunststof' }
+        ]
+      },
+      {
+        id: 'window_problem',
+        type: 'select',
+        label: 'Wat is er gaande?',
+        required: true,
+        options: [
+          { value: 'raamslot_sluit_niet', label: 'Het raamslot sluit niet goed' },
+          { value: 'raam_niet_passend', label: 'Het raam is niet passend/sluitend' },
+          { value: 'raam_draai_kiep', label: 'Raam staat in zowel draai als kiepstand' },
+          { value: 'raam_gaat_niet_open', label: 'Raam gaat niet open' },
+          { value: 'anders', label: 'Anders, namelijk ...' }
+        ]
+      },
+      {
+        id: 'other_problem_description',
+        type: 'text',
+        label: 'Anders, namelijk:',
+        placeholder: 'Beschrijf het andere probleem...',
+        required: false
+      },
+      {
+        id: 'photos_instruction',
+        type: 'info',
+        label: 'Om u te helpen is het heel belangrijk voor ons om een beeld te krijgen van het probleem.\nUpload hieronder alstublieft minstens twee foto’s: één van de hele deur, en één van het probleem.',
+        required: false
+      }
+    ]
+  },
+
+  // SLOTEN FINAL NODES - Comprehensive lock configuration
+  'issue.deuren_sloten': {
+    title: 'Sloten',
+    description: 'Slot problemen - help ons het probleem beter te begrijpen',
+    questions: [
+      {
+        id: 'lock_location',
+        type: 'select',
+        label: 'Het betreft het slot van de:',
+        required: true,
+        options: [
+          { value: 'atd', label: 'Algemene toegangsdeur (hele gebouw)' },
+          { value: 'voordeur_gehuurde', label: 'Voordeur gehuurde pand' },
+          { value: 'binnendeur', label: 'Binnendeur' },
+          { value: 'zolderdeur_bergingdeur', label: 'Zolderdeur/Bergingdeur' }
+        ]
+      },
+      {
+        id: 'lock_problem',
+        type: 'select',
+        label: 'Wat is er gaande?',
+        required: true,
+        options: [
+          { value: 'sleutel_draait_niet', label: 'Sleutel draait niet meer/afgebroken in het cilinder' },
+          { value: 'cilinder_uit_slot', label: 'Cilinder is uit het slot' },
+          { value: 'anders', label: 'Anders, namelijk ...' }
+        ]
+      },
+      {
+        id: 'other_problem_description',
+        type: 'text',
+        label: 'Anders, namelijk:',
+        placeholder: 'Beschrijf het andere probleem...',
+        required: false
+      },
+      {
+        id: 'photos_instruction',
+        type: 'info',
+        label: 'Om u te helpen is het heel belangrijk voor ons om een beeld te krijgen van het probleem.\nUpload hieronder alstublieft minstens twee foto’s: één van de hele deur, en één van het probleem.',
+        required: false
+      }
+    ]
+  },
+
+  // INTERCOM COMPREHENSIVE CONFIGURATIONS - Based on intercom type
+  'issue.v1.intercom.bel': {
+    title: 'Bel (Intercom)',
+    description: 'Bel intercom problemen',
+    questions: [
+      {
+        id: 'intercom_type',
+        type: 'select',
+        label: 'Wat voor intercom is het?',
+        required: true,
+        options: [
+          { value: 'bel', label: 'Bel' },
+          { value: 'bel_met_deur_opener', label: 'Bel met deur opener' }
+        ]
+      },
+      {
+        id: 'tenant_responsibility_check',
+        type: 'radio',
+        label: 'Is dit een rekening van de huurder?',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja - dit valt onder huurder verantwoordelijkheid' },
+          { value: 'nee', label: 'Nee - dit is een technisch probleem' }
+        ]
+      },
+      {
+        id: 'door_opener_defect',
+        type: 'radio',
+        label: 'Deuropener is defect',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'bell_not_ringing',
+        type: 'radio',
+        label: 'Bel gaat niet af',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'video_not_working',
+        type: 'radio',
+        label: 'Video doet het niet',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'speech_to_tenant_not_working',
+        type: 'radio',
+        label: 'Spraak naar gehuurde doet het niet',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'speech_to_street_not_working',
+        type: 'radio',
+        label: 'Spraak naar straat doet het niet',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'photos_instruction',
+        type: 'info',
+        label: 'Om u te helpen is het heel belangrijk voor ons om een beeld te krijgen van het probleem.\nUpload hieronder alstublieft minstens twee foto\'s: één van de hele deur, en één van de installatie.',
+        required: false
+      }
+    ]
+  },
+
+  'issue.v1.intercom.video_with_door_opener': {
+    title: 'Video Intercom met Deuropener',
+    description: 'Video intercom met deuropener problemen',
+    questions: [
+      {
+        id: 'door_opener_defect',
+        type: 'radio',
+        label: 'Is de deuropener defect?',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'bell_rings',
+        type: 'radio',
+        label: 'Gaat de bel af?',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'video_not_working',
+        type: 'radio',
+        label: 'Video doet het niet',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'speech_to_tenant_not_working',
+        type: 'radio',
+        label: 'Spraak naar gehuurde doet het niet',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'speech_to_street_not_working',
+        type: 'radio',
+        label: 'Spraak naar straat doet het niet',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'problem_description',
+        type: 'textarea',
+        label: 'Beschrijving',
+        placeholder: 'Geef een gedetailleerde beschrijving van het intercom probleem...',
+        required: false
+      },
+      {
+        id: 'photos_instruction',
+        type: 'info',
+        label: 'Om u te helpen is het heel belangrijk voor ons om een beeld te krijgen van het probleem.\nUpload hieronder alstublieft minstens twee foto\'s: één van de hele deur, en één van de installatie.',
+        required: false
+      }
+    ]
+  },
 };

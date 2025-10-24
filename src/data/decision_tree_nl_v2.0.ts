@@ -31,7 +31,7 @@ export const maintenanceTreeData = {
         { "label": "Deuren, Ramen, sloten & toegang", "next": "cat.deuren", "aliases": ["deur","slot","sleutel","balkondeur","schuifpui","dranger","toegang","portiekdeur","garagepoort","hek","raam","kozijn","glas","ruit","espagnolet","sluiting","tocht","kit","dakraam","schuifraam"] },
         { "label": "Dak of gevel", "next": "cat.dak", "aliases": ["dak","gevel","dakgoot","regenpijp","balkon","lichtkoepel","daklekkage","voegwerk","scheur"] },
         { "label": "Ventilatie, schimmel & ongedierte", "next": "cat.vent", "aliases": ["ventilatie","afzuiging","wtw","mechanische ventilatie","schimmel","vocht","stank","geur","muizen","ongedierte","insecten","duiven"] },
-        { "label": "Apparaten (keuken, witgoed, airco)", "next": "cat.apparaten", "aliases": ["apparaat","vaatwasser","oven","fornuis","kookplaat","inductie","koelkast","vriezer","wasmachine","droger","afzuigkap","airco","boiler"] },
+        { "label": "Witgoed/Keukenapparatuur (tegels)", "next": "cat.apparaten", "aliases": ["apparaat","vaatwasser","oven","fornuis","kookplaat","inductie","koelkast","vriezer","wasmachine","droger","afzuigkap","airco","boiler"] },
         { "label": "Rook- of CO-melder", "next": "cat.stroom.smoke", "aliases": ["rookmelder","co-melder","brandmelder","koolmonoxide","piept","batterij"] },
         { "label": "Ruikt u gas?", "next": "issue.emergency", "aliases": ["gas","gaslucht","ruikt gas","gaskraan","co","koolmonoxide gas"] }
       ]
@@ -183,15 +183,15 @@ export const maintenanceTreeData = {
       "type": "menu",
       "title": "Stroom of elektra",
       "options": [
-        { "label": "Hele woning zonder stroom", "next": "issue.v1.electrical.whole_home.outage", "aliases": ["stroom uit","geen stroom","hele huis zonder stroom","algemene storing"] },
-        { "label": "Groep of zekering valt uit", "next": "issue.v1.electrical.circuit.breaker_trip", "aliases": ["zekering valt uit","stop slaat door","groep valt uit","automaat klapt"] },
-        { "label": "Aardlekschakelaar springt", "next": "issue.v1.electrical.rcd.trip", "aliases": ["aardlek","aardlekschakelaar","rcd trip","differentieel"] },
-        { "label": "Lampen doen het niet", "next": "issue.v1.electrical.lighting.room_issue", "aliases": ["lamp stuk","verlichting","lamp doet het niet","armatuur"] },
-        { "label": "Stopcontact werkt niet", "next": "issue.v1.electrical.outlet.not_working", "aliases": ["stopcontact kapot","wandcontactdoos","contactdoos werkt niet"] },
-        { "label": "Gemeenschappelijke verlichting", "next": "issue.v1.electrical.lighting.common_area", "aliases": ["gang verlichting","portiek verlichting","garage verlichting","buitenlamp"] },
-        { "label": "Meterkast (automaten)", "next": "issue.v1.electrical.meter_cabinet.issue", "aliases": ["meterkast","groepenkast","automaten","hoofdschakelaar"] },
-        { "label": "Rook- of CO-melder", "next": "cat.stroom.smoke", "aliases": ["rookmelder","co-melder","brandmelder","koolmonoxide","piept","batterij"] },
-        { "label": "Intercom en deuropener", "next": "cat.stroom.intercom", "aliases": ["intercom","bellentableau","videofoon","deurbel","buzzer","deuropener"] }
+        { "label": "Geheel geen elektra", "next": "issue.v1.electrical.whole_home.outage", "aliases": ["stroom uit","geen stroom","hele huis zonder stroom","algemene storing"] },
+        { "label": "Gedeeltelijk geen elektra", "next": "issue.v1.electrical.circuit.breaker_trip", "aliases": ["zekering valt uit","stop slaat door","groep valt uit","automaat klapt"] },
+        ///{ "label": "Aardlekschakelaar springt", "next": "issue.v1.electrical.rcd.trip", "aliases": ["aardlek","aardlekschakelaar","rcd trip","differentieel"] },
+        ///{ "label": "Lampen doen het niet", "next": "issue.v1.electrical.lighting.room_issue", "aliases": ["lamp stuk","verlichting","lamp doet het niet","armatuur"] },
+        ///{ "label": "Stopcontact werkt niet", "next": "issue.v1.electrical.outlet.not_working", "aliases": ["stopcontact kapot","wandcontactdoos","contactdoos werkt niet"] },
+        ///{ "label": "Gemeenschappelijke verlichting", "next": "issue.v1.electrical.lighting.common_area", "aliases": ["gang verlichting","portiek verlichting","garage verlichting","buitenlamp"] },
+        ///{ "label": "Meterkast (automaten)", "next": "issue.v1.electrical.meter_cabinet.issue", "aliases": ["meterkast","groepenkast","automaten","hoofdschakelaar"] },
+        ///{ "label": "Rook- of CO-melder", "next": "cat.stroom.smoke", "aliases": ["rookmelder","co-melder","brandmelder","koolmonoxide","piept","batterij"] },
+        ///{ "label": "Intercom en deuropener", "next": "cat.stroom.intercom", "aliases": ["intercom","bellentableau","videofoon","deurbel","buzzer","deuropener"] }
       ]
     },
     {
@@ -209,10 +209,9 @@ export const maintenanceTreeData = {
       "type": "menu",
       "title": "Intercom en deuropener",
       "options": [
-        { "label": "Geen geluid", "next": "issue.v1.intercom.audio_fault", "aliases": ["intercom geen geluid","spreekinstallatie kapot","microfoon intercom"] },
-        { "label": "Geen beeld", "next": "issue.v1.intercom.video_fault", "aliases": ["video intercom","geen beeld intercom","camera intercom"] },
-        { "label": "Deuropener werkt niet", "next": "issue.v1.doors.common.door_opener_fault", "aliases": ["buzzer doet het niet","open knop werkt niet","deurontgrendeling"] },
-        { "label": "Bellentableau uitgevallen", "next": "issue.v1.intercom.panel_fault", "aliases": ["bellentableau","belpaneel","tableau defect"] }
+        { "label": "Bel (Intercom)", "next": "issue.v1.intercom.video_with_door_opener", "aliases": ["video intercom","geen beeld intercom","camera intercom"] },
+        { "label": "Intercom en deuropener", "next": "issue.v1.intercom.bel", "aliases": ["intercom geen geluid","spreekinstallatie kapot","microfoon intercom"] },
+        { "label": "Video Intercom met Deuropener", "next": "issue.v1.intercom.video_with_door_opener", "aliases": ["video intercom","geen beeld intercom","camera intercom"] }
       ]
     },
 
@@ -223,8 +222,8 @@ export const maintenanceTreeData = {
       "title": "Deuren, Ramen, Sloten & Toegang",
       "options": [
         { "label": "Deuren", "next": "issue.v1.doors.general", "aliases": ["deur","voordeur","achterdeur","woningdeur","huisdeur","binnendeur","kamerdeur","balkondeur","schuifpui","pui","portiekdeur","entree deur","algemene deur","garagepoort","hek","toegangspoort","schuifhek","berging","box","fietsenstalling","lift","elevator"] },
-        { "label": "Ramen", "next": "cat.deuren.ramen", "aliases": ["raam","raam vast","raam opent niet","raam sluit niet","espagnolet","raam sluiting","raamklink stuk","tocht","kit vervangen","rubbers slecht","kieren","glas kapot","barst in ruit","ruitschade","raam lekt","kozijn lekt","inregenen raam","dakraam","velux","lichtkoepel","schuifraam","balkonraam","pui raam"] },
-        { "label": "Sloten", "next": "cat.deuren.sloten", "aliases": ["slot","sleutel","cilinder","slot kapot","cilinder stuk","kan niet op slot","sleutel draait niet","sleutel kwijt","sleutel afgebroken","buitengesloten"] },
+        { "label": "Ramen", "next": "issue.ramen_kozijnen_glas", "aliases": ["raam","raam vast","raam opent niet","raam sluit niet","espagnolet","raam sluiting","raamklink stuk","tocht","kit vervangen","rubbers slecht","kieren","glas kapot","barst in ruit","ruitschade","raam lekt","kozijn lekt","inregenen raam","dakraam","velux","lichtkoepel","schuifraam","balkonraam","pui raam"] },
+        { "label": "Sloten", "next": "issue.deuren_sloten", "aliases": ["slot","sleutel","cilinder","slot kapot","cilinder stuk","kan niet op slot","sleutel draait niet","sleutel kwijt","sleutel afgebroken","buitengesloten"] },
         { "label": "Intercom", "next": "cat.stroom.intercom", "aliases": ["intercom","bellentableau","deurbel","buzzer","videofoon","spreekinstallatie","deuropener"] }
         
         // Commented out original options - will be reconnected later
@@ -353,13 +352,14 @@ export const maintenanceTreeData = {
     {
       "id": "cat.apparaten",
       "type": "menu",
-      "title": "Apparaten (keuken, witgoed, airco)",
+      "title": "Apparaten (wasmachine of vaatwasser)",
       "options": [
-        { "label": "Keukenapparatuur", "next": "cat.apparaten.keuken", "aliases": ["keukenapparaat","vaatwasser","oven","fornuis","kookplaat","inductie","koelkast","vriezer","wasmachine","droger","afzuigkap","airco","boiler"] },
-        { "label": "Witgoed", "next": "cat.apparaten.witgoed", "aliases": ["witgoed","wasmachine","droger"] },
-        { "label": "Klimaatinstallaties", "next": "cat.apparaten.klimaat", "aliases": ["airco","ventilatie unit","wtw"] },
-        { "label": "Een apparaat veroorzaakt aardlek", "next": "issue.v1.electrical.rcd.trip", "aliases": ["aardlek door apparaat","rcd valt","aardlek trip","stroom valt uit bij apparaat"] },
-        { "label": "Lamp", "next": "issue.uw_responsability", "aliases": ["airco","ventilatie unit","wtw"] }
+        { "label": "Vaatwasser", "next": "issue.uw_responsability", "aliases": ["keukenapparaat","vaatwasser","oven","fornuis","kookplaat","inductie","koelkast","vriezer","wasmachine","droger","afzuigkap","airco","boiler"] },
+        { "label": "Oven", "next": "issue.uw_responsability", "aliases": ["witgoed","wasmachine","droger"] },
+        { "label": "Inbouw Koelkast", "next": "issue.uw_responsability", "aliases": ["airco","ventilatie unit","wtw"] },
+        { "label": "Inbouw Vriezer", "next": "issue.uw_responsability", "aliases": ["aardlek door apparaat","rcd valt","aardlek trip","stroom valt uit bij apparaat"] },
+        { "label": "Inbouw Koel/vries combi", "next": "issue.uw_responsability", "aliases": ["aardlek door apparaat","rcd valt","aardlek trip","stroom valt uit bij apparaat"] },
+        { "label": "Vrijstaande koelkast/vriezer/koel vries combi", "next": "issue.uw_responsability", "aliases": ["aardlek door apparaat","rcd valt","aardlek trip","stroom valt uit bij apparaat"] }     
       ]
     },
     {
