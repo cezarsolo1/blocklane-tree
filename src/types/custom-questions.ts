@@ -2427,4 +2427,456 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
       }
     ]
   },
+
+  // RAMEN FINAL NODES - Comprehensive window configuration
+  'issue.ramen_kozijnen_glas': {
+    title: 'Ramen',
+    description: 'Raam problemen - help ons het probleem beter te begrijpen',
+    questions: [
+      {
+        id: 'frame_material',
+        type: 'select',
+        label: 'Uit wat voor materiaal bestaat het kozijn?',
+        required: true,
+        options: [
+          { value: 'hout', label: 'Hout' },
+          { value: 'aluminium', label: 'Aluminium' },
+          { value: 'staal', label: 'Staal' },
+          { value: 'kunststof', label: 'Kunststof' }
+        ]
+      },
+      {
+        id: 'window_problem',
+        type: 'select',
+        label: 'Wat is er gaande?',
+        required: true,
+        options: [
+          { value: 'raamslot_sluit_niet', label: 'Het raamslot sluit niet goed' },
+          { value: 'raam_niet_passend', label: 'Het raam is niet passend/sluitend' },
+          { value: 'raam_draai_kiep', label: 'Raam staat in zowel draai als kiepstand' },
+          { value: 'raam_gaat_niet_open', label: 'Raam gaat niet open' },
+          { value: 'anders', label: 'Anders, namelijk ...' }
+        ]
+      },
+      {
+        id: 'other_problem_description',
+        type: 'text',
+        label: 'Anders, namelijk:',
+        placeholder: 'Beschrijf het andere probleem...',
+        required: false
+      },
+      {
+        id: 'photos_instruction',
+        type: 'info',
+        label: 'Om u te helpen is het heel belangrijk voor ons om een beeld te krijgen van het probleem.\nUpload hieronder alstublieft minstens twee foto’s: één van de hele deur, en één van het probleem.',
+        required: false
+      }
+    ]
+  },
+
+  // SLOTEN FINAL NODES - Comprehensive lock configuration
+  'issue.deuren_sloten': {
+    title: 'Sloten',
+    description: 'Slot problemen - help ons het probleem beter te begrijpen',
+    questions: [
+      {
+        id: 'lock_location',
+        type: 'select',
+        label: 'Het betreft het slot van de:',
+        required: true,
+        options: [
+          { value: 'atd', label: 'Algemene toegangsdeur (hele gebouw)' },
+          { value: 'voordeur_gehuurde', label: 'Voordeur gehuurde pand' },
+          { value: 'binnendeur', label: 'Binnendeur' },
+          { value: 'zolderdeur_bergingdeur', label: 'Zolderdeur/Bergingdeur' }
+        ]
+      },
+      {
+        id: 'lock_problem',
+        type: 'select',
+        label: 'Wat is er gaande?',
+        required: true,
+        options: [
+          { value: 'sleutel_draait_niet', label: 'Sleutel draait niet meer/afgebroken in het cilinder' },
+          { value: 'cilinder_uit_slot', label: 'Cilinder is uit het slot' },
+          { value: 'anders', label: 'Anders, namelijk ...' }
+        ]
+      },
+      {
+        id: 'other_problem_description',
+        type: 'text',
+        label: 'Anders, namelijk:',
+        placeholder: 'Beschrijf het andere probleem...',
+        required: false
+      },
+      {
+        id: 'photos_instruction',
+        type: 'info',
+        label: 'Om u te helpen is het heel belangrijk voor ons om een beeld te krijgen van het probleem.\nUpload hieronder alstublieft minstens twee foto’s: één van de hele deur, en één van het probleem.',
+        required: false
+      }
+    ]
+  },
+
+  // INTERCOM COMPREHENSIVE CONFIGURATIONS - Based on intercom type
+  'issue.v1.intercom.bel': {
+    title: 'Bel (Intercom)',
+    description: 'Bel intercom problemen',
+    questions: [
+      {
+        id: 'intercom_type',
+        type: 'select',
+        label: 'Wat voor intercom is het?',
+        required: true,
+        options: [
+          { value: 'bel', label: 'Bel' },
+          { value: 'bel_met_deur_opener', label: 'Bel met deur opener' }
+        ]
+      },
+      {
+        id: 'tenant_responsibility_check',
+        type: 'radio',
+        label: 'Is dit een rekening van de huurder?',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja - dit valt onder huurder verantwoordelijkheid' },
+          { value: 'nee', label: 'Nee - dit is een technisch probleem' }
+        ]
+      },
+      {
+        id: 'door_opener_defect',
+        type: 'radio',
+        label: 'Deuropener is defect',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'bell_not_ringing',
+        type: 'radio',
+        label: 'Bel gaat niet af',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'video_not_working',
+        type: 'radio',
+        label: 'Video doet het niet',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'speech_to_tenant_not_working',
+        type: 'radio',
+        label: 'Spraak naar gehuurde doet het niet',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'speech_to_street_not_working',
+        type: 'radio',
+        label: 'Spraak naar straat doet het niet',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'photos_instruction',
+        type: 'info',
+        label: 'Om u te helpen is het heel belangrijk voor ons om een beeld te krijgen van het probleem.\nUpload hieronder alstublieft minstens twee foto\'s: één van de hele deur, en één van de installatie.',
+        required: false
+      }
+    ]
+  },
+
+  'issue.v1.intercom.video_with_door_opener': {
+    title: 'Video Intercom met Deuropener',
+    description: 'Video intercom met deuropener problemen',
+    questions: [
+      {
+        id: 'door_opener_defect',
+        type: 'radio',
+        label: 'Is de deuropener defect?',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'bell_rings',
+        type: 'radio',
+        label: 'Gaat de bel af?',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'video_not_working',
+        type: 'radio',
+        label: 'Video doet het niet',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'speech_to_tenant_not_working',
+        type: 'radio',
+        label: 'Spraak naar gehuurde doet het niet',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'speech_to_street_not_working',
+        type: 'radio',
+        label: 'Spraak naar straat doet het niet',
+        required: true,
+        options: [
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
+        ]
+      },
+      {
+        id: 'problem_description',
+        type: 'textarea',
+        label: 'Beschrijving',
+        placeholder: 'Geef een gedetailleerde beschrijving van het intercom probleem...',
+        required: false
+      },
+      {
+        id: 'photos_instruction',
+        type: 'info',
+        label: 'Om u te helpen is het heel belangrijk voor ons om een beeld te krijgen van het probleem.\nUpload hieronder alstublieft minstens twee foto\'s: één van de hele deur, en één van de installatie.',
+        required: false
+      }
+    ]
+  },
+
+  // Smoke and CO Detector configurations
+  'issue.v1.smoke.battery_replace': {
+    title: 'Rookmelder/CO-melder batterij vervangen',
+    description: 'De melder geeft een periodiek signaal, dit betekent dat de batterij vervangen moet worden',
+    questions: [
+      {
+        id: 'detector_type',
+        type: 'radio',
+        label: 'Wat voor melder betreft het?',
+        options: [
+          { value: 'rookmelder', label: 'Rookmelder' },
+          { value: 'co_melder', label: 'CO-melder' },
+          { value: 'combi', label: 'Combinatie rookmelder/CO-melder' }
+        ],
+        required: true
+      },
+      {
+        id: 'detector_location',
+        type: 'radio',
+        label: 'Waar bevindt de melder zich?',
+        options: [
+          { value: 'gehuurde_pand', label: 'In het gehuurde pand' },
+          { value: 'algemene_ruimte', label: 'In algemene ruimte/trappenhuis' }
+        ],
+        required: true
+      },
+      {
+        id: 'signal_frequency',
+        type: 'select',
+        label: 'Hoe vaak piept de melder?',
+        options: [
+          { value: 'elke_minuut', label: 'Elke minuut' },
+          { value: 'elke_paar_minuten', label: 'Elke paar minuten' },
+          { value: 'onregelmatig', label: 'Onregelmatig' }
+        ],
+        required: true
+      },
+      {
+        id: 'additional_info',
+        type: 'textarea',
+        label: 'Aanvullende informatie',
+        placeholder: 'Eventuele extra details over het probleem',
+        required: false
+      }
+    ]
+  },
+
+  'issue.v1.smoke.fire_alarm': {
+    title: 'NOODGEVAL - Rookmelder alarm',
+    description: 'Dit is een noodgeval! Bel direct 112 (brandweer) en daarna ons kantoor ter info',
+    questions: [
+      {
+        id: 'emergency_acknowledgment',
+        type: 'checkbox',
+        label: 'Ik begrijp dat ik direct 112 moet bellen en daarna het kantoor (020-5775333)',
+        required: true,
+        variant: 'boolean'
+      },
+      {
+        id: 'fire_visible',
+        type: 'radio',
+        label: 'Ziet u vuur of rook?',
+        options: [
+          { value: 'ja_vuur', label: 'Ja, ik zie vuur' },
+          { value: 'ja_rook', label: 'Ja, ik zie rook' },
+          { value: 'nee', label: 'Nee, alleen alarm' }
+        ],
+        required: true
+      },
+      {
+        id: 'location_evacuated',
+        type: 'radio',
+        label: 'Heeft u de woning verlaten?',
+        options: [
+          { value: 'ja', label: 'Ja, ik ben buiten' },
+          { value: 'nee', label: 'Nee, ik ben nog binnen' }
+        ],
+        required: true
+      }
+    ]
+  },
+
+  'issue.v1.co.alarm': {
+    title: 'NOODGEVAL - CO-melder alarm',
+    description: 'Dit is een noodgeval! Bel direct 112 (brandweer) en daarna ons kantoor ter info',
+    questions: [
+      {
+        id: 'emergency_acknowledgment',
+        type: 'checkbox',
+        label: 'Ik begrijp dat ik direct 112 moet bellen en daarna het kantoor (020-5775333)',
+        required: true,
+        variant: 'boolean'
+      },
+      {
+        id: 'symptoms',
+        type: 'checkbox',
+        label: 'Heeft u last van een van de volgende symptomen?',
+        options: [
+          { value: 'hoofdpijn', label: 'Hoofdpijn' },
+          { value: 'duizeligheid', label: 'Duizeligheid' },
+          { value: 'misselijkheid', label: 'Misselijkheid' },
+          { value: 'vermoeidheid', label: 'Vermoeidheid' },
+          { value: 'geen', label: 'Geen symptomen' }
+        ],
+        required: true
+      },
+      {
+        id: 'location_evacuated',
+        type: 'radio',
+        label: 'Heeft u de woning verlaten?',
+        options: [
+          { value: 'ja', label: 'Ja, ik ben buiten' },
+          { value: 'nee', label: 'Nee, ik ben nog binnen' }
+        ],
+        required: true
+      }
+    ]
+  },
+
+  'issue.v1.smoke.buren_contact': {
+    title: 'Rookmelder bij de buren - Contact opgenomen',
+    description: 'U heeft al contact opgenomen met de buren over de rookmelder',
+    questions: [
+      {
+        id: 'neighbor_response',
+        type: 'radio',
+        label: 'Wat was de reactie van de buren?',
+        options: [
+          { value: 'opgelost', label: 'Probleem is opgelost' },
+          { value: 'bewust', label: 'Ze zijn zich bewust van het probleem' },
+          { value: 'geen_reactie', label: 'Geen reactie gekregen' },
+          { value: 'niet_thuis', label: 'Niemand thuis' }
+        ],
+        required: true
+      },
+      {
+        id: 'alarm_type',
+        type: 'radio',
+        label: 'Wat voor geluid maakt de melder?',
+        options: [
+          { value: 'periodiek_piep', label: 'Periodiek piepje (batterij)' },
+          { value: 'continu_alarm', label: 'Continu alarm (brand)' }
+        ],
+        required: true
+      },
+      {
+        id: 'neighbor_address',
+        type: 'text',
+        label: 'Huisnummer van de buren',
+        placeholder: 'Bijv. 12A',
+        required: true
+      },
+      {
+        id: 'additional_info',
+        type: 'textarea',
+        label: 'Aanvullende informatie',
+        placeholder: 'Eventuele extra details',
+        required: false
+      }
+    ]
+  },
+
+  'issue.v1.smoke.buren_info': {
+    title: 'Rookmelder bij de buren - Woning niet bewoond',
+    description: 'De woning waar de rookmelder afgaat is niet bewoond',
+    questions: [
+      {
+        id: 'neighbor_address',
+        type: 'text',
+        label: 'Huisnummer van de betreffende woning',
+        placeholder: 'Bijv. 12A',
+        required: true
+      },
+      {
+        id: 'alarm_type',
+        type: 'radio',
+        label: 'Wat voor geluid maakt de melder?',
+        options: [
+          { value: 'periodiek_piep', label: 'Periodiek piepje (batterij)' },
+          { value: 'continu_alarm', label: 'Continu alarm (mogelijk brand)' }
+        ],
+        required: true
+      },
+      {
+        id: 'duration',
+        type: 'select',
+        label: 'Hoe lang gaat de melder al af?',
+        options: [
+          { value: 'net_begonnen', label: 'Net begonnen' },
+          { value: 'paar_uur', label: 'Een paar uur' },
+          { value: 'hele_dag', label: 'De hele dag' },
+          { value: 'meerdere_dagen', label: 'Meerdere dagen' }
+        ],
+        required: true
+      },
+      {
+        id: 'smoke_visible',
+        type: 'radio',
+        label: 'Ziet u rook of andere tekenen van brand?',
+        options: [
+          { value: 'ja', label: 'Ja, ik zie rook' },
+          { value: 'nee', label: 'Nee, geen rook zichtbaar' }
+        ],
+        required: true
+      }
+    ]
+  },
 };
