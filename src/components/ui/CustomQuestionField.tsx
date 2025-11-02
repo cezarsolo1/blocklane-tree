@@ -217,17 +217,43 @@ export const CustomQuestionField: React.FC<CustomQuestionFieldProps> = ({
           </div>
         );
 
-      case 'info':
+      case 'info': {
+        const getInfoStyles = () => {
+          switch (question.style) {
+            case 'emergency':
+              return {
+                container: 'p-4 bg-red-50 border border-red-200 rounded-md',
+                text: 'text-sm text-red-800 whitespace-pre-line font-semibold',
+                description: 'text-sm text-red-600 mt-2'
+              };
+            case 'warning':
+              return {
+                container: 'p-4 bg-yellow-50 border border-yellow-200 rounded-md',
+                text: 'text-sm text-yellow-800 whitespace-pre-line',
+                description: 'text-sm text-yellow-600 mt-2'
+              };
+            default:
+              return {
+                container: 'p-4 bg-blue-50 border border-blue-200 rounded-md',
+                text: 'text-sm text-blue-800 whitespace-pre-line',
+                description: 'text-sm text-blue-600 mt-2'
+              };
+          }
+        };
+        
+        const styles = getInfoStyles();
+        
         return (
-          <div className="p-4 bg-blue-50 border border-blue-200 rounded-md">
-            <div className="text-sm text-blue-800 whitespace-pre-line">
+          <div className={styles.container}>
+            <div className={styles.text}>
               {label}
             </div>
             {question.description && (
-              <p className="text-sm text-blue-600 mt-2">{question.description}</p>
+              <p className={styles.description}>{question.description}</p>
             )}
           </div>
         );
+      }
 
       default:
         return null;

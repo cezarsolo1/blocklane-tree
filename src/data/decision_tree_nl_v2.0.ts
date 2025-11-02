@@ -218,8 +218,8 @@ export const maintenanceTreeData = {
       "type": "menu",
       "title": "Melder in het gehuurde pand",
       "options": [
-        { "label": "Geeft periodiek een signaal", "next": "issue.v1.smoke.battery_replace", "aliases": ["piept","batterij","signaal","twee piepjes"] },
-        { "label": "Gaat af als alarm", "next": "issue.v1.smoke.fire_alarm", "aliases": ["alarm","brand","gaat af","continu geluid"] }
+        { "label": "Geeft periodiek een signaal", "next": "issue.v1.smoke.gehuurde.periodic", "aliases": ["piept","batterij","signaal","twee piepjes"] },
+        { "label": "Gaat af als alarm", "next": "issue.v1.smoke.gehuurde.alarm", "aliases": ["alarm","brand","gaat af","continu geluid"] }
       ]
     },
     {
@@ -227,8 +227,8 @@ export const maintenanceTreeData = {
       "type": "menu",
       "title": "Melder in algemene ruimte/trappenhuis",
       "options": [
-        { "label": "Geeft periodiek een signaal", "next": "issue.v1.smoke.battery_replace", "aliases": ["piept","batterij","signaal","twee piepjes"] },
-        { "label": "Gaat af als alarm", "next": "issue.v1.smoke.fire_alarm", "aliases": ["alarm","brand","gaat af","continu geluid"] }
+        { "label": "Geeft periodiek een signaal", "next": "issue.v1.smoke.algemeen.periodic", "aliases": ["piept","batterij","signaal","twee piepjes"] },
+        { "label": "Gaat af als alarm", "next": "issue.v1.smoke.algemeen.alarm", "aliases": ["alarm","brand","gaat af","continu geluid"] }
       ]
     },
     {
@@ -253,8 +253,8 @@ export const maintenanceTreeData = {
       "type": "menu",
       "title": "CO-melder",
       "options": [
-        { "label": "Geeft periodiek een signaal", "next": "issue.v1.smoke.battery_replace", "aliases": ["piept","batterij","signaal","twee piepjes"] },
-        { "label": "Gaat af als alarm", "next": "issue.v1.co.alarm", "aliases": ["alarm","co alarm","koolmonoxide","gaat af"] }
+        { "label": "Geeft periodiek een signaal", "next": "issue.v1.co.periodic", "aliases": ["piept","batterij","signaal","twee piepjes"] },
+        { "label": "Gaat af als alarm", "next": "issue.v1.co.alarm.final", "aliases": ["alarm","co alarm","koolmonoxide","gaat af"] }
       ]
     },
     {

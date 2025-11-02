@@ -25,6 +25,7 @@ export interface CustomQuestion {
   description?: string; // for file inputs and other descriptive text
   accept?: string; // for file inputs
   emergency_trigger?: string; // value that triggers emergency handling
+  style?: 'emergency' | 'warning' | 'info'; // styling for special cases
 }
 
 export interface CustomQuestionsConfig {
@@ -2660,7 +2661,89 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
     ]
   },
 
-  // Smoke and CO Detector configurations
+  // Smoke and CO Detector configurations - Separate pages
+  'issue.v1.smoke.gehuurde.periodic': {
+    title: 'Geeft periodiek een signaal',
+    description: 'Rookmelder in het gehuurde pand geeft periodiek een signaal',
+    questions: [
+      {
+        id: 'instruction_message',
+        type: 'info',
+        label: 'Als JA: Je moet batterij vervangen',
+        required: false
+      },
+      {
+        id: 'other_problem',
+        type: 'textarea',
+        label: 'Is er een ander probleem? Beschrijf het hier:',
+        placeholder: 'Beschrijf eventuele andere problemen met de rookmelder...',
+        required: false
+      }
+    ]
+  },
+
+  'issue.v1.smoke.gehuurde.alarm': {
+    title: 'Gaat af als alarm',
+    description: 'Rookmelder in het gehuurde pand gaat af als alarm',
+    questions: [
+      {
+        id: 'instruction_message',
+        type: 'info',
+        label: 'Als JA: Je moet bel direct brandweer en daarna ons kantoor ter info en meld dat u spoed heeft vanwege een rook-melder alarm in het gehuurde pand (020-5775333).',
+        required: false,
+        style: 'emergency'
+      },
+      {
+        id: 'other_problem',
+        type: 'textarea',
+        label: 'Is er een ander probleem? Beschrijf het hier:',
+        placeholder: 'Beschrijf eventuele andere problemen met de rookmelder...',
+        required: false
+      }
+    ]
+  },
+
+  'issue.v1.smoke.algemeen.periodic': {
+    title: 'Geeft periodiek een signaal',
+    description: 'Rookmelder in algemene ruimte/trappenhuis geeft periodiek een signaal',
+    questions: [
+      {
+        id: 'instruction_message',
+        type: 'info',
+        label: 'Als JA: Je moet batterij vervangen',
+        required: false
+      },
+      {
+        id: 'other_problem',
+        type: 'textarea',
+        label: 'Is er een ander probleem? Beschrijf het hier:',
+        placeholder: 'Beschrijf eventuele andere problemen met de rookmelder...',
+        required: false
+      }
+    ]
+  },
+
+  'issue.v1.smoke.algemeen.alarm': {
+    title: 'Gaat af als alarm',
+    description: 'Rookmelder in algemene ruimte/trappenhuis gaat af als alarm',
+    questions: [
+      {
+        id: 'instruction_message',
+        type: 'info',
+        label: 'Als JA: Je moet bel direct brandweer en daarna ons kantoor ter info en meld dat u spoed heeft vanwege een rook-melder alarm in de algemene ruimte/trappenhuis (020-5775333).',
+        required: false,
+        style: 'emergency'
+      },
+      {
+        id: 'other_problem',
+        type: 'textarea',
+        label: 'Is er een ander probleem? Beschrijf het hier:',
+        placeholder: 'Beschrijf eventuele andere problemen met de rookmelder...',
+        required: false
+      }
+    ]
+  },
+
   'issue.v1.smoke.battery_replace': {
     title: 'Rookmelder/CO-melder batterij vervangen',
     description: 'De melder geeft een periodiek signaal, dit betekent dat de batterij vervangen moet worden',
@@ -2784,38 +2867,9 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
     description: 'U heeft al contact opgenomen met de buren over de rookmelder',
     questions: [
       {
-        id: 'neighbor_response',
-        type: 'radio',
-        label: 'Wat was de reactie van de buren?',
-        options: [
-          { value: 'opgelost', label: 'Probleem is opgelost' },
-          { value: 'bewust', label: 'Ze zijn zich bewust van het probleem' },
-          { value: 'geen_reactie', label: 'Geen reactie gekregen' },
-          { value: 'niet_thuis', label: 'Niemand thuis' }
-        ],
-        required: true
-      },
-      {
-        id: 'alarm_type',
-        type: 'radio',
-        label: 'Wat voor geluid maakt de melder?',
-        options: [
-          { value: 'periodiek_piep', label: 'Periodiek piepje (batterij)' },
-          { value: 'continu_alarm', label: 'Continu alarm (brand)' }
-        ],
-        required: true
-      },
-      {
-        id: 'neighbor_address',
-        type: 'text',
-        label: 'Huisnummer van de buren',
-        placeholder: 'Bijv. 12A',
-        required: true
-      },
-      {
         id: 'additional_info',
         type: 'textarea',
-        label: 'Aanvullende informatie',
+        label: 'Meer informatie',
         placeholder: 'Eventuele extra details',
         required: false
       }
@@ -2834,36 +2888,86 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
         required: true
       },
       {
-        id: 'alarm_type',
+        id: 'periodic_signal',
         type: 'radio',
-        label: 'Wat voor geluid maakt de melder?',
+        label: 'Geeft periodiek een signaal',
         options: [
-          { value: 'periodiek_piep', label: 'Periodiek piepje (batterij)' },
-          { value: 'continu_alarm', label: 'Continu alarm (mogelijk brand)' }
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
         ],
         required: true
       },
       {
-        id: 'duration',
-        type: 'select',
-        label: 'Hoe lang gaat de melder al af?',
+        id: 'periodic_signal_instruction',
+        type: 'info',
+        label: 'Als JA: melding K&S',
+        required: false
+      },
+      {
+        id: 'fire_alarm',
+        type: 'radio',
+        label: 'Gaat af als alarm',
         options: [
-          { value: 'net_begonnen', label: 'Net begonnen' },
-          { value: 'paar_uur', label: 'Een paar uur' },
-          { value: 'hele_dag', label: 'De hele dag' },
-          { value: 'meerdere_dagen', label: 'Meerdere dagen' }
+          { value: 'ja', label: 'Ja' },
+          { value: 'nee', label: 'Nee' }
         ],
         required: true
       },
       {
-        id: 'smoke_visible',
-        type: 'radio',
-        label: 'Ziet u rook of andere tekenen van brand?',
-        options: [
-          { value: 'ja', label: 'Ja, ik zie rook' },
-          { value: 'nee', label: 'Nee, geen rook zichtbaar' }
-        ],
-        required: true
+        id: 'fire_alarm_instruction',
+        type: 'info',
+        label: 'Als JA: Kijk of er iemand aanwezig is in het pand, zo niet: Bel kantoor of bij calamiteiten direct 112.',
+        required: false,
+        style: 'emergency'
+      },
+      {
+        id: 'additional_info',
+        type: 'textarea',
+        label: 'Meer informatie',
+        placeholder: 'Eventuele extra details',
+        required: false
+      }
+    ]
+  },
+
+  // CO-melder configurations - Separate pages
+  'issue.v1.co.periodic': {
+    title: 'Geeft periodiek een signaal',
+    description: 'CO-melder geeft periodiek een signaal',
+    questions: [
+      {
+        id: 'instruction_message',
+        type: 'info',
+        label: 'Als JA: batterij vervangen',
+        required: false
+      },
+      {
+        id: 'other_problem',
+        type: 'textarea',
+        label: 'Is er een ander probleem? Beschrijf het hier:',
+        placeholder: 'Beschrijf eventuele andere problemen met de CO-melder...',
+        required: false
+      }
+    ]
+  },
+
+  'issue.v1.co.alarm.final': {
+    title: 'Gaat af als alarm',
+    description: 'CO-melder gaat af als alarm',
+    questions: [
+      {
+        id: 'instruction_message',
+        type: 'info',
+        label: 'Als JA: bel direct brandweer en daarna ons kantoor ter info en meld dat u spoed heeft vanwege een CO-melder alarm in het gehuurde (020-5775333).',
+        required: false,
+        style: 'emergency'
+      },
+      {
+        id: 'other_problem',
+        type: 'textarea',
+        label: 'Is er een ander probleem? Beschrijf het hier:',
+        placeholder: 'Beschrijf eventuele andere problemen met de CO-melder...',
+        required: false
       }
     ]
   },
