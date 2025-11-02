@@ -24,6 +24,7 @@ export interface CustomQuestion {
   defaultValue?: string;
   description?: string; // for file inputs and other descriptive text
   accept?: string; // for file inputs
+  emergency_trigger?: string; // value that triggers emergency handling
 }
 
 export interface CustomQuestionsConfig {
@@ -2524,26 +2525,6 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
     description: 'Bel intercom problemen',
     questions: [
       {
-        id: 'intercom_type',
-        type: 'select',
-        label: 'Wat voor intercom is het?',
-        required: true,
-        options: [
-          { value: 'bel', label: 'Bel' },
-          { value: 'bel_met_deur_opener', label: 'Bel met deur opener' }
-        ]
-      },
-      {
-        id: 'tenant_responsibility_check',
-        type: 'radio',
-        label: 'Is dit een rekening van de huurder?',
-        required: true,
-        options: [
-          { value: 'ja', label: 'Ja - dit valt onder huurder verantwoordelijkheid' },
-          { value: 'nee', label: 'Nee - dit is een technisch probleem' }
-        ]
-      },
-      {
         id: 'door_opener_defect',
         type: 'radio',
         label: 'Deuropener is defect',
@@ -2592,6 +2573,13 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
           { value: 'ja', label: 'Ja' },
           { value: 'nee', label: 'Nee' }
         ]
+      },
+      {
+        id: 'additional_info',
+        type: 'textarea',
+        label: 'Aanvullende informatie',
+        placeholder: 'Eventuele extra details over het probleem',
+        required: false
       },
       {
         id: 'photos_instruction',
@@ -2876,6 +2864,81 @@ export const STEP2_QUESTIONS_CONFIG: CustomQuestionsConfig = {
           { value: 'nee', label: 'Nee, geen rook zichtbaar' }
         ],
         required: true
+      }
+    ]
+  },
+
+  // CV and Radiator Leak - Combined configuration
+  'issue.v1.cv.leak.combined': {
+    title: 'CV en radiatoren',
+    description: 'CV en radiator lekkage kan variëren van kleine druppels tot ernstige wateroverlast',
+    questions: [
+      {
+        id: 'leak_type',
+        type: 'radio',
+        label: 'Wat lekt er?',
+        options: [
+          { value: 'radiator', label: 'Radiator' },
+          { value: 'cv_leiding', label: 'CV-leiding' },
+          { value: 'ketel', label: 'Ketel/boiler' },
+          { value: 'onbekend', label: 'Weet ik niet zeker' }
+        ],
+        required: true
+      },
+      {
+        id: 'leak_severity',
+        type: 'radio',
+        label: 'Hoe ernstig is de lekkage?',
+        options: [
+          { value: 'lichte_druppels', label: 'Lichte druppels' },
+          { value: 'matige_lekkage', label: 'Matige lekkage (kleine plas)' },
+          { value: 'zware_stroom', label: 'Zware stroom of overstroming' }
+        ],
+        required: true,
+        emergency_trigger: 'zware_stroom'
+      },
+      {
+        id: 'leak_location_detail',
+        type: 'radio',
+        label: 'Waar precies lekt het?',
+        options: [
+          { value: 'ventiel_kraan', label: 'Bij een ventiel/kraan' },
+          { value: 'aansluiting', label: 'Bij een aansluiting/koppeling' },
+          { value: 'leiding_zichtbaar', label: 'Zichtbare leiding' },
+          { value: 'leiding_muur', label: 'Leiding in de muur' },
+          { value: 'leiding_vloer', label: 'Leiding in de vloer' },
+          { value: 'ketel_onderkant', label: 'Onderkant van de ketel' },
+          { value: 'ketel_aansluitingen', label: 'Bij ketel aansluitingen' },
+          { value: 'radiator_zelf', label: 'Uit de radiator zelf' },
+          { value: 'onbekend', label: 'Weet ik niet' }
+        ],
+        required: true
+      },
+      {
+        id: 'room_location',
+        type: 'text',
+        label: 'In welke ruimte bevindt de lekkage zich?',
+        placeholder: 'Bijv. woonkamer, slaapkamer, keuken, bijkeuken',
+        required: true
+      },
+      {
+        id: 'photo_situation',
+        type: 'info',
+        label: 'Maak een foto van de hele situatie.',
+        required: false
+      },
+      {
+        id: 'photo_source',
+        type: 'info',
+        label: 'Maak een foto waar het water vandaan komt.',
+        required: false
+      },
+      {
+        id: 'additional_info',
+        type: 'textarea',
+        label: 'Aanvullende informatie',
+        placeholder: 'Eventuele extra details over de lekkage',
+        required: false
       }
     ]
   },
