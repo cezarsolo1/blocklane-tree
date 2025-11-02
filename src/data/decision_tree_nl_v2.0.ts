@@ -28,7 +28,7 @@ export const maintenanceTreeData = {
         { "label": "Afvoer & Riolering", "next": "cat.afvoer", "aliases": ["verstopping","afvoer","riool","rioollucht","wc verstopt","toilet verstopt","gootsteen verstopt","putje"] },
         { "label": "Verwarming of géén warm water", "next": "cat.verwarming", "aliases": ["verwarming","cv","ketel","radiator koud","geen warmte","geen warm water","boiler","thermostaat"] },
         { "label": "Stroom of elektra", "next": "cat.stroom", "aliases": ["stroom","elektra","stroomstoring","stroom uit","aardlek","kortsluiting","groepenkast","stoppen","zekering"] },
-        { "label": "Deuren, Ramen, sloten & toegang", "next": "cat.deuren", "aliases": ["deur","slot","sleutel","balkondeur","schuifpui","dranger","toegang","portiekdeur","garagepoort","hek","raam","kozijn","glas","ruit","espagnolet","sluiting","tocht","kit","dakraam","schuifraam"] },
+        { "label": "Deuren, Ramen, sloten & Intercom", "next": "cat.deuren", "aliases": ["deur","slot","sleutel","balkondeur","schuifpui","dranger","toegang","portiekdeur","garagepoort","hek","raam","kozijn","glas","ruit","espagnolet","sluiting","tocht","kit","dakraam","schuifraam"] },
         { "label": "Dak of gevel", "next": "cat.dak", "aliases": ["dak","gevel","dakgoot","regenpijp","balkon","lichtkoepel","daklekkage","voegwerk","scheur"] },
         { "label": "Ventilatie, schimmel & ongedierte", "next": "cat.vent", "aliases": ["ventilatie","afzuiging","wtw","mechanische ventilatie","schimmel","vocht","stank","geur","muizen","ongedierte","insecten","duiven"] },
         { "label": "Witgoed/Keukenapparatuur ", "next": "cat.apparaten", "aliases": ["apparaat","vaatwasser","oven","fornuis","kookplaat","inductie","koelkast","vriezer","wasmachine","droger","afzuigkap","airco","boiler"] },
@@ -45,7 +45,7 @@ export const maintenanceTreeData = {
       "options": [
         { "label": "Plafond, Dak of Muren", "next": "issue.v1.leakage.ceiling_wall_roof.combined", "aliases": ["plafond","dak","muur","muren","plafond vlek","plafond druppelt","dak lekt","bovenburen lek","muur nat","vochtplek muur","plafondlekkage","daklekkage"] },
         { "label": "Gevel (incl. Ramen)", "next": "cat.lekkage.gevel_ramen", "aliases": ["gevel","raam","ramen","kozijn","inregenen","gevel lekt","buitenmuur nat","raam lekt","kozijn lekt","voegwerk","scheur gevel"] },
-        { "label": "CV en radiatoren", "next": "cat.lekkage.cv_radiatoren", "aliases": ["cv","radiator","radiatoren","verwarming","cv-lek","leiding lekt","cv leiding lekt","radiator lekt","verwarmingsleiding"] },
+        { "label": "CV en radiatoren", "next": "issue.v1.cv.leak.combined", "aliases": ["cv","radiator","radiatoren","verwarming","cv-lek","leiding lekt","cv leiding lekt","radiator lekt","verwarmingsleiding"] },
         { "label": "Wasbak, afvoer, of toilet", "next": "cat.lekkage.wasbak_afvoer_toilet", "aliases": ["wasbak","afvoer","toilet","wc","gootsteen","spoelbak","wastafel","sifon","afvoerpijp","rioolpijp","douche","bad","doucheputje"] },
         { "label": "Kranen", "next": "issue.v1.leakage.tap.combined", "aliases": ["kraan","kranen","mengkraan","thermostaatkraan","keukenkraan","badkamerkraan","kraan lekt","kraan drupt"] },
         { "label": "Apparaten (wasmachine of vaatwasser)", "next": "issue.v1.leakage.appliances.combined", "aliases": ["apparaat","apparaten","wasmachine","vaatwasser","afwasmachine","slang","aansluiting","aquastop","toevoerslang","afvoerslang"] }
