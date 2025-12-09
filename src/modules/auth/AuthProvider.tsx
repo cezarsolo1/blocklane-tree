@@ -159,26 +159,50 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const requestOtp = async (email: string) => {
     console.log('Requesting OTP for email:', email);
     
-    // Check if email is allowed first
-    const isAllowed = await checkAllowedEmail(email);
-    if (!isAllowed) {
-      return { error: { message: 'Email not authorized for access. Please contact contact@blocklane.nl' } };
-    }
-
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        shouldCreateUser: true,
+    try {
+      // Check if email is allowed first
+      const isAllowed = await checkAllowedEmail(email);
+      if (!isAllowed) {
+        return { error: { message: 'Email not authorized for access. Please contact contact@blocklane.nl' } };
       }
-    });
 
-    if (error) {
-      console.log('OTP request error:', error);
-    } else {
-      console.log('OTP sent successfully to:', email);
+      // Check if Supabase is properly configured
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+      
+      if (!supabaseUrl || !supabaseKey || supabaseUrl === 'https://placeholder.supabase.co') {
+        console.error('Supabase not configured, using development bypass');
+        return { error: { message: 'Authentication service not available. Please use the development bypass option below.' } };
+      }
+
+      console.log('Attempting to send OTP via Supabase...');
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          shouldCreateUser: true,
+        }
+      });
+
+      if (error) {
+        console.log('OTP request error:', error);
+        
+        // Provide more user-friendly error messages
+        if (error.message.includes('fetch')) {
+          return { error: { message: 'Network connection error. Please check your internet connection and try again.' } };
+        } else if (error.message.includes('Invalid')) {
+          return { error: { message: 'Invalid email address format. Please check and try again.' } };
+        } else {
+          return { error: { message: `Authentication error: ${error.message}` } };
+        }
+      } else {
+        console.log('OTP sent successfully to:', email);
+      }
+
+      return { error };
+    } catch (err) {
+      console.error('Unexpected error in requestOtp:', err);
+      return { error: { message: 'An unexpected error occurred. Please try the development bypass option below.' } };
     }
-
-    return { error };
   };
 
   const verifyOtp = async (email: string, token: string) => {

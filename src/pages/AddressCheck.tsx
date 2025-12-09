@@ -15,6 +15,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { normalizePostalCodeNL, isValidPostalCodeNL, normalizeCity, validateAddress } from '@/modules/validation/address';
 import { logAddressEvent } from '@/modules/api/logAddressEvent';
 import { createAddressChangeRequest } from '@/modules/api/createAddressChangeRequest';
+import { scrapeUserData, extractUsernameFromEmail, extractAddressFromScrapedData } from '@/modules/api/scrapeUserData';
 import { LogoutButton } from '@/components/LogoutButton';
 
 
@@ -38,6 +39,10 @@ export const AddressCheck = () => {
   const [saved, setSaved] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [scrapedData, setScrapedData] = useState<any>(null);
+  const [scrapingLoading, setScrapingLoading] = useState(false);
+  const [scrapingError, setScrapingError] = useState<string | null>(null);
+  const [prefilledFields, setPrefilledFields] = useState<string[]>([]);
   
   const [form, setForm] = useState<AddressForm>({
     street: '',
@@ -49,7 +54,102 @@ export const AddressCheck = () => {
     country: 'NL'
   });
 
-  // Load prefilled address data from allowed_users
+  // Scrape user data using email as username
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!user?.email) {
+        console.log('No user email available for data scraping');
+        return;
+      }
+
+      console.log('=== STARTING USER DATA SCRAPING ===');
+      console.log('User email:', user.email);
+      
+      setScrapingLoading(true);
+      setScrapingError(null);
+
+      try {
+        // Extract username from email (part before @)
+        const username = extractUsernameFromEmail(user.email);
+        console.log('Extracted username:', username);
+
+        // Try scraping with username first
+        let result = await scrapeUserData({ username });
+        
+        // If username fails, try with full email
+        if (!result.success) {
+          console.log('Username scraping failed, trying with email:', user.email);
+          result = await scrapeUserData({ email: user.email });
+        }
+
+        if (result.success && result.data) {
+          console.log('User data scraped successfully:', result.data);
+          setScrapedData(result.data);
+          
+          // Extract address data using robust extraction function
+          const extractedAddress = extractAddressFromScrapedData(result.data);
+          console.log('Extracted address for form prefilling:', extractedAddress);
+          
+          // Check if we got any meaningful address data
+          const hasAddressData = extractedAddress.street || 
+                                extractedAddress.house_number || 
+                                extractedAddress.postal_code || 
+                                extractedAddress.city;
+          
+          if (hasAddressData) {
+            // Track which fields are being prefilled
+            const filledFields: string[] = [];
+            
+            const newFormData = { ...form };
+            
+            if (extractedAddress.street) {
+              newFormData.street = extractedAddress.street;
+              filledFields.push('street');
+            }
+            if (extractedAddress.house_number) {
+              newFormData.house_number = extractedAddress.house_number;
+              filledFields.push('house_number');
+            }
+            if (extractedAddress.house_number_suffix) {
+              newFormData.house_number_suffix = extractedAddress.house_number_suffix;
+              filledFields.push('house_number_suffix');
+            }
+            if (extractedAddress.postal_code) {
+              newFormData.postal_code = extractedAddress.postal_code;
+              filledFields.push('postal_code');
+            }
+            if (extractedAddress.city) {
+              newFormData.city = extractedAddress.city;
+              filledFields.push('city');
+            }
+            if (extractedAddress.telephone) {
+              newFormData.telephone = extractedAddress.telephone;
+              filledFields.push('telephone');
+            }
+            
+            setForm(newFormData);
+            setPrefilledFields(filledFields);
+            console.log('Form prefilled with extracted address data:', extractedAddress);
+            console.log('Prefilled fields:', filledFields);
+          } else {
+            console.log('No usable address data found in scraped data');
+          }
+        } else {
+          console.log('User data scraping failed:', result.error);
+          setScrapingError(result.error || 'Failed to fetch user data');
+        }
+      } catch (err) {
+        console.error('Error during user data scraping:', err);
+        setScrapingError(err instanceof Error ? err.message : 'Unknown error occurred');
+      } finally {
+        setScrapingLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [user?.email]);
+
+  // Load prefilled address data from allowed_users (fallback)
   useEffect(() => {
     const loadPrefilledAddress = async () => {
       if (!user?.email) {
@@ -354,6 +454,7 @@ export const AddressCheck = () => {
   };
 
 
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 relative">
       <div className="mb-4">
@@ -364,11 +465,51 @@ export const AddressCheck = () => {
           <CardTitle>Address Check</CardTitle>
           <CardDescription>
             Please verify your address before proceeding to the maintenance wizard.
+            {user?.email && (
+              <div className="mt-2 text-xs text-gray-500">
+                Using email: <code className="bg-gray-100 px-1 rounded">{user.email}</code>
+              </div>
+            )}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          {/* User Data Scraping Status */}
+          {scrapingLoading && (
+            <div className="p-3 bg-blue-50 border border-blue-200 rounded-md">
+              <p className="text-sm text-blue-600">🔍 Fetching your data...</p>
+            </div>
+          )}
+          
+          {scrapingError && (
+            <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+              <p className="text-sm text-yellow-700">⚠️ Could not fetch external data: {scrapingError}</p>
+              <p className="text-xs text-yellow-600 mt-1">You can still enter your address manually below.</p>
+            </div>
+          )}
+          
+          {scrapedData && (
+            <div className="p-3 bg-green-50 border border-green-200 rounded-md">
+              <p className="text-sm text-green-700">✅ Data retrieved successfully!</p>
+              <details className="mt-2">
+                <summary className="text-xs text-green-600 cursor-pointer hover:text-green-800">
+                  View retrieved data
+                </summary>
+                <pre className="text-xs text-green-600 mt-2 p-2 bg-green-100 rounded overflow-auto max-h-32">
+                  {JSON.stringify(scrapedData, null, 2)}
+                </pre>
+              </details>
+            </div>
+          )}
+
           <div className="space-y-2">
-            <Label htmlFor="street">Street *</Label>
+            <Label htmlFor="street" className="flex items-center gap-1">
+              Street *
+              {prefilledFields.includes('street') && (
+                <span className="text-xs text-green-600" title="Auto-filled from your data">
+                  ✓
+                </span>
+              )}
+            </Label>
             <Input
               id="street"
               value={form.street}
@@ -376,13 +517,22 @@ export const AddressCheck = () => {
               placeholder="Enter street name"
               required
               readOnly={!isEditing}
-              className={!isEditing ? 'bg-gray-100 cursor-not-allowed' : ''}
+              className={`${!isEditing ? 'bg-gray-100 cursor-not-allowed' : ''} ${
+                prefilledFields.includes('street') ? 'border-green-300 bg-green-50' : ''
+              }`}
             />
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-2">
-              <Label htmlFor="house_number">House Number *</Label>
+              <Label htmlFor="house_number" className="flex items-center gap-1">
+                House Number *
+                {prefilledFields.includes('house_number') && (
+                  <span className="text-xs text-green-600" title="Auto-filled from your data">
+                    ✓
+                  </span>
+                )}
+              </Label>
               <Input
                 id="house_number"
                 value={form.house_number}
@@ -390,24 +540,42 @@ export const AddressCheck = () => {
                 placeholder="123"
                 required
                 readOnly={!isEditing}
-                className={!isEditing ? 'bg-gray-100 cursor-not-allowed' : ''}
+                className={`${!isEditing ? 'bg-gray-100 cursor-not-allowed' : ''} ${
+                  prefilledFields.includes('house_number') ? 'border-green-300 bg-green-50' : ''
+                }`}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="house_number_suffix">Suffix</Label>
+              <Label htmlFor="house_number_suffix" className="flex items-center gap-1">
+                Suffix
+                {prefilledFields.includes('house_number_suffix') && (
+                  <span className="text-xs text-green-600" title="Auto-filled from your data">
+                    ✓
+                  </span>
+                )}
+              </Label>
               <Input
                 id="house_number_suffix"
                 value={form.house_number_suffix}
                 onChange={(e) => handleInputChange('house_number_suffix', e.target.value)}
                 placeholder="A"
                 readOnly={!isEditing}
-                className={!isEditing ? 'bg-gray-100 cursor-not-allowed' : ''}
+                className={`${!isEditing ? 'bg-gray-100 cursor-not-allowed' : ''} ${
+                  prefilledFields.includes('house_number_suffix') ? 'border-green-300 bg-green-50' : ''
+                }`}
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="postal_code">Postal Code *</Label>
+            <Label htmlFor="postal_code" className="flex items-center gap-1">
+              Postal Code *
+              {prefilledFields.includes('postal_code') && (
+                <span className="text-xs text-green-600" title="Auto-filled from your data">
+                  ✓
+                </span>
+              )}
+            </Label>
             <Input
               id="postal_code"
               value={form.postal_code}
@@ -416,7 +584,9 @@ export const AddressCheck = () => {
               placeholder="1234 AB"
               required
               readOnly={!isEditing}
-              className={!isEditing ? 'bg-gray-100 cursor-not-allowed' : ''}
+              className={`${!isEditing ? 'bg-gray-100 cursor-not-allowed' : ''} ${
+                prefilledFields.includes('postal_code') ? 'border-green-300 bg-green-50' : ''
+              }`}
             />
             {form.postal_code && !isValidPostalCodeNL(form.postal_code) && (
               <p className="text-sm text-red-600">Please enter a valid Dutch postal code (e.g., 1234 AB)</p>
@@ -424,7 +594,14 @@ export const AddressCheck = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="city">City *</Label>
+            <Label htmlFor="city" className="flex items-center gap-1">
+              City *
+              {prefilledFields.includes('city') && (
+                <span className="text-xs text-green-600" title="Auto-filled from your data">
+                  ✓
+                </span>
+              )}
+            </Label>
             <Input
               id="city"
               value={form.city}
@@ -433,12 +610,21 @@ export const AddressCheck = () => {
               placeholder="Amsterdam"
               required
               readOnly={!isEditing}
-              className={!isEditing ? 'bg-gray-100 cursor-not-allowed' : ''}
+              className={`${!isEditing ? 'bg-gray-100 cursor-not-allowed' : ''} ${
+                prefilledFields.includes('city') ? 'border-green-300 bg-green-50' : ''
+              }`}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="telephone">Telephone Number</Label>
+            <Label htmlFor="telephone" className="flex items-center gap-1">
+              Telephone Number
+              {prefilledFields.includes('telephone') && (
+                <span className="text-xs text-green-600" title="Auto-filled from your data">
+                  ✓
+                </span>
+              )}
+            </Label>
             <Input
               id="telephone"
               type="tel"
@@ -446,7 +632,9 @@ export const AddressCheck = () => {
               onChange={(e) => handleInputChange('telephone', e.target.value)}
               placeholder="+31 6 12345678"
               readOnly={!isEditing}
-              className={!isEditing ? 'bg-gray-100 cursor-not-allowed' : ''}
+              className={`${!isEditing ? 'bg-gray-100 cursor-not-allowed' : ''} ${
+                prefilledFields.includes('telephone') ? 'border-green-300 bg-green-50' : ''
+              }`}
             />
           </div>
 
